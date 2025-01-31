@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -144,7 +178,7 @@ window.Quarto = {
 </section>
 <section id="description-of-data-and-data-source" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="description-of-data-and-data-source"><span class="header-section-number">2.2</span> Description of data and data source</h2>
-<p><em>This is a time series data based on 38 member countries from the Organisation for Economic Co-operation and Development (OECD). This organization is a unique forum with governments from 37 democracies collaborate to develop policy standards to promote sustainable economic growth. However, the data obtained from this dataset is crude and needs to be treated before attempting analysis based on it. For example, in its present form, the variable name is a long sentense describing the data it contains.</em></p>
+<p><em>This is a time series data based on 38 member countries from the Organisation for Economic Co-operation and Development (OECD). This organization is a unique forum with governments from 37 democracies collaborate to develop policy standards to promote sustainable economic growth. However, the data obtained from this dataset is crude and needs to be treated before attempting analysis based on it. For example, in its present form, the variable name is a long sentense describing the data it contains.The years are listed as column names and variables are listed as Series.</em></p>
 </section>
 <section id="objective-of-the-research" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="objective-of-the-research"><span class="header-section-number">2.3</span> Objective of the research</h2>
@@ -184,11 +218,32 @@ Figure&nbsp;1: A figure that is manually generated and shows some overview/schem
 </section>
 <section id="data-import-and-cleaning" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="data-import-and-cleaning"><span class="header-section-number">3.2</span> Data import and cleaning</h2>
-<p><em>Write code that reads in the file and cleans it so it’s ready for analysis. Since this will be fairly long code for most datasets, it might be a good idea to have it in one or several R scripts. If that is the case, explain here briefly what kind of cleaning/processing you do, and provide more details and well documented code somewhere (e.g.&nbsp;as supplement in a paper). All materials, including files that contain code, should be commented well so everyone can follow along.</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw-data"</span>, <span class="st">"wdi-oecd.xlsx"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(file_path, <span class="at">sheet=</span><span class="st">"Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="statistical-analysis" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="statistical-analysis"><span class="header-section-number">3.3</span> Statistical analysis</h2>
-<p><em>Explain anything related to your statistical analyses.</em></p>
+<p><em>This is the snapshot of the data as of now.</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 15
+  `Country Name` `Country Code` `Series Name`      `Series Code` `2010 [YR2010]`
+  &lt;chr&gt;          &lt;chr&gt;          &lt;chr&gt;              &lt;chr&gt;         &lt;chr&gt;          
+1 OECD members   OED            Adolescent fertil… SP.ADO.TFRT   31.44760033510…
+2 OECD members   OED            Agriculture, fore… NV.AGR.TOTL.… 1.512123631489…
+3 OECD members   OED            Annual freshwater… ER.H2O.FWTL.… ..             
+4 OECD members   OED            Births attended b… SH.STA.BRTC.… 97.77757721482…
+5 OECD members   OED            Contraceptive pre… SP.DYN.CONU.… 74.525121400516
+6 OECD members   OED            Domestic credit p… FS.AST.DOMS.… ..             
+# ℹ 10 more variables: `2011 [YR2011]` &lt;chr&gt;, `2012 [YR2012]` &lt;chr&gt;,
+#   `2013 [YR2013]` &lt;chr&gt;, `2014 [YR2014]` &lt;chr&gt;, `2015 [YR2015]` &lt;chr&gt;,
+#   `2016 [YR2016]` &lt;chr&gt;, `2017 [YR2017]` &lt;chr&gt;, `2018 [YR2018]` &lt;chr&gt;,
+#   `2019 [YR2019]` &lt;chr&gt;, `2020 [YR2020]` &lt;chr&gt;</code></pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
