@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="">
+<meta name="author" content="Prasanga Paudel">
 
-<title>Prasanga Paudel- Data Analysis Project</title>
+<title>Factors affecting health sector expenditure in OECD countries</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,13 +128,19 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Prasanga Paudel- Data Analysis Project</h1>
+<h1 class="title">Factors affecting health sector expenditure in OECD countries</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prasanga Paudel </p>
+          </div>
+  </div>
     
   
     
@@ -149,14 +155,14 @@ window.Quarto = {
 <p>This uses HTML as output format. <a href="https://quarto.org/docs/output-formats/ms-word.html">See here</a> for more information. You can switch to other formats, like docx or pdf. See <a href="https://quarto.org/">the Quarto documentation</a> for other formats.</p>
 <p><strong>Authors</strong></p>
 <ul>
-<li>First Autor<span class="math inline">\(^{1,2,*}\)</span> (ORCID: 0000-0000-1234-5678)</li>
+<li>Prasanga Paudel<span class="math inline">\(^{1,2,*}\)</span> (ORCID: 0000-0000-1234-5678)</li>
 <li>Second Author<span class="math inline">\(^{3, *}\)</span></li>
 <li>Third Autor<span class="math inline">\(^{3, \dagger}\)</span></li>
 <li>Last Author<span class="math inline">\(^{1, 2, \land}\)</span></li>
 </ul>
 <p><strong>Author affiliations</strong></p>
 <ol type="1">
-<li>College of Public Health, University of Georgia, Athens, GA, USA.</li>
+<li>College of Agricultural and Environmental Science, University of Georgia, Athens, GA, USA.</li>
 <li>Another Affiliation, Athens, GA, USA.</li>
 <li>Yet another Affiliation.</li>
 </ol>
@@ -173,8 +179,8 @@ window.Quarto = {
 <h1 data-number="2"><span class="header-section-number">2</span> Introduction</h1>
 <section id="general-background-information" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="general-background-information"><span class="header-section-number">2.1</span> General Background Information</h2>
-<p><em>We will try to analyze the most influential factors affecting the expenditure in health sector by different countries. The predictor variables will include factors ranging from education, mortality, population distribution among rural and urban spaces, and so on. We would use multiple regression analysis with health sector expenditure as dependent variable and the variable of interests as predictors.</em></p>
-<p><em>We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have also focused on the relation between life expectancy and health expenditure. However, these research were based on fixed effect and random effect models. In our analysis we will try to follow OLS based multiple regression model.</em></p>
+<p><em>We will try to analyze the most influential factors affecting the expenditure in health sector by different countries. The predictor variables will include factors ranging from education, mortality, population distribution among rural and urban spaces, and so on. We would use multiple regression analysis with health sector expenditure as dependent variable and the variable of interests as predictors for this panel data.</em></p>
+<p><em>We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have also focused on the relation between life expectancy and health expenditure. However, these research were based on fixed effect and random effect models. In our analysis we will try to follow OLS multiple regression model.</em></p>
 </section>
 <section id="description-of-data-and-data-source" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="description-of-data-and-data-source"><span class="header-section-number">2.2</span> Description of data and data source</h2>
@@ -182,6 +188,7 @@ window.Quarto = {
 </section>
 <section id="objective-of-the-research" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="objective-of-the-research"><span class="header-section-number">2.3</span> Objective of the research</h2>
+<p>The expenditure in health sector is one of the important factor that helps in determining the efficiency of health sector. We can relate the expenditure with different national development indicators and hope to find important connections between them. This will help government to make specific interventions through their policy to enhance their health sector. We can also find out how countries are currently operating and which factor has helped or negatively affected their health sector.</p>
 <p><em>The main objective of this research is to:</em></p>
 <p><em>1. To analyze the factors that affect the expenditure in health sector among OECD countries.</em></p>
 <p><em>2. To analyze the magnitude of the influence of these factors on health expenditure</em></p>
@@ -198,33 +205,15 @@ window.Quarto = {
 <section id="methods" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Methods</h1>
 <p><em>To be added</em></p>
-<section id="schematic-of-workflow" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="schematic-of-workflow"><span class="header-section-number">3.1</span> Schematic of workflow</h2>
-<p>Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). <a href="#fig-schematic" class="quarto-xref">Figure&nbsp;1</a> is an example of some - completely random/unrelated - schematic that was generated with Biorender. We store those figures in the <code>assets</code> folder.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="fig-schematic" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../../assets/antigen-recognition.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it’s just a random one from one of our projects I found and placed here.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="data-import-and-cleaning" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="data-import-and-cleaning"><span class="header-section-number">3.2</span> Data import and cleaning</h2>
+<section id="data-import-and-cleaning" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="data-import-and-cleaning"><span class="header-section-number">3.1</span> Data import and cleaning</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw-data"</span>, <span class="st">"wdi-oecd.xlsx"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(file_path, <span class="at">sheet=</span><span class="st">"Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="statistical-analysis" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="statistical-analysis"><span class="header-section-number">3.3</span> Statistical analysis</h2>
+<section id="statistical-analysis" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="statistical-analysis"><span class="header-section-number">3.2</span> Statistical analysis</h2>
 <p><em>This is the snapshot of the data as of now.</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -242,6 +231,24 @@ Figure&nbsp;1: A figure that is manually generated and shows some overview/schem
 #   `2013 [YR2013]` &lt;chr&gt;, `2014 [YR2014]` &lt;chr&gt;, `2015 [YR2015]` &lt;chr&gt;,
 #   `2016 [YR2016]` &lt;chr&gt;, `2017 [YR2017]` &lt;chr&gt;, `2018 [YR2018]` &lt;chr&gt;,
 #   `2019 [YR2019]` &lt;chr&gt;, `2020 [YR2020]` &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="schematic-of-workflow" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="schematic-of-workflow"><span class="header-section-number">3.3</span> Schematic of workflow</h2>
+<p>Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). <a href="#fig-schematic" class="quarto-xref">Figure&nbsp;1</a> is an example of some - completely random/unrelated - schematic that was generated with Biorender. We store those figures in the <code>assets</code> folder.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-schematic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../assets/antigen-recognition.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it’s just a random one from one of our projects I found and placed here.
+</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
