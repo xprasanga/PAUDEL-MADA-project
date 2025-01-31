@@ -1,6 +1,6 @@
 ---
-title: "Prasanga Paudel- Data Analysis Project"
-author: ""
+title: "Factors affecting health sector expenditure in OECD countries"
+author: "Prasanga Paudel"
 format:
   html:
     toc: false
@@ -30,14 +30,14 @@ library(readxl)
 
 **Authors**  
 
-* First Autor$^{1,2,*}$ (ORCID: 0000-0000-1234-5678) 
+* Prasanga Paudel$^{1,2,*}$ (ORCID: 0000-0000-1234-5678) 
 * Second Author$^{3, *}$
 * Third Autor$^{3, \dagger}$
 * Last Author$^{1, 2, \land}$ 
 
 **Author affiliations**  
 
-1. College of Public Health, University of Georgia, Athens, GA, USA.
+1. College of Agricultural and Environmental Science, University of Georgia, Athens, GA, USA.
 2. Another Affiliation, Athens, GA, USA.
 3. Yet another Affiliation.
 
@@ -63,14 +63,17 @@ _The data is based on World Development Indicator from World Bank Group. This is
 # Introduction 
 
 ## General Background Information
-_We will try to analyze the most influential factors affecting the expenditure in health sector by different countries. The predictor variables will include factors ranging from education, mortality, population distribution among rural and urban spaces, and so on. We would use multiple regression analysis with health sector expenditure as dependent variable and the variable of interests as predictors._
+_We will try to analyze the most influential factors affecting the expenditure in health sector by different countries. The predictor variables will include factors ranging from education, mortality, population distribution among rural and urban spaces, and so on. We would use multiple regression analysis with health sector expenditure as dependent variable and the variable of interests as predictors for this panel data._
 
-_We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have also focused on the relation between life expectancy and health expenditure. However, these research were based on fixed effect and random effect models. In our analysis we will try to follow OLS based multiple regression model._
+_We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have also focused on the relation between life expectancy and health expenditure. However, these research were based on fixed effect and random effect models. In our analysis we will try to follow OLS multiple regression model._
 
 ## Description of data and data source
 _This is a time series data based on 38 member countries from the Organisation for Economic Co-operation and Development (OECD). This organization is a unique forum with governments from 37 democracies collaborate to develop policy standards to promote sustainable economic growth. However, the data obtained from this dataset is crude and needs to be treated before attempting analysis based on it. For example, in its present form, the variable name is a long sentense describing the data it contains.The years are listed as column names and variables are listed as Series._
 
 ## Objective of the research
+
+The expenditure in health sector is one of the important factor that helps in determining the efficiency of health sector. We can relate the expenditure with different national development indicators and hope to find important connections between them. This will help government to make specific interventions through their policy to enhance their health sector. We can also find out how countries are currently operating and which factor has helped or negatively affected their health sector.
+
 _The main objective of this research is to:_
 
 _1. To analyze the factors that affect the expenditure in health sector among OECD countries._
@@ -95,22 +98,6 @@ Link to the source: <https://databank.worldbank.org/source/world-development-ind
 _To be added_
 
 
-## Schematic of workflow
-
-Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). @fig-schematic is an example of some - completely random/unrelated - schematic that was generated with Biorender.
-We store those figures in the `assets` folder.
-
-```{r}
-#| label: fig-schematic
-#| fig-cap: "A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it's just a random one from one of our projects I found and placed here."
-#| echo: FALSE
-knitr::include_graphics(here("assets","antigen-recognition.png"))
-```
-
-
-
-
-
 ## Data import and cleaning
 ```{r}
 file_path <- here("data","raw-data", "wdi-oecd.xlsx")
@@ -125,6 +112,21 @@ _This is the snapshot of the data as of now._
 ```{r}
 head(data)
 ```
+
+
+## Schematic of workflow
+
+Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). @fig-schematic is an example of some - completely random/unrelated - schematic that was generated with Biorender.
+We store those figures in the `assets` folder.
+
+```{r}
+#| label: fig-schematic
+#| fig-cap: "A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it's just a random one from one of our projects I found and placed here."
+#| echo: FALSE
+knitr::include_graphics(here("assets","antigen-recognition.png"))
+```
+
+
 
 
 
