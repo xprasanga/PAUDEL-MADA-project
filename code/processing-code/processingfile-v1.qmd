@@ -1,143 +1,163 @@
 ---
-title: "An example cleaning script"
-author: "Andreas Handel"
-date: "2024-02-07"
+title: "Data cleaning for Project"
+author: "Prasanga Paudel"
+date: "2024-02-17"
 output: html_document
 ---
 
 
-# Processing script
-
-This contains the same code and comments/information as `processingcode.R`.
-
-This just shows it as Quarto file, to give you an idea how to do it in a setup that combines code and text in a single file.
-
-See the other Quarto file for my currently preferred approach of pulling code from the R script into the Quarto file.
-
-
-# Setup
-
-Load needed packages. make sure they are installed.
-
 ```{r}
-library(readxl) #for loading Excel files
-library(dplyr) #for data processing/cleaning
-library(tidyr) #for data processing/cleaning
-library(skimr) #for nice visualization of data 
-library(here) #to set paths
-```
-
-
-# Data loading
-
-Note that for functions that come from specific packages (instead of base R), I often specify both package and function like so:
-package::function() that's not required one could just call the function specifying the package makes it clearer where the function "lives",
-but it adds typing. You can do it either way.
-
-```{r}
-# path to data
-# note the use of the here() package and not absolute paths
-data_location <- here::here("data","raw-data","exampledata.xlsx")
-rawdata <- readxl::read_excel(data_location)
-```
-
-
-# Check data
-
-First we can look at the codebook
-
-```{r}
-codebook <- readxl::read_excel(data_location, sheet ="Codebook")
-print(codebook)
-```
-
-
-Several ways of looking at the data
-
-```{r}
-dplyr::glimpse(rawdata)
-summary(rawdata)
-head(rawdata)
-skimr::skim(rawdata)
+#loading the necessary packages
+library(here)
+library(dplyr)
+library(skimr)
+library(ggplot2)
+library(readxl)
+library(tidyr)
 ```
 
 
 
-# Cleaning
 
-By inspecting the data as done above, we find some problems that need addressing:
 
-First, there is an entry for height which says "sixty" instead of a number. 
-Does that mean it should be a numeric 60? It somehow doesn't make sense since the weight is 60kg, which can't happen for a 60cm person (a baby).
-Since we don't know how to fix this, we might decide to remove the person. This "sixty" entry also turned all Height entries into characters instead of numeric. That conversion to character also means that our summary function isn't very meaningful. So let's fix that first.
+## Data import and cleaning
+Here, we will import the original file downloaded from the website.
 
 ```{r}
-d1 <- rawdata %>% dplyr::filter( Height != "sixty" ) %>% 
-                  dplyr::mutate(Height = as.numeric(Height))
-skimr::skim(d1)
-hist(d1$Height)
-```
-
-Now we see that there is one person with a height of 6. That could be a typo, or someone mistakenly entered their height in feet. Since we unfortunately don't know, we might need to remove this person, which we'll do here.
-
-```{r}
-d2 <- d1 %>% dplyr::mutate( Height = replace(Height, Height=="6",round(6*30.48,0)) )
-skimr::skim(d2)
-```
-
-Height values seem ok now.
-
-Now let's look at the `Weight` variable. There is a person with weight of 7000, which is impossible, and one person with missing weight.
-To be able to analyze the data, we'll remove those individuals as well.
-
-```{r}
-d3 <- d2 %>%  dplyr::filter(Weight != 7000) %>% tidyr::drop_na()
-skimr::skim(d3)
-```
-
-Now checking the `Gender` variable. Gender should be a categorical/factor variable but is loaded as character. We can fix that with simple base R code to mix things up.
-
-```{r}
-d3$Gender <- as.factor(d3$Gender)  
-skimr::skim(d3)
-```
-
-
-Now we see that there is another NA, but it's not `NA` from R, instead it was loaded as character and is now considered as a category.
-Well proceed here by removing that individual with that NA entry. Since this keeps an empty category for Gender, I'm also using droplevels() to get rid of it.
-
-```{r}
-d4 <- d3 %>% dplyr::filter( !(Gender %in% c("NA","N")) ) %>% droplevels()
-skimr::skim(d4)
-```
-
-
-All done, data is clean now. 
-
-Let's assign at the end to some final variable, this makes it easier to add further cleaning steps above.
-
-```{r}
-processeddata <- d4
-```
-
-
-# Save data 
-
-Finally, we save the clean data as RDS file. I suggest you save your processed and cleaned data as RDS or RDA/Rdata files. 
-This preserves coding like factors, characters, numeric, etc.  If you save as CSV, that information would get lost.
-However, CSV is better for sharing with others since it's plain text. If you do CSV, you might want to write down somewhere what each variable is.
-
-See here for some suggestions on how to store your processed data:
-http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata
-
-```{r}
-save_data_location <- here::here("data","processed-data","processeddata.rds")
-saveRDS(processeddata, file = save_data_location)
+file_path <- here("data","raw-data", "wdi-oecd.xlsx")
+data <- read_excel(file_path, sheet="Data")
 ```
 
 
 
-# Notes
+## Preliminary check of the original data 
 
-Removing anyone who had "faulty" or missing data is one approach. It's often not the best. based on your question and your analysis approach, you might want to do cleaning differently (e.g. keep individuals with some missing information).
+_This is the snapshot of the data as of now._
+```{r}
+head(data)
+```
+
+
+## Data Cleaning
+
+We will now change the name of the variables so that R can better understand the names and to avoid errors during the data analysis process.
+
+```{r}
+# Cleaning year columns: Removing brackets, text, and spaces
+colnames(data) <- gsub("\\[.*\\]|\\s", "", colnames(data))  
+
+# We will now check the corrected names
+print(colnames(data))
+```
+Here, we can observe that the names have been assigned as required and we no longer have spaces and unwanted words and characters in the variable names.
+
+
+## Data Transformation
+
+As the necesary variables require to go further with analysis are present in rows under the column "SeriesName", we need to make sure that we have these variables as column names and not as rows. We will now perform the necessary transformations. We will also need to transform the year values from column names to rows as it would make more convinient to run a time series analysis. We will therefore create a new variable Year to save the values for different years. 
+
+```{r}
+# Reshaping the data from wide to long format
+data_long <- data %>%
+  pivot_longer(
+    cols = starts_with("20"),  # Selecting all year columns (2010 to 2020)
+    names_to = "Year",         # Naming the new column for years
+    values_to = "Value"        # Naming the new column for values
+  )
+
+# Viewing the reshaped data
+print(head(data_long))
+```
+As we can see the year data has been arranged as required. Now, we will transform the variables into column names. But, before doing that, we will remove all the special characters from the to-be variable names, and also replace spaces with unerscore.
+
+```{r}
+# Cleaning the Series_Name column
+data_long <- data_long %>%
+  mutate(
+    SeriesName = gsub("[^a-zA-Z0-9 ]", "", SeriesName),  # Removing special characters
+    SeriesName = gsub(" ", "_", SeriesName)               # Replacing spaces with _
+  )
+
+# View the updated Series_Name column
+print(unique(data_long$SeriesName))
+```
+Now, the variables are ready to be transformed.
+
+We will further insure that no replication has been produuced during out data analysis process.
+
+```{r}
+# Remove duplicates
+data_long <- data_long %>%
+  distinct(CountryName, CountryCode, SeriesCode, Year, SeriesName, .keep_all = TRUE)
+```
+
+Here, we will transform the variables as column names with appropriates values assigned to them correctly.
+```{r}
+# Spread the SeriesName into separate columns
+data_final <- data_long %>%
+  pivot_wider(
+    names_from = SeriesName,  # Use SeriesName to create new columns
+    values_from = Value       # Fill the new columns with the corresponding values
+  )
+
+```
+
+
+## Checking if the transformation is accurate
+
+In this section, we will verify if our transformation of the dataset was accurate.
+
+```{r}
+# Extract value from the original dataset
+original_value <- data %>%
+  filter(CountryName == "Hungary", SeriesName == "Primary education, teachers") %>%
+  pull(`2010`)  # Replace `2010` with the correct column name for the year 2010
+
+# Print the original value
+print(original_value)
+```
+This provides the value for Primary education, teachers for Hungary based on original dataset.
+
+
+```{r}
+# Convert Year to numeric
+data_final <- data_final %>%
+  mutate(Year = as.numeric(Year))
+
+# Extract the value
+transformed_value <- data_final %>%
+  filter(CountryName == "Hungary", Year == 2010) %>%
+  pull(Primary_education_teachers)
+
+# Remove missing values and print non-missing values
+non_missing_values <- na.omit(transformed_value)
+cat(non_missing_values, sep = "\n")
+```
+This provides the value for Primary education, teachers for Hungary based on transformed dataset. 
+Since they are equal, we have verified that our transformation was accurate.
+
+## Creating a more compact dataset 
+
+As the dataset has 10 years information for each country and currently this structure has resulted in creation of 641,817 observations, we will try to make it more compact and less complex.
+
+```{r}
+data_collapsed <- data_final %>%
+  group_by(CountryName, CountryCode, Year) %>%
+  summarize(across(everything(), ~ max(.x, na.rm = TRUE)), .groups = "drop")
+
+```
+
+
+
+
+## Saving the dataset for EDA
+
+Now, we will save the dataset so that we will be able run EDA based on it.
+
+
+```{r}
+rds_path <- here("data", "processed-data", "processeddata.rds")
+saveRDS(data_collapsed, rds_path)
+```
+
 

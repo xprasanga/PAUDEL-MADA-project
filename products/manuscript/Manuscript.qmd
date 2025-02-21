@@ -11,8 +11,6 @@ csl: ../../assets/american-journal-of-epidemiology.csl
 ---
 
 
-The structure below is one possible setup for a manuscript, or a general data analysis project (including the course project). Adjust as needed. 
-You don't need to have exactly these sections, but the content covering those sections should be addressed.
 
 This uses HTML as output format. [See here](https://quarto.org/docs/output-formats/ms-word.html) for more information. You can switch to other formats, like docx or pdf. See [the Quarto documentation](https://quarto.org/) for other formats.
 
@@ -23,6 +21,7 @@ library(here)
 library(knitr)
 library(here)
 library(readxl)
+library(writexl)
 ```
 
 
@@ -96,7 +95,7 @@ Link to the source: <https://databank.worldbank.org/source/world-development-ind
 _To be added_
 
 
-## Data import and cleaning
+# Data import and cleaning
 ```{r}
 file_path <- here("data","raw-data", "wdi-oecd.xlsx")
 data <- read_excel(file_path, sheet="Data")
@@ -104,7 +103,7 @@ data <- read_excel(file_path, sheet="Data")
 
 
 
-## Statistical analysis
+## A look into the original for of dataset
 
 _This is the snapshot of the data as of now._
 ```{r}
@@ -112,17 +111,9 @@ head(data)
 ```
 
 
-## Schematic of workflow
+# EDA based on clean dataset
 
-Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). @fig-schematic is an example of some - completely random/unrelated - schematic that was generated with Biorender.
-We store those figures in the `assets` folder.
-
-```{r}
-#| label: fig-schematic
-#| fig-cap: "A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it's just a random one from one of our projects I found and placed here."
-#| echo: FALSE
-knitr::include_graphics(here("assets","antigen-recognition.png"))
-```
+## Descriptive Analysis
 
 
 
@@ -138,48 +129,59 @@ knitr::include_graphics(here("assets","antigen-recognition.png"))
 _Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project._
 
 
-@tbl-summarytable shows a summary of the data.
+### Looking into the trend for our possible dependent variable 
 
-Note the loading of the data providing a **relative** path using the `../../` notation. (Two dots means a folder up). You never want to specify an **absolute** path like `C:\ahandel\myproject\results\` because if you share this with someone, it won't work for them since they don't have that path. You can also use the `here` R package to create paths. See examples of that below. I generally recommend the `here` package.
+@fig-health-expenditure-plot how "Health Expenditure as a Percentage of GDP Over Time (2010–2020)" is distributed over the years for top 5 OECD countries.
 
 ```{r}
-#| label: tbl-summarytable
-#| tbl-cap: "Data summary table."
+#| label: fig-health-expenditure-plot
+#| fig-cap: "Current Health Expenditure as a % of GDP (2010–2020): Top 5 nations"
 #| echo: FALSE
-resulttable=readRDS("../../results/tables/summarytable.rds")
-knitr::kable(resulttable)
+knitr::include_graphics(here("results","figures","health_expenditure_plot.png"))
 ```
 
 
+@fig-health-exp-aus how "Health Expenditure as a Percentage of GDP changes over time for Australia.
+
+```{r}
+#| label: fig-health-exp-aus
+#| fig-cap: "Health Expenditure (% of GDP), Country: Australia"
+#| echo: FALSE
+knitr::include_graphics(here("results", "figures", "health_exp_aus.png"))
+```
+
+
+@fig-pop-growth-aus checks if Health Expenditure as a Percentage of GDP over the Years shows any reation with annual population growth for Australia.
+
+```{r}
+#| label: fig-pop-growth-aus
+#| fig-cap: "Health Expenditure (% of GDP), Country: Australia"
+#| echo: FALSE
+knitr::include_graphics(here("results","figures","pop_growth_aus.png"))
+```
+
+
+@fig-he_per_capita checks if Health Expenditure Per Capita (USD) over the Years shows any reation with annual population growth for Australia.
+
+```{r}
+#| label: fig-he_per_capita
+#| fig-cap: "Health Expenditure Per Capita (USD, Country: Australia"
+#| echo: FALSE
+knitr::include_graphics(here("results","figures","health_exp_per_capita_aus.png"))
+```
 
 ## Basic statistical analysis
 
-_To get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any "p<0.05 means statistical significance" interpretation is not valid._
+_To be added_
 
 
-@fig-result shows a scatterplot figure produced by one of the R scripts.
-
-```{r}
-#| label: fig-result
-#| fig-cap: "Height and weight stratified by gender."
-#| echo: FALSE
-knitr::include_graphics(here("results","figures","height-weight-stratified.png"))
-```
 
 
 ## Full analysis
 
-_Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here._
+_To be added._
 
-Example @tbl-resulttable2 shows a summary of a linear model fit.
 
-```{r}
-#| label: tbl-resulttable2
-#| tbl-cap: "Linear model fit table."
-#| echo: FALSE
-resulttable2 = readRDS(here("results","tables","resulttable2.rds"))
-knitr::kable(resulttable2)
-```
 
 
 {{< pagebreak >}}
@@ -188,13 +190,13 @@ knitr::kable(resulttable2)
 # Discussion
 
 ## Summary and Interpretation
-_Summarize what you did, what you found and what it means._
+_To be added._
 
 ## Strengths and Limitations
-_Discuss what you perceive as strengths and limitations of your analysis._
+_To be added._
 
 ## Conclusions
-_What are the main take-home messages?_
+_To be added._
 
 _Include citations in your Rmd file using bibtex, the list of references will automatically be placed at the end_
 

@@ -151,7 +151,6 @@ window.Quarto = {
 </header>
 
 
-<p>The structure below is one possible setup for a manuscript, or a general data analysis project (including the course project). Adjust as needed. You don’t need to have exactly these sections, but the content covering those sections should be addressed.</p>
 <p>This uses HTML as output format. <a href="https://quarto.org/docs/output-formats/ms-word.html">See here</a> for more information. You can switch to other formats, like docx or pdf. See <a href="https://quarto.org/">the Quarto documentation</a> for other formats.</p>
 <p><strong>Authors</strong></p>
 <ul>
@@ -205,15 +204,15 @@ window.Quarto = {
 <section id="methods" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Methods</h1>
 <p><em>To be added</em></p>
-<section id="data-import-and-cleaning" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="data-import-and-cleaning"><span class="header-section-number">3.1</span> Data import and cleaning</h2>
+</section>
+<section id="data-import-and-cleaning" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Data import and cleaning</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw-data"</span>, <span class="st">"wdi-oecd.xlsx"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(file_path, <span class="at">sheet=</span><span class="st">"Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="statistical-analysis" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="statistical-analysis"><span class="header-section-number">3.2</span> Statistical analysis</h2>
+<section id="a-look-into-the-original-for-of-dataset" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="a-look-into-the-original-for-of-dataset"><span class="header-section-number">4.1</span> A look into the original for of dataset</h2>
 <p><em>This is the snapshot of the data as of now.</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -234,231 +233,106 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="schematic-of-workflow" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="schematic-of-workflow"><span class="header-section-number">3.3</span> Schematic of workflow</h2>
-<p>Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). <a href="#fig-schematic" class="quarto-xref">Figure&nbsp;1</a> is an example of some - completely random/unrelated - schematic that was generated with Biorender. We store those figures in the <code>assets</code> folder.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="fig-schematic" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../../assets/antigen-recognition.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it’s just a random one from one of our projects I found and placed here.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
+</section>
+<section id="eda-based-on-clean-dataset" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> EDA based on clean dataset</h1>
+<section id="descriptive-analysis" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="descriptive-analysis"><span class="header-section-number">5.1</span> Descriptive Analysis</h2>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
-<section id="results" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Results</h1>
-<section id="exploratorydescriptive-analysis" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="exploratorydescriptive-analysis"><span class="header-section-number">4.1</span> Exploratory/Descriptive analysis</h2>
+<section id="results" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Results</h1>
+<section id="exploratorydescriptive-analysis" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="exploratorydescriptive-analysis"><span class="header-section-number">6.1</span> Exploratory/Descriptive analysis</h2>
 <p><em>Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project.</em></p>
-<p><a href="#tbl-summarytable" class="quarto-xref">Table&nbsp;1</a> shows a summary of the data.</p>
-<p>Note the loading of the data providing a <strong>relative</strong> path using the <code>../../</code> notation. (Two dots means a folder up). You never want to specify an <strong>absolute</strong> path like <code>C:\ahandel\myproject\results\</code> because if you share this with someone, it won’t work for them since they don’t have that path. You can also use the <code>here</code> R package to create paths. See examples of that below. I generally recommend the <code>here</code> package.</p>
-<div class="cell">
-<div id="tbl-summarytable" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summarytable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Data summary table.
-</figcaption>
-<div aria-describedby="tbl-summarytable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 8%">
-<col style="width: 9%">
-<col style="width: 6%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">skim_type</th>
-<th style="text-align: left;">skim_variable</th>
-<th style="text-align: right;">n_missing</th>
-<th style="text-align: right;">complete_rate</th>
-<th style="text-align: left;">factor.ordered</th>
-<th style="text-align: right;">factor.n_unique</th>
-<th style="text-align: left;">factor.top_counts</th>
-<th style="text-align: right;">numeric.mean</th>
-<th style="text-align: right;">numeric.sd</th>
-<th style="text-align: right;">numeric.p0</th>
-<th style="text-align: right;">numeric.p25</th>
-<th style="text-align: right;">numeric.p50</th>
-<th style="text-align: right;">numeric.p75</th>
-<th style="text-align: right;">numeric.p100</th>
-<th style="text-align: left;">numeric.hist</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">factor</td>
-<td style="text-align: left;">Gender</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">M: 4, F: 3, O: 2</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">numeric</td>
-<td style="text-align: left;">Height</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">165.66667</td>
-<td style="text-align: right;">15.97655</td>
-<td style="text-align: right;">133</td>
-<td style="text-align: right;">156</td>
-<td style="text-align: right;">166</td>
-<td style="text-align: right;">178</td>
-<td style="text-align: right;">183</td>
-<td style="text-align: left;">▂▁▃▃▇</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">numeric</td>
-<td style="text-align: left;">Weight</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">70.11111</td>
-<td style="text-align: right;">21.24526</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">55</td>
-<td style="text-align: right;">70</td>
-<td style="text-align: right;">80</td>
-<td style="text-align: right;">110</td>
-<td style="text-align: left;">▇▂▃▂▂</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
-</section>
-<section id="basic-statistical-analysis" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="basic-statistical-analysis"><span class="header-section-number">4.2</span> Basic statistical analysis</h2>
-<p><em>To get some further insight into your data, if reasonable you could compute simple statistics (e.g.&nbsp;simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any “p&lt;0.05 means statistical significance” interpretation is not valid.</em></p>
-<p><a href="#fig-result" class="quarto-xref">Figure&nbsp;2</a> shows a scatterplot figure produced by one of the R scripts.</p>
+<section id="looking-into-the-trend-for-our-possible-dependent-variable" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="looking-into-the-trend-for-our-possible-dependent-variable"><span class="header-section-number">6.1.1</span> Looking into the trend for our possible dependent variable</h3>
+<p><a href="#fig-health-expenditure-plot" class="quarto-xref">Figure&nbsp;1</a> how “Health Expenditure as a Percentage of GDP Over Time (2010–2020)” is distributed over the years for top 5 OECD countries.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-result" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-health-expenditure-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-result-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../../results/figures/height-weight-stratified.png" class="img-fluid figure-img">
+<div aria-describedby="fig-health-expenditure-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../results/figures/health_expenditure_plot.png" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-result-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Height and weight stratified by gender.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-health-expenditure-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Current Health Expenditure as a % of GDP (2010–2020): Top 5 nations
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-health-exp-aus" class="quarto-xref">Figure&nbsp;2</a> how “Health Expenditure as a Percentage of GDP changes over time for Australia.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-health-exp-aus" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-health-exp-aus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../results/figures/health_exp_aus.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-health-exp-aus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Health Expenditure (% of GDP), Country: Australia
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-pop-growth-aus" class="quarto-xref">Figure&nbsp;3</a> checks if Health Expenditure as a Percentage of GDP over the Years shows any reation with annual population growth for Australia.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pop-growth-aus" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pop-growth-aus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../results/figures/pop_growth_aus.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pop-growth-aus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Health Expenditure (% of GDP), Country: Australia
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-he_per_capita" class="quarto-xref">Figure&nbsp;4</a> checks if Health Expenditure Per Capita (USD) over the Years shows any reation with annual population growth for Australia.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-he_per_capita" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-he_per_capita-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../results/figures/health_exp_per_capita_aus.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-he_per_capita-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Health Expenditure Per Capita (USD, Country: Australia
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="full-analysis" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="full-analysis"><span class="header-section-number">4.3</span> Full analysis</h2>
-<p><em>Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.</em></p>
-<p>Example <a href="#tbl-resulttable2" class="quarto-xref">Table&nbsp;2</a> shows a summary of a linear model fit.</p>
-<div class="cell">
-<div id="tbl-resulttable2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-resulttable2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Linear model fit table.
-</figcaption>
-<div aria-describedby="tbl-resulttable2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">149.2726967</td>
-<td style="text-align: right;">23.3823360</td>
-<td style="text-align: right;">6.3839942</td>
-<td style="text-align: right;">0.0013962</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Weight</td>
-<td style="text-align: right;">0.2623972</td>
-<td style="text-align: right;">0.3512436</td>
-<td style="text-align: right;">0.7470519</td>
-<td style="text-align: right;">0.4886517</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">GenderM</td>
-<td style="text-align: right;">-2.1244913</td>
-<td style="text-align: right;">15.5488953</td>
-<td style="text-align: right;">-0.1366329</td>
-<td style="text-align: right;">0.8966520</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">GenderO</td>
-<td style="text-align: right;">-4.7644739</td>
-<td style="text-align: right;">19.0114155</td>
-<td style="text-align: right;">-0.2506112</td>
-<td style="text-align: right;">0.8120871</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
+</section>
+<section id="basic-statistical-analysis" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="basic-statistical-analysis"><span class="header-section-number">6.2</span> Basic statistical analysis</h2>
+<p><em>To be added</em></p>
+</section>
+<section id="full-analysis" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="full-analysis"><span class="header-section-number">6.3</span> Full analysis</h2>
+<p><em>To be added.</em></p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
-<section id="discussion" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Discussion</h1>
-<section id="summary-and-interpretation" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="summary-and-interpretation"><span class="header-section-number">5.1</span> Summary and Interpretation</h2>
-<p><em>Summarize what you did, what you found and what it means.</em></p>
+<section id="discussion" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Discussion</h1>
+<section id="summary-and-interpretation" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="summary-and-interpretation"><span class="header-section-number">7.1</span> Summary and Interpretation</h2>
+<p><em>To be added.</em></p>
 </section>
-<section id="strengths-and-limitations" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="strengths-and-limitations"><span class="header-section-number">5.2</span> Strengths and Limitations</h2>
-<p><em>Discuss what you perceive as strengths and limitations of your analysis.</em></p>
+<section id="strengths-and-limitations" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="strengths-and-limitations"><span class="header-section-number">7.2</span> Strengths and Limitations</h2>
+<p><em>To be added.</em></p>
 </section>
-<section id="conclusions" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">5.3</span> Conclusions</h2>
-<p><em>What are the main take-home messages?</em></p>
+<section id="conclusions" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">7.3</span> Conclusions</h2>
+<p><em>To be added.</em></p>
 <p><em>Include citations in your Rmd file using bibtex, the list of references will automatically be placed at the end</em></p>
 <p>This paper <span class="citation" data-cites="leek2015">(<a href="#ref-leek2015" role="doc-biblioref">3</a>)</span> discusses types of analyses.</p>
 <p>These papers <span class="citation" data-cites="mckay2020 mckay2020a">(<a href="#ref-mckay2020" role="doc-biblioref">1</a>,<a href="#ref-mckay2020a" role="doc-biblioref">2</a>)</span> are good examples of papers published using a fully reproducible setup similar to the one shown in this template.</p>
@@ -466,12 +340,12 @@ Table&nbsp;2: Linear model fit table.
 <div style="page-break-after: always;"></div>
 </section>
 </section>
-<section id="references" class="level1 unnumbered" data-number="6">
+<section id="references" class="level1 unnumbered" data-number="8">
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">6 References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">8 References</h2><div id="refs" class="references csl-bib-body" role="list">
 <div id="ref-mckay2020" class="csl-entry" role="listitem">
 <div class="csl-left-margin">1. </div><div class="csl-right-inline">McKay B, Ebell M, Billings WZ, et al. <a href="https://doi.org/10.1093/ofid/ofaa494">Associations <span>Between Relative Viral Load</span> at <span>Diagnosis</span> and <span>Influenza A Symptoms</span> and <span>Recovery</span>.</a> <em>Open forum infectious diseases</em>. 2020;7(11):ofaa494. </div>
 </div>
