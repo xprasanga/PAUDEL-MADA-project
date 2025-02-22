@@ -69,10 +69,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="eda_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="eda_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="eda_files/libs/bootstrap/bootstrap-8a79a254b8e706d3c925cde0a310d4f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script src="eda_files/libs/kePrint-0.0.1/kePrint.js"></script>
-
-<link href="eda_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-
 
 
 </head>
@@ -137,25 +133,8 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<section id="loading-the-data." class="level1">
-<h1>Loading the data.</h1>
-<p>We will import the processed data from the processed-data folder which we is the cleaned and transformed dataset.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Path to data. </span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"processed-data"</span>,<span class="st">"processeddata.rds"</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(data_location)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="data-exploration-through-tables" class="level1">
-<h1>Data exploration through tables</h1>
-<p>Here we will present the summary stat for some of the interesting varible based on year 2010 for the OECD countries.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'kableExtra'</code></pre>
@@ -165,640 +144,59 @@ Attaching package: 'kableExtra'</code></pre>
 
     group_rows</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(htmltools)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(webshot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="loading-the-data." class="level1">
+<h1>Loading the data.</h1>
+<p>We will import the processed data from the processed-data folder which we is the cleaned and transformed dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Path to data. </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"processed-data"</span>,<span class="st">"processeddata.rds"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(data_location)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-exploration-through-tables" class="level1">
+<h1>Data exploration through tables</h1>
+<p>Here we will present the summary stat for some of the interesting varible based on year 2010 for the OECD countries.</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering data for the year 2010</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data_2010 <span class="ot">&lt;-</span> mydata <span class="sc">%&gt;%</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="dv">2010</span>)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary table, excluding specific rows</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>country_summary_table <span class="ot">&lt;-</span> data_2010 <span class="sc">%&gt;%</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>CountryName <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Data from database: World Development Indicators"</span>, </span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Last Updated: 01/28/2025"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    CountryName,</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    GDP_current_US,</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    Population_total,</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    Life_expectancy_at_birth_total_years,</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    Physicians_per_1000_people,</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    Hospital_beds_per_1000_people,</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    Government_Effectiveness_Estimate,</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    Control_of_Corruption_Estimate,</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    Rule_of_Law_Estimate,</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    Access_to_electricity__of_population,</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    Unemployment_total__of_total_labor_force_modeled_ILO_estimate,</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    Poverty_headcount_ratio_at_national_poverty_lines__of_population</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>CountryName <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Data from database: World Development Indicators"</span>, <span class="st">"OECD members"</span>,        <span class="st">"Last Updated: 01/28/2025"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    CountryName,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    GDP_current_US,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    Population_total,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    Life_expectancy_at_birth_total_years,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    Physicians_per_1000_people,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    Hospital_beds_per_1000_people,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    Government_Effectiveness_Estimate,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    Control_of_Corruption_Estimate,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    Rule_of_Law_Estimate,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    Access_to_electricity__of_population,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    Unemployment_total__of_total_labor_force_modeled_ILO_estimate,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    Poverty_headcount_ratio_at_national_poverty_lines__of_population</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and display an HTML table in R</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>country_summary_table <span class="sc">%&gt;%</span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">escape =</span> <span class="cn">FALSE</span>, <span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"left"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span>  <span class="co"># Making CountryName column bold</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"National Development Indicators"</span> <span class="ot">=</span> <span class="dv">11</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
-<colgroup>
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-</colgroup>
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; border-bottom: hidden;"></th>
-<th colspan="11" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-National Development Indicators
-</div></th>
-</tr>
-<tr class="even">
-<th style="text-align: left;" data-quarto-table-cell-role="th">CountryName</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">GDP_current_US</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Population_total</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Life_expectancy_at_birth_total_years</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Physicians_per_1000_people</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Hospital_beds_per_1000_people</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Government_Effectiveness_Estimate</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Control_of_Corruption_Estimate</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Rule_of_Law_Estimate</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Access_to_electricity__of_population</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Unemployment_total__of_total_labor_force_modeled_ILO_estimate</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Poverty_headcount_ratio_at_national_poverty_lines__of_population</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Australia</td>
-<td style="text-align: left;">1148838233480.7195</td>
-<td style="text-align: left;">22031750</td>
-<td style="text-align: left;">81.695121951219534</td>
-<td style="text-align: left;">3.364</td>
-<td style="text-align: left;">3.78</td>
-<td style="text-align: left;">1.76339137554169</td>
-<td style="text-align: left;">2.02361083030701</td>
-<td style="text-align: left;">1.75771832466125</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">5.214</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Austria</td>
-<td style="text-align: left;">389827789217.63409</td>
-<td style="text-align: left;">8363404</td>
-<td style="text-align: left;">80.580487804878061</td>
-<td style="text-align: left;">4.808</td>
-<td style="text-align: left;">7.65</td>
-<td style="text-align: left;">1.81252110004425</td>
-<td style="text-align: left;">1.59612202644348</td>
-<td style="text-align: left;">1.80120265483856</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">4.883</td>
-<td style="text-align: left;">14.5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Belgium</td>
-<td style="text-align: left;">481556503720.00092</td>
-<td style="text-align: left;">10895586</td>
-<td style="text-align: left;">80.1829268292683</td>
-<td style="text-align: left;">2.925</td>
-<td style="text-align: left;">6.13</td>
-<td style="text-align: left;">1.65420985221863</td>
-<td style="text-align: left;">1.47382998466492</td>
-<td style="text-align: left;">1.41785252094269</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">8.293</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Canada</td>
-<td style="text-align: left;">1617343367486.2585</td>
-<td style="text-align: left;">34005902</td>
-<td style="text-align: left;">81.322195121951225</td>
-<td style="text-align: left;">2.0384</td>
-<td style="text-align: left;">2.79</td>
-<td style="text-align: left;">1.77782678604126</td>
-<td style="text-align: left;">2.06187319755554</td>
-<td style="text-align: left;">1.79859042167664</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">8.178</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Chile</td>
-<td style="text-align: left;">217051209240.29752</td>
-<td style="text-align: left;">17181464</td>
-<td style="text-align: left;">78.501</td>
-<td style="text-align: left;">1.438</td>
-<td style="text-align: left;">2.05</td>
-<td style="text-align: left;">1.15724182128906</td>
-<td style="text-align: left;">1.44162690639496</td>
-<td style="text-align: left;">1.22541570663452</td>
-<td style="text-align: left;">99.5</td>
-<td style="text-align: left;">8.278</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Colombia</td>
-<td style="text-align: left;">286498534094.96326</td>
-<td style="text-align: left;">44777319</td>
-<td style="text-align: left;">75.033</td>
-<td style="text-align: left;">1.664</td>
-<td style="text-align: left;">1.51</td>
-<td style="text-align: left;">-0.123824141919613</td>
-<td style="text-align: left;">-0.42333310842514</td>
-<td style="text-align: left;">-0.271385610103607</td>
-<td style="text-align: left;">96.8</td>
-<td style="text-align: left;">11.153</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Costa Rica</td>
-<td style="text-align: left;">37658616951.803787</td>
-<td style="text-align: left;">4555962</td>
-<td style="text-align: left;">78.67</td>
-<td style="text-align: left;">2.283</td>
-<td style="text-align: left;">1.21</td>
-<td style="text-align: left;">0.298928886651993</td>
-<td style="text-align: left;">0.66439163684845</td>
-<td style="text-align: left;">0.535760879516602</td>
-<td style="text-align: left;">99</td>
-<td style="text-align: left;">7.171</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Czechia</td>
-<td style="text-align: left;">211168667286.26968</td>
-<td style="text-align: left;">10474410</td>
-<td style="text-align: left;">77.424390243902451</td>
-<td style="text-align: left;">3.599</td>
-<td style="text-align: left;">7.3</td>
-<td style="text-align: left;">0.9017294049263</td>
-<td style="text-align: left;">0.384590119123459</td>
-<td style="text-align: left;">0.930919170379639</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">7.281</td>
-<td style="text-align: left;">9.8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Denmark</td>
-<td style="text-align: left;">322345594075.47015</td>
-<td style="text-align: left;">5547683</td>
-<td style="text-align: left;">79.100000000000009</td>
-<td style="text-align: left;">3.724</td>
-<td style="text-align: left;">3.5</td>
-<td style="text-align: left;">2.10007047653198</td>
-<td style="text-align: left;">2.35235905647278</td>
-<td style="text-align: left;">1.89844179153442</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">7.746</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Estonia</td>
-<td style="text-align: left;">19524355419.037971</td>
-<td style="text-align: left;">1331475</td>
-<td style="text-align: left;">75.429268292682934</td>
-<td style="text-align: left;">3.244</td>
-<td style="text-align: left;">5.27</td>
-<td style="text-align: left;">1.07666647434235</td>
-<td style="text-align: left;">0.989536285400391</td>
-<td style="text-align: left;">1.15312993526459</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">16.707</td>
-<td style="text-align: left;">17.5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Finland</td>
-<td style="text-align: left;">249429613683.3338</td>
-<td style="text-align: left;">5363352</td>
-<td style="text-align: left;">79.870731707317091</td>
-<td style="text-align: left;">3.184</td>
-<td style="text-align: left;">5.86</td>
-<td style="text-align: left;">2.22388696670532</td>
-<td style="text-align: left;">2.15166974067688</td>
-<td style="text-align: left;">1.96125268936157</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">8.394</td>
-<td style="text-align: left;">13.7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">France</td>
-<td style="text-align: left;">2646230027988.3384</td>
-<td style="text-align: left;">65026211</td>
-<td style="text-align: left;">81.663414634146349</td>
-<td style="text-align: left;">3.397</td>
-<td style="text-align: left;">6.67</td>
-<td style="text-align: left;">1.46266102790833</td>
-<td style="text-align: left;">1.48775613307953</td>
-<td style="text-align: left;">1.49973154067993</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">9.279</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Germany</td>
-<td style="text-align: left;">3468154343000.0068</td>
-<td style="text-align: left;">81776930</td>
-<td style="text-align: left;">79.987804878048792</td>
-<td style="text-align: left;">3.734</td>
-<td style="text-align: left;">8.29</td>
-<td style="text-align: left;">1.51569378376007</td>
-<td style="text-align: left;">1.76642882823944</td>
-<td style="text-align: left;">1.63750469684601</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">7.043</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Greece</td>
-<td style="text-align: left;">296417644404.03387</td>
-<td style="text-align: left;">11121341</td>
-<td style="text-align: left;">80.3878048780488</td>
-<td style="text-align: left;">5.803</td>
-<td style="text-align: left;">4.52</td>
-<td style="text-align: left;">0.492912799119949</td>
-<td style="text-align: left;">-0.0625116676092148</td>
-<td style="text-align: left;">0.583895683288574</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">12.719</td>
-<td style="text-align: left;">21.4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Hungary</td>
-<td style="text-align: left;">132175349953.71332</td>
-<td style="text-align: left;">10000023</td>
-<td style="text-align: left;">74.207317073170742</td>
-<td style="text-align: left;">2.872</td>
-<td style="text-align: left;">7.19</td>
-<td style="text-align: left;">0.644822657108307</td>
-<td style="text-align: left;">0.303954064846039</td>
-<td style="text-align: left;">0.77266937494278</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">11.172</td>
-<td style="text-align: left;">14.1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Iceland</td>
-<td style="text-align: left;">13751161917.739773</td>
-<td style="text-align: left;">318041</td>
-<td style="text-align: left;">81.89756097560975</td>
-<td style="text-align: left;">3.588</td>
-<td style="text-align: left;">3.58</td>
-<td style="text-align: left;">1.580402135849</td>
-<td style="text-align: left;">1.93496966362</td>
-<td style="text-align: left;">1.70661580562592</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">7.564</td>
-<td style="text-align: left;">9.2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Ireland</td>
-<td style="text-align: left;">221985621537.50043</td>
-<td style="text-align: left;">4560155</td>
-<td style="text-align: left;">80.743902439024382</td>
-<td style="text-align: left;">4.164</td>
-<td style="text-align: left;">2.75</td>
-<td style="text-align: left;">1.34430372714996</td>
-<td style="text-align: left;">1.68115770816803</td>
-<td style="text-align: left;">1.76081323623657</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">14.534</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Israel</td>
-<td style="text-align: left;">238912622309.59021</td>
-<td style="text-align: left;">7623600</td>
-<td style="text-align: left;">81.60243902439025</td>
-<td style="text-align: left;">3.519</td>
-<td style="text-align: left;">3.29</td>
-<td style="text-align: left;">1.38622903823853</td>
-<td style="text-align: left;">0.750026702880859</td>
-<td style="text-align: left;">0.909712016582489</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">8.48</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Italy</td>
-<td style="text-align: left;">2144936254535.0042</td>
-<td style="text-align: left;">59277417</td>
-<td style="text-align: left;">82.036585365853668</td>
-<td style="text-align: left;">3.784</td>
-<td style="text-align: left;">3.61</td>
-<td style="text-align: left;">0.467300355434418</td>
-<td style="text-align: left;">0.283443719148636</td>
-<td style="text-align: left;">0.454773187637329</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">8.363</td>
-<td style="text-align: left;">19.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Japan</td>
-<td style="text-align: left;">5759071769013.1133</td>
-<td style="text-align: left;">128070000</td>
-<td style="text-align: left;">82.842682926829269</td>
-<td style="text-align: left;">2.213</td>
-<td style="text-align: left;">13.51</td>
-<td style="text-align: left;">1.52235090732574</td>
-<td style="text-align: left;">1.55362319946289</td>
-<td style="text-align: left;">1.31965863704681</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">5.102</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Korea, Rep.</td>
-<td style="text-align: left;">1143672241149.7156</td>
-<td style="text-align: left;">49554112</td>
-<td style="text-align: left;">80.117073170731715</td>
-<td style="text-align: left;">2.014</td>
-<td style="text-align: left;">8.87</td>
-<td style="text-align: left;">1.14781618118286</td>
-<td style="text-align: left;">0.426656723022461</td>
-<td style="text-align: left;">1.00820755958557</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">3.324</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Latvia</td>
-<td style="text-align: left;">23468324572.334278</td>
-<td style="text-align: left;">2097555</td>
-<td style="text-align: left;">73.4829268292683</td>
-<td style="text-align: left;">3.101</td>
-<td style="text-align: left;">5.67</td>
-<td style="text-align: left;">0.722773253917694</td>
-<td style="text-align: left;">0.203808978199959</td>
-<td style="text-align: left;">0.758604049682617</td>
-<td style="text-align: left;">99.8</td>
-<td style="text-align: left;">19.482</td>
-<td style="text-align: left;">19</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Lithuania</td>
-<td style="text-align: left;">36638128534.064323</td>
-<td style="text-align: left;">3097282</td>
-<td style="text-align: left;">73.268292682926827</td>
-<td style="text-align: left;">3.895</td>
-<td style="text-align: left;">7.07</td>
-<td style="text-align: left;">0.738227605819702</td>
-<td style="text-align: left;">0.37242180109024</td>
-<td style="text-align: left;">0.776326060295105</td>
-<td style="text-align: left;">99.7</td>
-<td style="text-align: left;">17.814</td>
-<td style="text-align: left;">19.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Luxembourg</td>
-<td style="text-align: left;">56213985987.416779</td>
-<td style="text-align: left;">506953</td>
-<td style="text-align: left;">80.631707317073179</td>
-<td style="text-align: left;">2.773</td>
-<td style="text-align: left;">5.37</td>
-<td style="text-align: left;">1.71641802787781</td>
-<td style="text-align: left;">2.03858494758606</td>
-<td style="text-align: left;">1.84410035610199</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">4.423</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Mexico</td>
-<td style="text-align: left;">1105424238731.0928</td>
-<td style="text-align: left;">113623895</td>
-<td style="text-align: left;">74.19</td>
-<td style="text-align: left;">2.026</td>
-<td style="text-align: left;">1.06</td>
-<td style="text-align: left;">0.0962913855910301</td>
-<td style="text-align: left;">-0.439748138189316</td>
-<td style="text-align: left;">-0.552031338214874</td>
-<td style="text-align: left;">99.2</td>
-<td style="text-align: left;">5.303</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Netherlands</td>
-<td style="text-align: left;">852464982433.335</td>
-<td style="text-align: left;">16615394</td>
-<td style="text-align: left;">80.702439024390245</td>
-<td style="text-align: left;">2.963</td>
-<td style="text-align: left;">4.12</td>
-<td style="text-align: left;">1.77032697200775</td>
-<td style="text-align: left;">2.09006071090698</td>
-<td style="text-align: left;">1.81173205375671</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">4.991</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">New Zealand</td>
-<td style="text-align: left;">146517541181.254</td>
-<td style="text-align: left;">4350700</td>
-<td style="text-align: left;">80.904878048780489</td>
-<td style="text-align: left;">2.626</td>
-<td style="text-align: left;">2.75</td>
-<td style="text-align: left;">1.81132459640503</td>
-<td style="text-align: left;">2.32940340042114</td>
-<td style="text-align: left;">1.86188757419586</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">6.557</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Norway</td>
-<td style="text-align: left;">431052143940.43817</td>
-<td style="text-align: left;">4889252</td>
-<td style="text-align: left;">80.997560975609773</td>
-<td style="text-align: left;">4.114</td>
-<td style="text-align: left;">4.3</td>
-<td style="text-align: left;">1.87354242801666</td>
-<td style="text-align: left;">2.07725214958191</td>
-<td style="text-align: left;">1.88987576961517</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">3.527</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">OECD members</td>
-<td style="text-align: left;">45384803865762.086</td>
-<td style="text-align: left;">1292108663</td>
-<td style="text-align: left;">79.088647261278027</td>
-<td style="text-align: left;">2.7346904384616435</td>
-<td style="text-align: left;">4.8962663109859514</td>
-<td style="text-align: left;">..</td>
-<td style="text-align: left;">..</td>
-<td style="text-align: left;">..</td>
-<td style="text-align: left;">99.807537915717859</td>
-<td style="text-align: left;">8.5148782130046428</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Poland</td>
-<td style="text-align: left;">478111630683.5141</td>
-<td style="text-align: left;">38042794</td>
-<td style="text-align: left;">76.246341463414637</td>
-<td style="text-align: left;">2.156</td>
-<td style="text-align: left;">6.51</td>
-<td style="text-align: left;">0.630121886730194</td>
-<td style="text-align: left;">0.513736724853516</td>
-<td style="text-align: left;">0.712359011173248</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">9.578</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Portugal</td>
-<td style="text-align: left;">238443864993.21713</td>
-<td style="text-align: left;">10573100</td>
-<td style="text-align: left;">79.026829268292687</td>
-<td style="text-align: left;">3.979</td>
-<td style="text-align: left;">3.37</td>
-<td style="text-align: left;">0.981475114822388</td>
-<td style="text-align: left;">1.06266355514526</td>
-<td style="text-align: left;">1.02578413486481</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">10.771</td>
-<td style="text-align: left;">18</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Slovak Republic</td>
-<td style="text-align: left;">91112160800.766846</td>
-<td style="text-align: left;">5391428</td>
-<td style="text-align: left;">75.112195121951217</td>
-<td style="text-align: left;">3.356</td>
-<td style="text-align: left;">6.46</td>
-<td style="text-align: left;">0.781369268894196</td>
-<td style="text-align: left;">0.248165294528008</td>
-<td style="text-align: left;">0.563034415245056</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">14.387</td>
-<td style="text-align: left;">13</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Slovenia</td>
-<td style="text-align: left;">47793117240.900093</td>
-<td style="text-align: left;">2048583</td>
-<td style="text-align: left;">79.4219512195122</td>
-<td style="text-align: left;">2.42</td>
-<td style="text-align: left;">4.55</td>
-<td style="text-align: left;">1.01478588581085</td>
-<td style="text-align: left;">0.917391359806061</td>
-<td style="text-align: left;">1.00198233127594</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">7.236</td>
-<td style="text-align: left;">13.6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Spain</td>
-<td style="text-align: left;">1427989078916.6694</td>
-<td style="text-align: left;">46576897</td>
-<td style="text-align: left;">81.6268292682927</td>
-<td style="text-align: left;">3.758</td>
-<td style="text-align: left;">3.11</td>
-<td style="text-align: left;">0.942974150180817</td>
-<td style="text-align: left;">1.16003704071045</td>
-<td style="text-align: left;">1.15678811073303</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">19.86</td>
-<td style="text-align: left;">20.6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Sweden</td>
-<td style="text-align: left;">492753255885.71826</td>
-<td style="text-align: left;">9378126</td>
-<td style="text-align: left;">81.451219512195138</td>
-<td style="text-align: left;">3.806</td>
-<td style="text-align: left;">2.73</td>
-<td style="text-align: left;">1.96262037754059</td>
-<td style="text-align: left;">2.21972584724426</td>
-<td style="text-align: left;">1.93030881881714</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">8.61</td>
-<td style="text-align: left;">15.4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">Switzerland</td>
-<td style="text-align: left;">598851028906.58032</td>
-<td style="text-align: left;">7824909</td>
-<td style="text-align: left;">82.246341463414652</td>
-<td style="text-align: left;">3.81</td>
-<td style="text-align: left;">5.2</td>
-<td style="text-align: left;">1.8709591627121</td>
-<td style="text-align: left;">2.06414246559143</td>
-<td style="text-align: left;">1.74979496002197</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">4.808</td>
-<td style="text-align: left;">15</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">Turkiye</td>
-<td style="text-align: left;">776967266305.53027</td>
-<td style="text-align: left;">73142150</td>
-<td style="text-align: left;">75.069</td>
-<td style="text-align: left;">1.687</td>
-<td style="text-align: left;">2.74</td>
-<td style="text-align: left;">0.315034985542297</td>
-<td style="text-align: left;">0.0254152249544859</td>
-<td style="text-align: left;">0.0499801225960255</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">11.879</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">United Kingdom</td>
-<td style="text-align: left;">2485482596184.7095</td>
-<td style="text-align: left;">62766365</td>
-<td style="text-align: left;">80.402439024390247</td>
-<td style="text-align: left;">2.656</td>
-<td style="text-align: left;">2.93</td>
-<td style="text-align: left;">1.6179975271225</td>
-<td style="text-align: left;">1.60567390918732</td>
-<td style="text-align: left;">1.77469253540039</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">7.924</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">United States</td>
-<td style="text-align: left;">15048971000000</td>
-<td style="text-align: left;">309327143</td>
-<td style="text-align: left;">78.541463414634151</td>
-<td style="text-align: left;">..</td>
-<td style="text-align: left;">3.03</td>
-<td style="text-align: left;">1.55227208137512</td>
-<td style="text-align: left;">1.26525807380676</td>
-<td style="text-align: left;">1.63102221488953</td>
-<td style="text-align: left;">100</td>
-<td style="text-align: left;">9.633</td>
-<td style="text-align: left;">..</td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the HTML table</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>table_html <span class="ot">&lt;-</span> country_summary_table <span class="sc">%&gt;%</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">escape =</span> <span class="cn">FALSE</span>, <span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">position =</span> <span class="st">"left"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"National Development Indicators"</span> <span class="ot">=</span> <span class="dv">11</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the table object as an RDS file</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>rds_file <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>, <span class="st">"health_exp_2010.rds"</span>)</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(table_html, <span class="at">file =</span> rds_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data-exploration-through-figures" class="level1">

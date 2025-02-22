@@ -4,6 +4,7 @@ author: "Prasanga Paudel"
 format:
   html:
     toc: false
+    embed-resources: true
     number-sections: true
     highlight-style: github
 bibliography: ../../assets/dataanalysis-references.bib
@@ -22,21 +23,21 @@ library(knitr)
 library(here)
 library(readxl)
 library(writexl)
+library(magrittr)
+library(patchwork)
+library(kableExtra)
 ```
 
 
 **Authors**  
 
 * Prasanga Paudel$^{1,2,*}$ (ORCID: 0000-0000-1234-5678) 
-* Second Author$^{3, *}$
-* Third Autor$^{3, \dagger}$
-* Last Author$^{1, 2, \land}$ 
+ 
 
 **Author affiliations**  
 
 1. College of Agricultural and Environmental Science, University of Georgia, Athens, GA, USA.
-2. Another Affiliation, Athens, GA, USA.
-3. Yet another Affiliation.
+
 
 $*$ These authors contributed equally to this work.
 
@@ -92,10 +93,11 @@ Link to the source: <https://databank.worldbank.org/source/world-development-ind
 
 # Methods 
 
-_To be added_
+We wll be following a panel data time series regression model. The details will be discussed as we progress.
 
 
-# Data import and cleaning
+# Importing the original dataset
+
 ```{r}
 file_path <- here("data","raw-data", "wdi-oecd.xlsx")
 data <- read_excel(file_path, sheet="Data")
@@ -103,18 +105,29 @@ data <- read_excel(file_path, sheet="Data")
 
 
 
-## A look into the original for of dataset
+## A look into the original format of the dataset
 
-_This is the snapshot of the data as of now._
+_This was the state of the data when first downloaded_
 ```{r}
 head(data)
 ```
 
+# Importing the cleaned dataset
 
-# EDA based on clean dataset
+```{r}
+#Path to data. 
+data_location <- here::here("data","processed-data","processeddata.rds")
+#load data
+mydata <- readRDS(data_location)
+```
 
-## Descriptive Analysis
+## A look into the cleaned dataset
 
+_This is the present state of the dataset_
+
+```{r}
+head(mydata)
+```
 
 
 
@@ -124,14 +137,30 @@ head(data)
 
 # Results
 
+In exploratory data analysis, we will just look at data from Australia as a reference for relation between variables in most of the cases. We are currently thinking of using "Current Health Expenditure as a % of GDP" as our dependent variable. But, we will see the it's distribution and connections with other variables before making decision.
+
 ## Exploratory/Descriptive analysis
 
-_Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project._
+_Here, we will now use a combination of tables and figues to have a look into the data._
+
+As this is a time series data, it is quite difficult to visualize all the variables across the years for all the countries. So, we will try to keep it simple and see simple relations between variables within a year or trend of a particular variable for some countries across the years.
+
+
+@tbl-summary shows the values under interesting variables for all OECD countries for the year 2010.
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Summary of variables"
+#| echo: FALSE
+table_html <- readRDS(here::here("results", "tables", "health_exp_2010.rds"))
+table_html
+
+```
 
 
 ### Looking into the trend for our possible dependent variable 
 
-@fig-health-expenditure-plot how "Health Expenditure as a Percentage of GDP Over Time (2010–2020)" is distributed over the years for top 5 OECD countries.
+@fig-health-expenditure-plot shows how "Health Expenditure as a Percentage of GDP Over Time (2010–2020)" is distributed over the years for top 5 OECD countries.
 
 ```{r}
 #| label: fig-health-expenditure-plot
@@ -141,7 +170,7 @@ knitr::include_graphics(here("results","figures","health_expenditure_plot.png"))
 ```
 
 
-@fig-health-exp-aus how "Health Expenditure as a Percentage of GDP changes over time for Australia.
+@fig-health-exp-aus shows the distribution of "Health Expenditure as a Percentage of GDP changes over time for Australia. 
 
 ```{r}
 #| label: fig-health-exp-aus
@@ -151,7 +180,7 @@ knitr::include_graphics(here("results", "figures", "health_exp_aus.png"))
 ```
 
 
-@fig-pop-growth-aus checks if Health Expenditure as a Percentage of GDP over the Years shows any reation with annual population growth for Australia.
+@fig-pop-growth-aus shows the distribution  of Health Expenditure as a Percentage of GDP over the Years Comparing with shows any reation with annual population growth for Australia.This figure shows that it has very less in common with @fig-health-exp-aus as long as distribution and correlation is concerned.
 
 ```{r}
 #| label: fig-pop-growth-aus
@@ -161,7 +190,7 @@ knitr::include_graphics(here("results","figures","pop_growth_aus.png"))
 ```
 
 
-@fig-he_per_capita checks if Health Expenditure Per Capita (USD) over the Years shows any reation with annual population growth for Australia.
+@fig-he_per_capita shows the distribution of Health Expenditure Per Capita (USD) over the Years. It shows that it is some what related to @fig-pop-growth-aus in it's distribution. So we can say that there is indeed a presence of some pattern in the variables of interest.
 
 ```{r}
 #| label: fig-he_per_capita
@@ -169,7 +198,8 @@ knitr::include_graphics(here("results","figures","pop_growth_aus.png"))
 #| echo: FALSE
 knitr::include_graphics(here("results","figures","health_exp_per_capita_aus.png"))
 ```
-
+ I think it will be better for us to use the variable "Health Expenditure Per Capita $USD" as a dependent variable in our analysis as it show more variation and connections with other variables.
+ 
 ## Basic statistical analysis
 
 _To be added_

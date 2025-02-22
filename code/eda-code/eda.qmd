@@ -17,6 +17,10 @@ library(dplyr)
 library(skimr)
 library(ggplot2)
 library(patchwork)
+library(kableExtra)
+library(htmltools)
+library(magrittr)
+library(webshot2)
 ```
 
 
@@ -37,9 +41,6 @@ mydata <- readRDS(data_location)
 Here we will present the summary stat for some of the interesting varible based on year 2010 for the OECD countries.
 
 ```{r}
-library(dplyr)
-library(knitr)
-library(kableExtra) 
 
 # Filtering data for the year 2010
 data_2010 <- mydata %>%
@@ -47,8 +48,7 @@ data_2010 <- mydata %>%
 
 # Create a summary table, excluding specific rows
 country_summary_table <- data_2010 %>%
-  filter(!CountryName %in% c("Data from database: World Development Indicators", "OECD members"
-                              "Last Updated: 01/28/2025")) %>%
+  filter(!CountryName %in% c("Data from database: World Development Indicators", "OECD members",        "Last Updated: 01/28/2025")) %>%
   select(
     CountryName,
     GDP_current_US,
@@ -64,13 +64,21 @@ country_summary_table <- data_2010 %>%
     Poverty_headcount_ratio_at_national_poverty_lines__of_population
   )
 
-# Create and display an HTML table in R
-country_summary_table %>%
+
+
+# Generate the HTML table
+table_html <- country_summary_table %>%
   kable("html", escape = FALSE, digits = 2) %>%
-  kable_styling(full_width = F, position = "left") %>%
-  column_spec(1, bold = TRUE) %>%  # Making CountryName column bold
+  kable_styling(full_width = FALSE, position = "left") %>%
+  column_spec(1, bold = TRUE) %>%
   add_header_above(c(" " = 1, "National Development Indicators" = 11)) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
+
+# Save the table object as an RDS file
+rds_file <- here::here("results", "tables", "health_exp_2010.rds")
+saveRDS(table_html, file = rds_file)
+
+
 
 ```
 
