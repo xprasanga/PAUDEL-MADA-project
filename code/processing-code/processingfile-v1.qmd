@@ -14,6 +14,7 @@ library(skimr)
 library(ggplot2)
 library(readxl)
 library(tidyr)
+library(writexl)
 ```
 
 
@@ -159,5 +160,13 @@ Now, we will save the dataset so that we will be able run EDA based on it.
 rds_path <- here("data", "processed-data", "processeddata.rds")
 saveRDS(data_collapsed, rds_path)
 ```
+
+Saving an excel file as well.
+
+```{r}
+xl_path <- here("data", "processed-data", "processeddata.xlsx")
+writexl::write_xlsx(processeddata, xl_path)
+```
+
 
 

@@ -1,0 +1,237 @@
+---
+title: "statistical-analysis"
+format: html
+editor: visual
+---
+
+## Quarto
+
+
+
+```{r}
+#Path to data. 
+data_location <- here::here("data","processed-data","processeddata.rds")
+#load data
+mydata <- readRDS(data_location)
+```
+
+
+
+
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+
+# Define the dependent variable
+dependent_var <- "Current_health_expenditure_per_capita_current_US"
+
+# Select 50 variables that are likely to predict the dependent variable
+selected_vars <- c(
+  # Economic Factors
+  "GDP_per_capita_current_US", "GNI_per_capita_Atlas_method_current_US", "GDP_growth_annual_",
+  "Inflation_GDP_deflator_annual_", "Domestic_credit_provided_by_financial_sector__of_GDP",
+  "Gross_capital_formation__of_GDP", "Exports_of_goods_and_services__of_GDP",
+  "Imports_of_goods_and_services__of_GDP", "Foreign_direct_investment_net_inflows_BoP_current_US",
+  "Industry_including_construction_value_added__of_GDP", "Agriculture_forestry_and_fishing_value_added__of_GDP",
+  "Services_value_added__of_GDP", "Unemployment_total__of_total_labor_force_modeled_ILO_estimate",
+  "Income_share_held_by_lowest_20", "Income_share_held_by_highest_20", "Poverty_headcount_ratio_at_215_a_day_2017_PPP__of_population",
+  
+  # Health Factors
+  "Life_expectancy_at_birth_total_years", "Mortality_rate_under5_per_1000_live_births",
+  "Prevalence_of_HIV_total__of_population_ages_1549", "Immunization_measles__of_children_ages_1223_months",
+  "Births_attended_by_skilled_health_staff__of_total", "Contraceptive_prevalence_any_method__of_married_women_ages_1549",
+  "Hospital_beds_per_1000_people", "Physicians_per_1000_people", "Prevalence_of_underweight_weight_for_age__of_children_under_5",
+  "Adolescent_fertility_rate_births_per_1000_women_ages_1519", "Current_health_expenditure__of_GDP",
+  "Domestic_general_government_health_expenditure__of_GDP",
+  
+  # Social Factors
+  "Population_total", "Population_growth_annual_", "Population_density_people_per_sq_km_of_land_area",
+  "Urban_population__of_total_population", "Rural_population__of_total_population",
+  "Literacy_rate_adult_total__of_people_ages_15_and_above", "School_enrollment_primary__gross",
+  "School_enrollment_secondary__gross", "School_enrollment_tertiary__gross", "Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate",
+  "Net_migration", "Refugee_population_by_country_or_territory_of_asylum",
+  
+  # Government Factors
+  "Military_expenditure__of_GDP", "Tax_revenue__of_GDP", "Government_expenditure_on_education_total__of_GDP",
+  "Government_Effectiveness_Estimate", "Rule_of_Law_Estimate", "Control_of_Corruption_Estimate",
+  "Political_Stability_and_Absence_of_ViolenceTerrorism_Estimate", "Regulatory_Quality_Estimate",
+  
+  # Trade Factors
+  "Trade__of_GDP", "Merchandise_trade__of_GDP", "Exports_of_goods_and_services_current_US",
+  "Imports_of_goods_and_services_current_US", "Foreign_direct_investment_net_inflows_BoP_current_US",
+  "External_debt_stocks_total_DOD_current_US", "Net_barter_terms_of_trade_index_2015__100"
+)
+
+# Add the dependent variable to the selected variables
+selected_vars <- c(dependent_var, selected_vars)
+
+# Subset the dataset with the selected variables
+mydata_selected <- mydata %>%
+  select(all_of(selected_vars))
+
+# Categorize the selected variables
+variable_categories <- list(
+  Economic = c("GDP_per_capita_current_US", "GNI_per_capita_Atlas_method_current_US", "GDP_growth_annual_",
+               "Inflation_GDP_deflator_annual_", "Domestic_credit_provided_by_financial_sector__of_GDP",
+               "Gross_capital_formation__of_GDP", "Exports_of_goods_and_services__of_GDP",
+               "Imports_of_goods_and_services__of_GDP", "Foreign_direct_investment_net_inflows_BoP_current_US",
+               "Industry_including_construction_value_added__of_GDP", "Agriculture_forestry_and_fishing_value_added__of_GDP",
+               "Services_value_added__of_GDP", "Unemployment_total__of_total_labor_force_modeled_ILO_estimate",
+               "Income_share_held_by_lowest_20", "Income_share_held_by_highest_20", "Poverty_headcount_ratio_at_215_a_day_2017_PPP__of_population"),
+  
+  Health = c("Life_expectancy_at_birth_total_years", "Mortality_rate_under5_per_1000_live_births",
+             "Prevalence_of_HIV_total__of_population_ages_1549", "Immunization_measles__of_children_ages_1223_months",
+             "Births_attended_by_skilled_health_staff__of_total", "Contraceptive_prevalence_any_method__of_married_women_ages_1549",
+             "Hospital_beds_per_1000_people", "Physicians_per_1000_people", "Prevalence_of_underweight_weight_for_age__of_children_under_5",
+             "Adolescent_fertility_rate_births_per_1000_women_ages_1519", "Current_health_expenditure__of_GDP",
+             "Domestic_general_government_health_expenditure__of_GDP"),
+  
+  Social = c("Population_total", "Population_growth_annual_", "Population_density_people_per_sq_km_of_land_area",
+             "Urban_population__of_total_population", "Rural_population__of_total_population",
+             "Literacy_rate_adult_total__of_people_ages_15_and_above", "School_enrollment_primary__gross",
+             "School_enrollment_secondary__gross", "School_enrollment_tertiary__gross", "Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate",
+             "Net_migration", "Refugee_population_by_country_or_territory_of_asylum"),
+  
+  Government = c("Military_expenditure__of_GDP", "Tax_revenue__of_GDP", "Government_expenditure_on_education_total__of_GDP",
+                 "Government_Effectiveness_Estimate", "Rule_of_Law_Estimate", "Control_of_Corruption_Estimate",
+                 "Political_Stability_and_Absence_of_ViolenceTerrorism_Estimate", "Regulatory_Quality_Estimate"),
+  
+  Trade = c("Trade__of_GDP", "Merchandise_trade__of_GDP", "Exports_of_goods_and_services_current_US",
+            "Imports_of_goods_and_services_current_US", "Foreign_direct_investment_net_inflows_BoP_current_US",
+            "External_debt_stocks_total_DOD_current_US", "Net_barter_terms_of_trade_index_2015__100")
+)
+
+# Print the categorized variables
+print(variable_categories)
+```
+
+
+
+
+
+
+
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(broom)      # For tidy regression results
+library(purrr)      # For functional programming
+library(kableExtra) # For advanced table formatting
+
+# Ensure all selected variables are numeric
+mydata <- mydata %>%
+  mutate(across(everything(), as.numeric))
+
+# Function to run multiple regression for a specific category and country
+run_regression <- function(data, category_vars, category_name) {
+  # Drop variables with all NA values within the category
+  category_vars <- category_vars[sapply(data[category_vars], function(x) !all(is.na(x)))]
+  
+  # If no variables are left after dropping, return NULL
+  if (length(category_vars) == 0) {
+    return(NULL)
+  }
+  
+  # Create a subset of data with the dependent variable and independent variables
+  regression_data <- data %>%
+    select(Current_health_expenditure_per_capita_current_US, all_of(category_vars)) %>%
+    na.omit()  # Remove rows with NA values
+  
+  # Check if there are enough rows to run the regression
+  if (nrow(regression_data) == 0) {
+    return(NULL)
+  }
+  
+  # Create the regression formula
+  formula <- as.formula(paste("Current_health_expenditure_per_capita_current_US ~", 
+                              paste(category_vars, collapse = " + ")))
+  
+  # Run the regression
+  regression_model <- lm(formula, data = regression_data)
+  
+  # Tidy up the regression results and add a "Significant" column
+  tidy_results <- tidy(regression_model) %>%
+    mutate(
+      Category = category_name,
+      Significant = ifelse(p.value <= 0.10, "YES", "NO")  # Add significance column
+    )
+  
+  return(tidy_results)
+}
+
+# Function to run regression for all countries and a specific category
+run_regression_all_countries <- function(category_vars, category_name) {
+  results <- mydata %>%
+    group_by(CountryName) %>%
+    group_modify(~ {
+      regression_results <- run_regression(.x, category_vars, category_name)
+      if (!is.null(regression_results)) {
+        return(regression_results)
+      } else {
+        return(tibble())  # Return empty tibble if no results
+      }
+    })
+  
+  return(results)
+}
+
+# Run regression for each category and create tables
+economic_results <- run_regression_all_countries(variable_categories$Economic, "Economic")
+health_results <- run_regression_all_countries(variable_categories$Health, "Health")
+social_results <- run_regression_all_countries(variable_categories$Social, "Social")
+government_results <- run_regression_all_countries(variable_categories$Government, "Government")
+trade_results <- run_regression_all_countries(variable_categories$Trade, "Trade")
+
+# Combine all results into one table
+all_results <- bind_rows(
+  economic_results,
+  health_results,
+  social_results,
+  government_results,
+  trade_results
+)
+
+# Ensure the "Significant" column has no NA values
+all_results <- all_results %>%
+  mutate(Significant = ifelse(is.na(Significant), "NO", Significant))  # Replace NA with "NO"
+
+# Remove the CountryName column
+all_results <- all_results %>%
+  select(-CountryName)
+
+# Rename the "term" column to "Predictor variables"
+all_results <- all_results %>%
+  rename(`Predictor variables` = term)
+
+# Add category separators
+all_results <- all_results %>%
+  group_by(Category) %>%
+  group_modify(~ {
+    # Add a separator row before each category
+    separator_row <- tibble(
+      `Predictor variables` = paste("Independent variables from", .y$Category, "category"),
+      estimate = NA, std.error = NA, statistic = NA, p.value = NA, Significant = NA
+    )
+    bind_rows(separator_row, .x)
+  }) %>%
+  ungroup()
+
+# Create an advanced table using kableExtra
+all_results %>%
+  kable("html", caption = "Regression Results by Category") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  scroll_box(width = "100%", height = "500px") %>%
+  row_spec(which(all_results$Significant == "YES"), background = "#D9F2D9") %>%  # Highlight significant rows in green
+  row_spec(which(all_results$`Predictor variables` %in% paste("Independent variables from", unique(all_results$Category), "category")), 
+           bold = TRUE, background = "#FFA500") %>%  # Highlight separator rows in orange
+  column_spec(1, bold = TRUE)  # Bold the "Predictor variables" column
+```
+
+
+
+
+
+
