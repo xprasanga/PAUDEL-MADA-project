@@ -1,4 +1,7 @@
 # eda-code
 
-This folder contains code to do a simple exploratory data analysis (EDA) on the processed/cleaned data.
-The code produces a few tables and figures, which are saved in the appropriate `results` sub-folder.
+
+This folder contains the `eda.qmq` file which has the code for running all our exploratory data analysis of the project.
+The analysis code from this folder depends on the processed data generated from the `processing-code` folder.
+
+The `eda.html` file contains the output generated from the `eda.qmq` code in a html format.

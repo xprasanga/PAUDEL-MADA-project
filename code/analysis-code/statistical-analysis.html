@@ -100,17 +100,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="quarto" class="level2">
-<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Path to data. </span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"processed-data"</span>,<span class="st">"processeddata.rds"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(data_location)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'dplyr'</code></pre>
@@ -125,87 +117,144 @@ Attaching package: 'dplyr'</code></pre>
 
     intersect, setdiff, setequal, union</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dependent_var <span class="ot">&lt;-</span> <span class="st">"Current_health_expenditure_per_capita_current_US"</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Select 50 variables that are likely to predict the dependent variable</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>selected_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Economic Factors</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GDP_per_capita_current_US"</span>, <span class="st">"GNI_per_capita_Atlas_method_current_US"</span>, <span class="st">"GDP_growth_annual_"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Inflation_GDP_deflator_annual_"</span>, <span class="st">"Domestic_credit_provided_by_financial_sector__of_GDP"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Gross_capital_formation__of_GDP"</span>, <span class="st">"Exports_of_goods_and_services__of_GDP"</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Imports_of_goods_and_services__of_GDP"</span>, <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Industry_including_construction_value_added__of_GDP"</span>, <span class="st">"Agriculture_forestry_and_fishing_value_added__of_GDP"</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Services_value_added__of_GDP"</span>, <span class="st">"Unemployment_total__of_total_labor_force_modeled_ILO_estimate"</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Income_share_held_by_lowest_20"</span>, <span class="st">"Income_share_held_by_highest_20"</span>, <span class="st">"Poverty_headcount_ratio_at_215_a_day_2017_PPP__of_population"</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Health Factors</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Life_expectancy_at_birth_total_years"</span>, <span class="st">"Mortality_rate_under5_per_1000_live_births"</span>,</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Prevalence_of_HIV_total__of_population_ages_1549"</span>, <span class="st">"Immunization_measles__of_children_ages_1223_months"</span>,</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Births_attended_by_skilled_health_staff__of_total"</span>, <span class="st">"Contraceptive_prevalence_any_method__of_married_women_ages_1549"</span>,</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hospital_beds_per_1000_people"</span>, <span class="st">"Physicians_per_1000_people"</span>, <span class="st">"Prevalence_of_underweight_weight_for_age__of_children_under_5"</span>,</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Adolescent_fertility_rate_births_per_1000_women_ages_1519"</span>, <span class="st">"Current_health_expenditure__of_GDP"</span>,</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Domestic_general_government_health_expenditure__of_GDP"</span>,</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Social Factors</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Population_total"</span>, <span class="st">"Population_growth_annual_"</span>, <span class="st">"Population_density_people_per_sq_km_of_land_area"</span>,</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Urban_population__of_total_population"</span>, <span class="st">"Rural_population__of_total_population"</span>,</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Literacy_rate_adult_total__of_people_ages_15_and_above"</span>, <span class="st">"School_enrollment_primary__gross"</span>,</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"School_enrollment_secondary__gross"</span>, <span class="st">"School_enrollment_tertiary__gross"</span>, <span class="st">"Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate"</span>,</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Net_migration"</span>, <span class="st">"Refugee_population_by_country_or_territory_of_asylum"</span>,</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Government Factors</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Military_expenditure__of_GDP"</span>, <span class="st">"Tax_revenue__of_GDP"</span>, <span class="st">"Government_expenditure_on_education_total__of_GDP"</span>,</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Government_Effectiveness_Estimate"</span>, <span class="st">"Rule_of_Law_Estimate"</span>, <span class="st">"Control_of_Corruption_Estimate"</span>,</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Political_Stability_and_Absence_of_ViolenceTerrorism_Estimate"</span>, <span class="st">"Regulatory_Quality_Estimate"</span>,</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Trade Factors</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Trade__of_GDP"</span>, <span class="st">"Merchandise_trade__of_GDP"</span>, <span class="st">"Exports_of_goods_and_services_current_US"</span>,</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Imports_of_goods_and_services_current_US"</span>, <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span>,</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"External_debt_stocks_total_DOD_current_US"</span>, <span class="st">"Net_barter_terms_of_trade_index_2015__100"</span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the dependent variable to the selected variables</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>selected_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(dependent_var, selected_vars)</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the dataset with the selected variables</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>mydata_selected <span class="ot">&lt;-</span> mydata <span class="sc">%&gt;%</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(selected_vars))</span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Categorize the selected variables</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>variable_categories <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">Economic =</span> <span class="fu">c</span>(<span class="st">"GDP_per_capita_current_US"</span>, <span class="st">"GNI_per_capita_Atlas_method_current_US"</span>, <span class="st">"GDP_growth_annual_"</span>,</span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Inflation_GDP_deflator_annual_"</span>, <span class="st">"Domestic_credit_provided_by_financial_sector__of_GDP"</span>,</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Gross_capital_formation__of_GDP"</span>, <span class="st">"Exports_of_goods_and_services__of_GDP"</span>,</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Imports_of_goods_and_services__of_GDP"</span>, <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span>,</span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Industry_including_construction_value_added__of_GDP"</span>, <span class="st">"Agriculture_forestry_and_fishing_value_added__of_GDP"</span>,</span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Services_value_added__of_GDP"</span>, <span class="st">"Unemployment_total__of_total_labor_force_modeled_ILO_estimate"</span>,</span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Income_share_held_by_lowest_20"</span>, <span class="st">"Income_share_held_by_highest_20"</span>, <span class="st">"Poverty_headcount_ratio_at_215_a_day_2017_PPP__of_population"</span>),</span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">Health =</span> <span class="fu">c</span>(<span class="st">"Life_expectancy_at_birth_total_years"</span>, <span class="st">"Mortality_rate_under5_per_1000_live_births"</span>,</span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Prevalence_of_HIV_total__of_population_ages_1549"</span>, <span class="st">"Immunization_measles__of_children_ages_1223_months"</span>,</span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Births_attended_by_skilled_health_staff__of_total"</span>, <span class="st">"Contraceptive_prevalence_any_method__of_married_women_ages_1549"</span>,</span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Hospital_beds_per_1000_people"</span>, <span class="st">"Physicians_per_1000_people"</span>, <span class="st">"Prevalence_of_underweight_weight_for_age__of_children_under_5"</span>,</span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Adolescent_fertility_rate_births_per_1000_women_ages_1519"</span>, <span class="st">"Current_health_expenditure__of_GDP"</span>,</span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Domestic_general_government_health_expenditure__of_GDP"</span>),</span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>  <span class="at">Social =</span> <span class="fu">c</span>(<span class="st">"Population_total"</span>, <span class="st">"Population_growth_annual_"</span>, <span class="st">"Population_density_people_per_sq_km_of_land_area"</span>,</span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Urban_population__of_total_population"</span>, <span class="st">"Rural_population__of_total_population"</span>,</span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Literacy_rate_adult_total__of_people_ages_15_and_above"</span>, <span class="st">"School_enrollment_primary__gross"</span>,</span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>             <span class="st">"School_enrollment_secondary__gross"</span>, <span class="st">"School_enrollment_tertiary__gross"</span>, <span class="st">"Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate"</span>,</span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Net_migration"</span>, <span class="st">"Refugee_population_by_country_or_territory_of_asylum"</span>),</span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">Government =</span> <span class="fu">c</span>(<span class="st">"Military_expenditure__of_GDP"</span>, <span class="st">"Tax_revenue__of_GDP"</span>, <span class="st">"Government_expenditure_on_education_total__of_GDP"</span>,</span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Government_Effectiveness_Estimate"</span>, <span class="st">"Rule_of_Law_Estimate"</span>, <span class="st">"Control_of_Corruption_Estimate"</span>,</span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Political_Stability_and_Absence_of_ViolenceTerrorism_Estimate"</span>, <span class="st">"Regulatory_Quality_Estimate"</span>),</span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>  <span class="at">Trade =</span> <span class="fu">c</span>(<span class="st">"Trade__of_GDP"</span>, <span class="st">"Merchandise_trade__of_GDP"</span>, <span class="st">"Exports_of_goods_and_services_current_US"</span>,</span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Imports_of_goods_and_services_current_US"</span>, <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span>,</span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>            <span class="st">"External_debt_stocks_total_DOD_current_US"</span>, <span class="st">"Net_barter_terms_of_trade_index_2015__100"</span>)</span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the categorized variables</span></span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(variable_categories)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)      </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'kableExtra'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(webshot)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magick)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to ImageMagick 6.9.12.98
+Enabled features: cairo, freetype, fftw, ghostscript, heic, lcms, pango, raw, rsvg, webp
+Disabled features: fontconfig, x11</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at C:/Users/LibraryUser/Documents/GitHub/PAUDEL-MADA-project</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'plm'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:dplyr':
+
+    between, lag, lead</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: zoo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'zoo'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric</code></pre>
+</div>
+</div>
+<p>At first we will import the dataset</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Path to data. </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"processed-data"</span>,<span class="st">"processeddata.rds"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(data_location)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will now pick the most useful variables from the large pool of 1400+ variables in our dataset, and we will then categorize these variables based on the aspects they cover. For example, if there is avariable named “Annual GDP growth”, we will categorize it as an “Economic” variable. Similarly, if there is a variable named “Unemployment rate” or “Total population”, we will categorize them as “Social” variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the dependent variable</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>dependent_var <span class="ot">&lt;-</span> <span class="st">"Current_health_expenditure_per_capita_current_US"</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Select 50 variables that are likely to predict the dependent variable</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>selected_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Economic Factors</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GDP_per_capita_current_US"</span>, <span class="st">"GNI_per_capita_Atlas_method_current_US"</span>, <span class="st">"GDP_growth_annual_"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Inflation_GDP_deflator_annual_"</span>, <span class="st">"Domestic_credit_provided_by_financial_sector__of_GDP"</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Gross_capital_formation__of_GDP"</span>, <span class="st">"Exports_of_goods_and_services__of_GDP"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Imports_of_goods_and_services__of_GDP"</span>, <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Industry_including_construction_value_added__of_GDP"</span>, <span class="st">"Agriculture_forestry_and_fishing_value_added__of_GDP"</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Services_value_added__of_GDP"</span>, <span class="st">"Unemployment_total__of_total_labor_force_modeled_ILO_estimate"</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Income_share_held_by_lowest_20"</span>, <span class="st">"Income_share_held_by_highest_20"</span>, <span class="st">"Poverty_headcount_ratio_at_215_a_day_2017_PPP__of_population"</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Health Factors</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Life_expectancy_at_birth_total_years"</span>, <span class="st">"Mortality_rate_under5_per_1000_live_births"</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Prevalence_of_HIV_total__of_population_ages_1549"</span>, <span class="st">"Immunization_measles__of_children_ages_1223_months"</span>,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Births_attended_by_skilled_health_staff__of_total"</span>, <span class="st">"Contraceptive_prevalence_any_method__of_married_women_ages_1549"</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hospital_beds_per_1000_people"</span>, <span class="st">"Physicians_per_1000_people"</span>, <span class="st">"Prevalence_of_underweight_weight_for_age__of_children_under_5"</span>,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Adolescent_fertility_rate_births_per_1000_women_ages_1519"</span>, <span class="st">"Current_health_expenditure__of_GDP"</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Domestic_general_government_health_expenditure__of_GDP"</span>,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Social Factors</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Population_total"</span>, <span class="st">"Population_growth_annual_"</span>, <span class="st">"Population_density_people_per_sq_km_of_land_area"</span>,</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Urban_population__of_total_population"</span>, <span class="st">"Rural_population__of_total_population"</span>,</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Literacy_rate_adult_total__of_people_ages_15_and_above"</span>, <span class="st">"School_enrollment_primary__gross"</span>,</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"School_enrollment_secondary__gross"</span>, <span class="st">"School_enrollment_tertiary__gross"</span>, <span class="st">"Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate"</span>,</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Net_migration"</span>, <span class="st">"Refugee_population_by_country_or_territory_of_asylum"</span>,</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Government Factors</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Military_expenditure__of_GDP"</span>, <span class="st">"Tax_revenue__of_GDP"</span>, <span class="st">"Government_expenditure_on_education_total__of_GDP"</span>,</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Government_Effectiveness_Estimate"</span>, <span class="st">"Rule_of_Law_Estimate"</span>, <span class="st">"Control_of_Corruption_Estimate"</span>,</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Political_Stability_and_Absence_of_ViolenceTerrorism_Estimate"</span>, <span class="st">"Regulatory_Quality_Estimate"</span>,</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Trade Factors</span></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Trade__of_GDP"</span>, <span class="st">"Merchandise_trade__of_GDP"</span>, <span class="st">"Exports_of_goods_and_services_current_US"</span>,</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Imports_of_goods_and_services_current_US"</span>, <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span>,</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"External_debt_stocks_total_DOD_current_US"</span>, <span class="st">"Net_barter_terms_of_trade_index_2015__100"</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the dependent variable to the selected variables</span></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>selected_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(dependent_var, selected_vars)</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the dataset with the selected variables</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>mydata_selected <span class="ot">&lt;-</span> mydata <span class="sc">%&gt;%</span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(selected_vars))</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Categorize the selected variables</span></span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>variable_categories <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">Economic =</span> <span class="fu">c</span>(<span class="st">"GDP_per_capita_current_US"</span>, <span class="st">"GNI_per_capita_Atlas_method_current_US"</span>, <span class="st">"GDP_growth_annual_"</span>,</span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Inflation_GDP_deflator_annual_"</span>, <span class="st">"Domestic_credit_provided_by_financial_sector__of_GDP"</span>,</span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Gross_capital_formation__of_GDP"</span>, <span class="st">"Exports_of_goods_and_services__of_GDP"</span>,</span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Imports_of_goods_and_services__of_GDP"</span>, <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span>,</span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Industry_including_construction_value_added__of_GDP"</span>, <span class="st">"Agriculture_forestry_and_fishing_value_added__of_GDP"</span>,</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Services_value_added__of_GDP"</span>, <span class="st">"Unemployment_total__of_total_labor_force_modeled_ILO_estimate"</span>,</span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Income_share_held_by_lowest_20"</span>, <span class="st">"Income_share_held_by_highest_20"</span>, <span class="st">"Poverty_headcount_ratio_at_215_a_day_2017_PPP__of_population"</span>),</span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">Health =</span> <span class="fu">c</span>(<span class="st">"Life_expectancy_at_birth_total_years"</span>, <span class="st">"Mortality_rate_under5_per_1000_live_births"</span>,</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Prevalence_of_HIV_total__of_population_ages_1549"</span>, <span class="st">"Immunization_measles__of_children_ages_1223_months"</span>,</span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Births_attended_by_skilled_health_staff__of_total"</span>, <span class="st">"Contraceptive_prevalence_any_method__of_married_women_ages_1549"</span>,</span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Hospital_beds_per_1000_people"</span>, <span class="st">"Physicians_per_1000_people"</span>, <span class="st">"Prevalence_of_underweight_weight_for_age__of_children_under_5"</span>,</span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Adolescent_fertility_rate_births_per_1000_women_ages_1519"</span>, <span class="st">"Current_health_expenditure__of_GDP"</span>,</span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Domestic_general_government_health_expenditure__of_GDP"</span>),</span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>  <span class="at">Social =</span> <span class="fu">c</span>(<span class="st">"Population_total"</span>, <span class="st">"Population_growth_annual_"</span>, <span class="st">"Population_density_people_per_sq_km_of_land_area"</span>,</span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Urban_population__of_total_population"</span>, <span class="st">"Rural_population__of_total_population"</span>,</span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Literacy_rate_adult_total__of_people_ages_15_and_above"</span>, <span class="st">"School_enrollment_primary__gross"</span>,</span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a>             <span class="st">"School_enrollment_secondary__gross"</span>, <span class="st">"School_enrollment_tertiary__gross"</span>, <span class="st">"Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate"</span>,</span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Net_migration"</span>, <span class="st">"Refugee_population_by_country_or_territory_of_asylum"</span>),</span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">Government =</span> <span class="fu">c</span>(<span class="st">"Military_expenditure__of_GDP"</span>, <span class="st">"Tax_revenue__of_GDP"</span>, <span class="st">"Government_expenditure_on_education_total__of_GDP"</span>,</span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Government_Effectiveness_Estimate"</span>, <span class="st">"Rule_of_Law_Estimate"</span>, <span class="st">"Control_of_Corruption_Estimate"</span>,</span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Political_Stability_and_Absence_of_ViolenceTerrorism_Estimate"</span>, <span class="st">"Regulatory_Quality_Estimate"</span>),</span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a>  <span class="at">Trade =</span> <span class="fu">c</span>(<span class="st">"Trade__of_GDP"</span>, <span class="st">"Merchandise_trade__of_GDP"</span>, <span class="st">"Exports_of_goods_and_services_current_US"</span>,</span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Imports_of_goods_and_services_current_US"</span>, <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span>,</span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a>            <span class="st">"External_debt_stocks_total_DOD_current_US"</span>, <span class="st">"Net_barter_terms_of_trade_index_2015__100"</span>)</span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the categorized variables</span></span>
+<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(variable_categories)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Economic
  [1] "GDP_per_capita_current_US"                                    
@@ -273,138 +322,105 @@ $Trade
 [7] "Net_barter_terms_of_trade_index_2015__100"           </code></pre>
 </div>
 </div>
+<p>Now that we have selected our variables, we will try to look at the relation between our dependent variable “Health Expenditure Per Capita $USD” with other variables from a specific category.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)      <span class="co"># For tidy regression results</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)      <span class="co"># For functional programming</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra) <span class="co"># For advanced table formatting</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert all columns to numeric except CountryName, CountryCode, and SeriesCode</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> mydata <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span><span class="fu">c</span>(CountryName, CountryCode, SeriesCode), as.numeric))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'kableExtra'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:dplyr':
-
-    group_rows</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure all selected variables are numeric</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> mydata <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: There were 1084 warnings in `mutate()`.
+<pre><code>Warning: There were 1081 warnings in `mutate()`.
 The first warning was:
-ℹ In argument: `across(everything(), as.numeric)`.
+ℹ In argument: `across(-c(CountryName, CountryCode, SeriesCode), as.numeric)`.
 Caused by warning:
 ! NAs introduced by coercion
-ℹ Run `dplyr::last_dplyr_warnings()` to see the 1083 remaining warnings.</code></pre>
+ℹ Run `dplyr::last_dplyr_warnings()` to see the 1080 remaining warnings.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to run multiple regression for a specific category and country</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>run_regression <span class="ot">&lt;-</span> <span class="cf">function</span>(data, category_vars, category_name) {</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Drop variables with all NA values within the category</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  category_vars <span class="ot">&lt;-</span> category_vars[<span class="fu">sapply</span>(data[category_vars], <span class="cf">function</span>(x) <span class="sc">!</span><span class="fu">all</span>(<span class="fu">is.na</span>(x)))]</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If no variables are left after dropping, return NULL</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(category_vars) <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a subset of data with the dependent variable and independent variables</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  regression_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(Current_health_expenditure_per_capita_current_US, <span class="fu">all_of</span>(category_vars)) <span class="sc">%&gt;%</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na.omit</span>()  <span class="co"># Remove rows with NA values</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check if there are enough rows to run the regression</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(regression_data) <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create the regression formula</span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  formula <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">"Current_health_expenditure_per_capita_current_US ~"</span>, </span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">paste</span>(category_vars, <span class="at">collapse =</span> <span class="st">" + "</span>)))</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Run the regression</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  regression_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(formula, <span class="at">data =</span> regression_data)</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Tidy up the regression results and add a "Significant" column</span></span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  tidy_results <span class="ot">&lt;-</span> <span class="fu">tidy</span>(regression_model) <span class="sc">%&gt;%</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">Category =</span> category_name,</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">Significant =</span> <span class="fu">ifelse</span>(p.value <span class="sc">&lt;=</span> <span class="fl">0.10</span>, <span class="st">"YES"</span>, <span class="st">"NO"</span>)  <span class="co"># Add significance column</span></span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tidy_results)</span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to run regression for all countries and a specific category</span></span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>run_regression_all_countries <span class="ot">&lt;-</span> <span class="cf">function</span>(category_vars, category_name) {</span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> mydata <span class="sc">%&gt;%</span></span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(CountryName) <span class="sc">%&gt;%</span></span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_modify</span>(<span class="sc">~</span> {</span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>      regression_results <span class="ot">&lt;-</span> <span class="fu">run_regression</span>(.x, category_vars, category_name)</span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(regression_results)) {</span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(regression_results)</span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(<span class="fu">tibble</span>())  <span class="co"># Return empty tibble if no results</span></span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Run regression for each category and create tables</span></span>
-<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>economic_results <span class="ot">&lt;-</span> <span class="fu">run_regression_all_countries</span>(variable_categories<span class="sc">$</span>Economic, <span class="st">"Economic"</span>)</span>
-<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>health_results <span class="ot">&lt;-</span> <span class="fu">run_regression_all_countries</span>(variable_categories<span class="sc">$</span>Health, <span class="st">"Health"</span>)</span>
-<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>social_results <span class="ot">&lt;-</span> <span class="fu">run_regression_all_countries</span>(variable_categories<span class="sc">$</span>Social, <span class="st">"Social"</span>)</span>
-<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>government_results <span class="ot">&lt;-</span> <span class="fu">run_regression_all_countries</span>(variable_categories<span class="sc">$</span>Government, <span class="st">"Government"</span>)</span>
-<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>trade_results <span class="ot">&lt;-</span> <span class="fu">run_regression_all_countries</span>(variable_categories<span class="sc">$</span>Trade, <span class="st">"Trade"</span>)</span>
-<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all results into one table</span></span>
-<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>  economic_results,</span>
-<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>  health_results,</span>
-<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>  social_results,</span>
-<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>  government_results,</span>
-<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>  trade_results</span>
-<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure the "Significant" column has no NA values</span></span>
-<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> all_results <span class="sc">%&gt;%</span></span>
-<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Significant =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(Significant), <span class="st">"NO"</span>, Significant))  <span class="co"># Replace NA with "NO"</span></span>
-<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the CountryName column</span></span>
-<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> all_results <span class="sc">%&gt;%</span></span>
-<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>CountryName)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Adding missing grouping variables: `CountryName`</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename the "term" column to "Predictor variables"</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> all_results <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Predictor variables</span><span class="st">`</span> <span class="ot">=</span> term)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add category separators</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> all_results <span class="sc">%&gt;%</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Category) <span class="sc">%&gt;%</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> {</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a separator row before each category</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    separator_row <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Predictor variables</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"Independent variables from"</span>, .y<span class="sc">$</span>Category, <span class="st">"category"</span>),</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">estimate =</span> <span class="cn">NA</span>, <span class="at">std.error =</span> <span class="cn">NA</span>, <span class="at">statistic =</span> <span class="cn">NA</span>, <span class="at">p.value =</span> <span class="cn">NA</span>, <span class="at">Significant =</span> <span class="cn">NA</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(separator_row, .x)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">%&gt;%</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an advanced table using kableExtra</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>all_results <span class="sc">%&gt;%</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">caption =</span> <span class="st">"Regression Results by Category"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>, <span class="st">"responsive"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"500px"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="fu">which</span>(all_results<span class="sc">$</span>Significant <span class="sc">==</span> <span class="st">"YES"</span>), <span class="at">background =</span> <span class="st">"#D9F2D9"</span>) <span class="sc">%&gt;%</span>  <span class="co"># Highlight significant rows in green</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="fu">which</span>(all_results<span class="sc">$</span><span class="st">`</span><span class="at">Predictor variables</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">paste</span>(<span class="st">"Independent variables from"</span>, <span class="fu">unique</span>(all_results<span class="sc">$</span>Category), <span class="st">"category"</span>)), </span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>           <span class="at">bold =</span> <span class="cn">TRUE</span>, <span class="at">background =</span> <span class="st">"#FFA500"</span>) <span class="sc">%&gt;%</span>  <span class="co"># Highlight separator rows in orange</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> <span class="cn">TRUE</span>)  <span class="co"># Bold the "Predictor variables" column</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to run regression for a specific category of independent variables</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>run_regression <span class="ot">&lt;-</span> <span class="cf">function</span>(data, category_vars, category_name) {</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Drop variables with all NA values within the category</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  category_vars <span class="ot">&lt;-</span> category_vars[<span class="fu">sapply</span>(data[category_vars], <span class="cf">function</span>(x) <span class="sc">!</span><span class="fu">all</span>(<span class="fu">is.na</span>(x)))]</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If no variables are left after dropping, return NULL</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(category_vars) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a subset of data with the dependent variable and independent variables</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  regression_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(Current_health_expenditure_per_capita_current_US, <span class="fu">all_of</span>(category_vars)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na.omit</span>()  <span class="co"># Remove rows with NA values</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check if there are enough rows to run the regression</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(regression_data) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create the regression formula</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  formula <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">"Current_health_expenditure_per_capita_current_US ~"</span>, </span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">paste</span>(category_vars, <span class="at">collapse =</span> <span class="st">" + "</span>)))</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Run the regression</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  regression_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(formula, <span class="at">data =</span> regression_data)</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Tidy up the regression results and add a "Significant" column</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>  tidy_results <span class="ot">&lt;-</span> <span class="fu">tidy</span>(regression_model) <span class="sc">%&gt;%</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">Category =</span> category_name,</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">Significant =</span> <span class="fu">ifelse</span>(p.value <span class="sc">&lt;=</span> <span class="fl">0.10</span>, <span class="st">"YES"</span>, <span class="st">"NO"</span>)  <span class="co"># Add significance column</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tidy_results)</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Run regression for each category and create tables</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>economic_results <span class="ot">&lt;-</span> <span class="fu">run_regression</span>(mydata, variable_categories<span class="sc">$</span>Economic, <span class="st">"Economic"</span>)</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>health_results <span class="ot">&lt;-</span> <span class="fu">run_regression</span>(mydata, variable_categories<span class="sc">$</span>Health, <span class="st">"Health"</span>)</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>social_results <span class="ot">&lt;-</span> <span class="fu">run_regression</span>(mydata, variable_categories<span class="sc">$</span>Social, <span class="st">"Social"</span>)</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>government_results <span class="ot">&lt;-</span> <span class="fu">run_regression</span>(mydata, variable_categories<span class="sc">$</span>Government, <span class="st">"Government"</span>)</span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>trade_results <span class="ot">&lt;-</span> <span class="fu">run_regression</span>(mydata, variable_categories<span class="sc">$</span>Trade, <span class="st">"Trade"</span>)</span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all results into one table</span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a>  economic_results,</span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a>  health_results,</span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a>  social_results,</span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a>  government_results,</span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a>  trade_results</span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure the "Significant" column has no NA values</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> all_results <span class="sc">%&gt;%</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Significant =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(Significant), <span class="st">"NO"</span>, Significant))  <span class="co"># Replace NA with "NO"</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename the "term" column to "Predictor variables"</span></span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> all_results <span class="sc">%&gt;%</span></span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Predictor variables</span><span class="st">`</span> <span class="ot">=</span> term)</span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Add category separators</span></span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> all_results <span class="sc">%&gt;%</span></span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Category) <span class="sc">%&gt;%</span></span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> {</span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a separator row before each category</span></span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a>    separator_row <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Predictor variables</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"Independent variables from"</span>, .y<span class="sc">$</span>Category, <span class="st">"category"</span>),</span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a>      <span class="at">estimate =</span> <span class="cn">NA</span>, <span class="at">std.error =</span> <span class="cn">NA</span>, <span class="at">statistic =</span> <span class="cn">NA</span>, <span class="at">p.value =</span> <span class="cn">NA</span>, <span class="at">Significant =</span> <span class="cn">NA</span></span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(separator_row, .x)</span>
+<span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">%&gt;%</span></span>
+<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb24-74"><a href="#cb24-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-75"><a href="#cb24-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an advanced table using kableExtra</span></span>
+<span id="cb24-76"><a href="#cb24-76" aria-hidden="true" tabindex="-1"></a>table_html <span class="ot">&lt;-</span> all_results <span class="sc">%&gt;%</span></span>
+<span id="cb24-77"><a href="#cb24-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">caption =</span> <span class="st">"Regression Results by Category"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-78"><a href="#cb24-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>, <span class="st">"responsive"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-79"><a href="#cb24-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"500px"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-80"><a href="#cb24-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="fu">which</span>(all_results<span class="sc">$</span>Significant <span class="sc">==</span> <span class="st">"YES"</span>), <span class="at">background =</span> <span class="st">"#D9F2D9"</span>) <span class="sc">%&gt;%</span>  <span class="co"># Highlight significant rows in green</span></span>
+<span id="cb24-81"><a href="#cb24-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="fu">which</span>(all_results<span class="sc">$</span><span class="st">`</span><span class="at">Predictor variables</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">paste</span>(<span class="st">"Independent variables from"</span>, <span class="fu">unique</span>(all_results<span class="sc">$</span>Category), <span class="st">"category"</span>)), </span>
+<span id="cb24-82"><a href="#cb24-82" aria-hidden="true" tabindex="-1"></a>           <span class="at">bold =</span> <span class="cn">TRUE</span>, <span class="at">background =</span> <span class="st">"#FFA500"</span>) <span class="sc">%&gt;%</span>  <span class="co"># Highlight separator rows in orange</span></span>
+<span id="cb24-83"><a href="#cb24-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> <span class="cn">TRUE</span>)  <span class="co"># Bold the "Predictor variables" column</span></span>
+<span id="cb24-84"><a href="#cb24-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-85"><a href="#cb24-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the table</span></span>
+<span id="cb24-86"><a href="#cb24-86" aria-hidden="true" tabindex="-1"></a>table_html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
 <div class="table-responsive">
@@ -419,7 +435,6 @@ Caused by warning:
 <th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">statistic</th>
 <th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">p.value</th>
 <th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">Significant</th>
-<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">CountryName</th>
 </tr>
 </thead>
 <tbody>
@@ -431,7 +446,6 @@ Caused by warning:
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: left; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -441,7 +455,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">2.0213148</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0505260</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -451,7 +464,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">4.9688450</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0000155</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Economic</td>
@@ -461,7 +473,6 @@ Caused by warning:
 <td style="text-align: right;">1.0484774</td>
 <td style="text-align: right;">0.3012195</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -471,7 +482,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-2.3137934</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0263378</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Economic</td>
@@ -481,7 +491,6 @@ Caused by warning:
 <td style="text-align: right;">1.4169100</td>
 <td style="text-align: right;">0.1648748</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -491,7 +500,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">1.9790704</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0552864</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Economic</td>
@@ -501,7 +509,6 @@ Caused by warning:
 <td style="text-align: right;">0.5549487</td>
 <td style="text-align: right;">0.5822694</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -511,7 +518,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-2.2795076</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0284981</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -521,7 +527,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">1.8911195</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0664575</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Economic</td>
@@ -531,7 +536,6 @@ Caused by warning:
 <td style="text-align: right;">0.7650534</td>
 <td style="text-align: right;">0.4490923</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -541,7 +545,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-2.4639087</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0185138</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -551,7 +554,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-2.6112733</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0129530</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -561,7 +563,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-2.1272203</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0401320</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Economic</td>
@@ -571,7 +572,6 @@ Caused by warning:
 <td style="text-align: right;">-1.1005611</td>
 <td style="text-align: right;">0.2781965</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Economic</td>
@@ -581,7 +581,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-2.6799069</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0109284</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Economic</td>
@@ -591,7 +590,6 @@ Caused by warning:
 <td style="text-align: right;">-0.9752504</td>
 <td style="text-align: right;">0.3357694</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Economic</td>
@@ -601,7 +599,6 @@ Caused by warning:
 <td style="text-align: right;">0.1753354</td>
 <td style="text-align: right;">0.8617721</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important; font-weight: bold;">Government</td>
@@ -611,7 +608,6 @@ Caused by warning:
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: left; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Government</td>
@@ -621,7 +617,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">2.7420974</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0064123</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Government</td>
@@ -631,7 +626,6 @@ Caused by warning:
 <td style="text-align: right;">0.3795245</td>
 <td style="text-align: right;">0.7045241</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Government</td>
@@ -641,7 +635,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-4.6563521</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0000045</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Government</td>
@@ -651,7 +644,6 @@ Caused by warning:
 <td style="text-align: right;">0.9243294</td>
 <td style="text-align: right;">0.3559392</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Government</td>
@@ -661,7 +653,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">3.2547158</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0012436</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Government</td>
@@ -671,7 +662,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">1.7722471</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0772064</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Government</td>
@@ -681,7 +671,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">3.8812544</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0001238</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Government</td>
@@ -691,7 +680,6 @@ Caused by warning:
 <td style="text-align: right;">-1.4542448</td>
 <td style="text-align: right;">0.1467570</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Government</td>
@@ -701,7 +689,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-3.7267491</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0002254</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important; font-weight: bold;">Health</td>
@@ -711,7 +698,6 @@ Caused by warning:
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: left; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -721,7 +707,6 @@ Caused by warning:
 <td style="text-align: right;">NaN</td>
 <td style="text-align: right;">NaN</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -731,7 +716,6 @@ Caused by warning:
 <td style="text-align: right;">NaN</td>
 <td style="text-align: right;">NaN</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -741,7 +725,6 @@ Caused by warning:
 <td style="text-align: right;">NaN</td>
 <td style="text-align: right;">NaN</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -751,7 +734,6 @@ Caused by warning:
 <td style="text-align: right;">NaN</td>
 <td style="text-align: right;">NaN</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -761,7 +743,6 @@ Caused by warning:
 <td style="text-align: right;">NaN</td>
 <td style="text-align: right;">NaN</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -771,7 +752,6 @@ Caused by warning:
 <td style="text-align: right;">NaN</td>
 <td style="text-align: right;">NaN</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -781,7 +761,6 @@ Caused by warning:
 <td style="text-align: right;">NaN</td>
 <td style="text-align: right;">NaN</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -791,7 +770,6 @@ Caused by warning:
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -801,7 +779,6 @@ Caused by warning:
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -811,7 +788,6 @@ Caused by warning:
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -821,7 +797,6 @@ Caused by warning:
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -831,7 +806,6 @@ Caused by warning:
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Health</td>
@@ -841,7 +815,6 @@ Caused by warning:
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important; font-weight: bold;">Social</td>
@@ -851,7 +824,6 @@ Caused by warning:
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: left; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Social</td>
@@ -861,7 +833,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-2.3113219</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0266516</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Social</td>
@@ -871,7 +842,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">4.4520835</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0000790</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Social</td>
@@ -881,7 +851,6 @@ Caused by warning:
 <td style="text-align: right;">0.7328662</td>
 <td style="text-align: right;">0.4683854</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Social</td>
@@ -891,7 +860,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">4.4540779</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0000786</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Social</td>
@@ -901,7 +869,6 @@ Caused by warning:
 <td style="text-align: right;">1.5326449</td>
 <td style="text-align: right;">0.1341053</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Social</td>
@@ -911,7 +878,6 @@ Caused by warning:
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Social</td>
@@ -921,7 +887,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">2.4079205</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0212921</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Social</td>
@@ -931,7 +896,6 @@ Caused by warning:
 <td style="text-align: right;">-0.8421817</td>
 <td style="text-align: right;">0.4052466</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Social</td>
@@ -941,7 +905,6 @@ Caused by warning:
 <td style="text-align: right;">0.0552437</td>
 <td style="text-align: right;">0.9562498</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Social</td>
@@ -951,7 +914,6 @@ Caused by warning:
 <td style="text-align: right;">-0.3031276</td>
 <td style="text-align: right;">0.7635375</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Social</td>
@@ -961,7 +923,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">4.4495146</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0000797</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Social</td>
@@ -971,7 +932,6 @@ Caused by warning:
 <td style="text-align: right;">0.7276145</td>
 <td style="text-align: right;">0.4715556</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Social</td>
@@ -981,7 +941,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-2.0616003</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0465227</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important; font-weight: bold;">Trade</td>
@@ -991,7 +950,6 @@ Caused by warning:
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 <td style="text-align: left; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
-<td style="text-align: right; font-weight: bold; background-color: rgba(255, 165, 0, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Trade</td>
@@ -1001,7 +959,6 @@ Caused by warning:
 <td style="text-align: right;">1.1553714</td>
 <td style="text-align: right;">0.2555494</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Trade</td>
@@ -1011,7 +968,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">5.7641765</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0000014</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Trade</td>
@@ -1021,7 +977,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-3.9819554</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0003178</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Trade</td>
@@ -1031,7 +986,6 @@ Caused by warning:
 <td style="text-align: right;">-0.4867642</td>
 <td style="text-align: right;">0.6293760</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; font-weight: bold;">Trade</td>
@@ -1041,7 +995,6 @@ Caused by warning:
 <td style="text-align: right;">1.2763553</td>
 <td style="text-align: right;">0.2100028</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Trade</td>
@@ -1051,7 +1004,6 @@ Caused by warning:
 <td style="text-align: right;">0.8383581</td>
 <td style="text-align: right;">0.4073617</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important; font-weight: bold;">Trade</td>
@@ -1061,7 +1013,6 @@ Caused by warning:
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">-4.1864229</td>
 <td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">0.0001744</td>
 <td style="text-align: left; background-color: rgba(217, 242, 217, 255) !important;">YES</td>
-<td style="text-align: right; background-color: rgba(217, 242, 217, 255) !important;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Trade</td>
@@ -1071,7 +1022,6 @@ Caused by warning:
 <td style="text-align: right;">-0.1203290</td>
 <td style="text-align: right;">0.9048916</td>
 <td style="text-align: left;">NO</td>
-<td style="text-align: right;">NA</td>
 </tr>
 </tbody>
 </table>
@@ -1080,6 +1030,130 @@ Caused by warning:
 
 </div>
 </div>
+<p>In the above table, we can observe that a lot of factors affect the dependent variable and a lot of them don’t. We can also observe that a lot of our variables have missing values make it unavailable for the regression estimation.</p>
+<p>Now, we will save our regression result is a HTML table so that we can use to present it in our manuscript.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the table as a PDF file</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>html_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>, <span class="st">"regression_results.html"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">save_kable</span>(table_html, <span class="at">file =</span> html_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we have tested some variables in our model across different categories, we will pick the most useful variable and add them into our preliminary model. We will also add other variable that were not present in the above table. Variable selection is a continuous process and the variables selected in the preliminary model may also be dropped later to make space for new variables that may appear as important.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Current_health_expenditure_per_capita_current_US <span class="sc">~</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>              GDP_growth_annual_ <span class="sc">+</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>              Income_share_held_by_lowest_20 <span class="sc">+</span> </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>              Control_of_Corruption_Estimate <span class="sc">+</span> </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>              Life_expectancy_at_birth_total_years <span class="sc">+</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate <span class="sc">+</span> </span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>              Literacy_rate_adult_total__of_people_ages_15_and_above <span class="sc">+</span> </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>              Trade__of_GDP<span class="sc">+</span> Foreign_direct_investment_net_inflows_BoP_current_US<span class="sc">+</span> </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  Access_to_electricity_rural__of_rural_population <span class="sc">+</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  Age_dependency_ratio__of_workingage_population</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  , </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> mydata)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the regression results to an HTML file</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  model,</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">output =</span> <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>, <span class="st">"preliminary_regression_results.html"</span>),</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"First Attempt at Regression Model"</span>,</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">'*'</span> <span class="ot">=</span> <span class="fl">0.1</span>, <span class="st">'**'</span> <span class="ot">=</span> <span class="fl">0.05</span>, <span class="st">'***'</span> <span class="ot">=</span> <span class="fl">0.01</span>),</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">notes =</span> <span class="fu">list</span>(</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Standard errors are shown in parentheses."</span>,</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Significance levels: * p &lt; 0.1, ** p &lt; 0.05, *** p &lt; 0.01."</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">encoding =</span> <span class="st">"UTF-8"</span>  <span class="co"># Ensure UTF-8 encoding</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The variables have a significant impact on the dependent variable as expected. But, as this is a time series dataset, we must also test for autocorrelation. There are many other tests as well which can be performed on time-series models such ADF test for unit root, and complex models such as ARCH and GARCH can also be used. However, we will only perform simple procedures and try to build a simple model.</p>
+<section id="autocorrelation-test" class="level1">
+<h1>Autocorrelation test</h1>
+<p>Below, we will perform the autocorrelation test.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Durbin-Watson test</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>dw_test <span class="ot">&lt;-</span> <span class="fu">dwtest</span>(model)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dw_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Durbin-Watson test
+
+data:  model
+DW = 1.3526, p-value = 0.001607
+alternative hypothesis: true autocorrelation is greater than 0</code></pre>
+</div>
+</div>
+<p>Unfortunately, the Durbin-Watson test is significant, and our model shows presence of autocorrelation.</p>
+<p>We will try to use a lagged model to solve the issue of autocorrelation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a lagged version of the dependent variable</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>Current_health_expenditure_per_capita_current_US_lag1 <span class="ot">&lt;-</span> <span class="fu">lag</span>(mydata<span class="sc">$</span>Current_health_expenditure_per_capita_current_US, <span class="dv">1</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>GDP_growth_annual_lag1 <span class="ot">&lt;-</span> <span class="fu">lag</span>(mydata<span class="sc">$</span>GDP_growth_annual_, <span class="dv">1</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Refit the model with lagged variables</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>model_lagged <span class="ot">&lt;-</span> <span class="fu">lm</span>(Current_health_expenditure_per_capita_current_US <span class="sc">~</span> </span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>                     GDP_growth_annual_ <span class="sc">+</span> GDP_growth_annual_lag1 <span class="sc">+</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>                     Income_share_held_by_lowest_20 <span class="sc">+</span> </span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>                     Control_of_Corruption_Estimate <span class="sc">+</span> </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>                     Life_expectancy_at_birth_total_years <span class="sc">+</span> </span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>                     Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate <span class="sc">+</span> </span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>                     Literacy_rate_adult_total__of_people_ages_15_and_above <span class="sc">+</span> </span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>                     Trade__of_GDP <span class="sc">+</span> </span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>                     Foreign_direct_investment_net_inflows_BoP_current_US <span class="sc">+</span> </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>                     Access_to_electricity_rural__of_rural_population <span class="sc">+</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>                     Age_dependency_ratio__of_workingage_population <span class="sc">+</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>                     Current_health_expenditure_per_capita_current_US_lag1,  <span class="co"># Include lagged dependent variable</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> mydata)</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="co"># autocorrelation test</span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>dw_test_lagged <span class="ot">&lt;-</span> <span class="fu">dwtest</span>(model_lagged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in dwtest(model_lagged): imaginary parts of eigenvalues discarded</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dw_test_lagged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Durbin-Watson test
+
+data:  model_lagged
+DW = 2.8812, p-value &lt; 2.2e-16
+alternative hypothesis: true autocorrelation is greater than 0</code></pre>
+</div>
+</div>
+<p>Unfortunately, the DW test is still significant, and lagged model also shows auto correlation.</p>
+<p>We will try to use a country fixed effect to account for the all time-invariant differences between countries (e.g., cultural, institutional, or geographical factors). Although these country fixed effect is not a solution to the autocorrelation problem in itself, we believe that the new model specification will show a different property than our previous two models with ordinary pooled OLS and lagged model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a fixed effects model using lm() with dummy variables</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>fixed_model_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(Current_health_expenditure_per_capita_current_US <span class="sc">~</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                       GDP_growth_annual_ <span class="sc">+</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                       Income_share_held_by_lowest_20 <span class="sc">+</span> </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                       Control_of_Corruption_Estimate <span class="sc">+</span> </span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>                       Life_expectancy_at_birth_total_years <span class="sc">+</span> </span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>   Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate <span class="sc">+</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>                       Literacy_rate_adult_total__of_people_ages_15_and_above <span class="sc">+</span> </span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>                       Trade__of_GDP <span class="sc">+</span> </span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>                       Foreign_direct_investment_net_inflows_BoP_current_US <span class="sc">+</span> </span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>                       Access_to_electricity_rural__of_rural_population <span class="sc">+</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>                       Age_dependency_ratio__of_workingage_population <span class="sc">+</span> </span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">factor</span>(CountryName),  <span class="co"># Include dummy variables for each entity</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">data =</span> mydata)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="co">#autocorrelation test</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>dw_test_lagged <span class="ot">&lt;-</span> <span class="fu">dwtest</span>(fixed_model_lm)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dw_test_lagged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Durbin-Watson test
+
+data:  fixed_model_lm
+DW = 2.6905, p-value = 0.4853
+alternative hypothesis: true autocorrelation is greater than 0</code></pre>
+</div>
+</div>
+<p>Thankfully, our country fixed effect model no longer shows autocorrelation. We will now be able to build upon this model for our further analysis.</p>
 </section>
 
 </main>

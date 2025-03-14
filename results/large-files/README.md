@@ -1,6 +1,6 @@
 # large-files
 
-This is where you should store the results of computations that produce
+This is where we will store the results of computations that produce
 large files, such as posterior samples from Bayesian models.
 
 Folder for any large files that are too big to be tracked with GitHub.

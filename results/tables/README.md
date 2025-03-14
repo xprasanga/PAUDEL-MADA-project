@@ -1,5 +1,4 @@
 # tables
 
-Folder for all tables (if you use R, often stored as Rds files)
+This is a folder for all tables generated during our eda and analysis process.
 
-You can create further sub-folders if that makes sense.

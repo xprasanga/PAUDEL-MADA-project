@@ -1,5 +1,4 @@
 # figures
 
-Folder for all figures.
+This is a folder for all figures generated during our eda and analysis process.
 
-You can create further sub-folders if that makes sense.

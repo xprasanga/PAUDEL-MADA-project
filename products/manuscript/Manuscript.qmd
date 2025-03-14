@@ -11,10 +11,7 @@ bibliography: ../../assets/dataanalysis-references.bib
 csl: ../../assets/american-journal-of-epidemiology.csl
 ---
 
-
-
-This uses HTML as output format. [See here](https://quarto.org/docs/output-formats/ms-word.html) for more information. You can switch to other formats, like docx or pdf. See [the Quarto documentation](https://quarto.org/) for other formats.
-
+This uses HTML as output format. 
 
 ```{r, echo=FALSE, message=FALSE}
 # load a few R packages
@@ -28,73 +25,62 @@ library(patchwork)
 library(kableExtra)
 ```
 
+**Authors**
 
-**Authors**  
+-   Prasanga Paudel$^{1,2,*}$ (ORCID: 0000-0000-1234-5678)
 
-* Prasanga Paudel$^{1,2,*}$ (ORCID: 0000-0000-1234-5678) 
- 
+**Author affiliations**
 
-**Author affiliations**  
-
-1. College of Agricultural and Environmental Science, University of Georgia, Athens, GA, USA.
-
+1.  College of Agricultural and Environmental Science, University of Georgia, Athens, GA, USA.
 
 $*$ These authors contributed equally to this work.
 
-$\land$ Corresponding author: some@email.com
+$\land$ Corresponding author: some\@email.com
 
-$\dagger$ Disclaimer: The opinions expressed in this article are the
-author's own and don't reflect their employer.
-
+$\dagger$ Disclaimer: The opinions expressed in this article are the author's own and don't reflect their employer.
 
 {{< pagebreak >}}
-
-
 
 # Summary/Abstract
-_The data is based on World Development Indicator from World Bank Group. This is a comprehensive database that includes information including employment, public and private expenditure in health sector, fertility, immunization, literacy, mortality, and many more.The dataset has a total of 1496 variables and across 11 years from 2010 to 2020. The actual source of data has information from 1960 to 2023 but to deal with the problem of missing values in recent years and overcomplication in analysis due to too many year data , we will focus on 10 recent years between 2010 and 2020._
 
+The data is based on World Development Indicator from World Bank Group. This is a comprehensive database that includes information including employment, public and private expenditure in health sector, fertility, immunization, literacy, mortality, and many more.The dataset has a total of 1496 variables and across 11 years from 2010 to 2020. The actual source of data has information from 1960 to 2023 but to deal with the problem of missing values in recent years and overcomplication in analysis due to too many year data , we will focus on 10 recent years between 2010 and 2020.
 
 {{< pagebreak >}}
 
-
-# Introduction 
+# Introduction
 
 ## General Background Information
-_We will try to analyze the most influential factors affecting the expenditure in health sector by different countries. The predictor variables will include factors ranging from education, mortality, population distribution among rural and urban spaces, and so on. We would use multiple regression analysis with health sector expenditure as dependent variable and the variable of interests as predictors for this panel data._
 
-_We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have also focused on the relation between life expectancy and health expenditure. However, these research were based on fixed effect and random effect models. In our analysis we will try to follow OLS multiple regression model._
+We will try to analyze the most influential factors affecting the expenditure in health sector by different countries. The predictor variables will include factors ranging from education, mortality, population distribution among rural and urban spaces, and so on. We would use multiple regression analysis with health sector expenditure as dependent variable and the variable of interests as predictors for this panel data.
+
+We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have also focused on the relation between life expectancy and health expenditure. However, these research were based on fixed effect and random effect models. In our analysis we will try to follow OLS multiple regression model.
 
 ## Description of data and data source
-_This is a time series data based on 38 member countries from the Organisation for Economic Co-operation and Development (OECD). This organization is a unique forum with governments from 37 democracies collaborate to develop policy standards to promote sustainable economic growth. However, the data obtained from this dataset is crude and needs to be treated before attempting analysis based on it. For example, in its present form, the variable name is a long sentense describing the data it contains.The years are listed as column names and variables are listed as Series._
+
+This is a time series data based on 38 member countries from the Organisation for Economic Co-operation and Development (OECD). This organization is a unique forum with governments from 37 democracies collaborate to develop policy standards to promote sustainable economic growth. However, the data obtained from this dataset is crude and needs to be treated before attempting analysis based on it. For example, in its present form, the variable name is a long sentense describing the data it contains.The years are listed as column names and variables are listed as Series.
 
 ## Objective of the research
 
 The expenditure in health sector is one of the important factor that helps in determining the efficiency of health sector. We can relate the expenditure with different national development indicators and hope to find important connections between them. This will help government to make specific interventions through their policy to enhance their health sector. We can also find out how countries are currently operating and which factor has helped or negatively affected their health sector.
 
-_The main objective of this research is to:_
+*The main objective of this research is to:*
 
-_1. To analyze the factors that affect the expenditure in health sector among OECD countries._
+*1. To analyze the factors that affect the expenditure in health sector among OECD countries.*
 
-_2. To analyze the magnitude of the influence of these factors on health expenditure_
-
-To cite other work (important everywhere, but likely happens first in introduction), make sure your references are in the bibtex file specified in the YAML header above and have the right bibtex key. Then you can include like this:
-
-Examples of reproducible research projects can for instance be found in [@mckay2020; @mckay2020a].
-
+*2. To analyze the magnitude of the influence of these factors on health expenditure*
 
 
 {{< pagebreak >}}
 
 ## Data aquisition
-_The data for this research is available at the official World Bank- Data Bank website.It is a free database managed by world bank group and can be accessed anytime. We can apply various filters as per our need and export the data as a .CSV or an .xlsx file._
+
+The data for this research is available at the official World Bank- Data Bank website.It is a free database managed by world bank group and can be accessed anytime. We can apply various filters as per our need and export the data as a .CSV or an .xlsx file.
 
 Link to the source: <https://databank.worldbank.org/source/world-development-indicators/Type/TABLE/preview/on#>
 
-# Methods 
+# Methods
 
 We wll be following a panel data time series regression model. The details will be discussed as we progress.
-
 
 # Importing the original dataset
 
@@ -103,11 +89,10 @@ file_path <- here("data","raw-data", "wdi-oecd.xlsx")
 data <- read_excel(file_path, sheet="Data")
 ```
 
-
-
 ## A look into the original format of the dataset
 
-_This was the state of the data when first downloaded_
+This was the state of the data when first downloaded
+
 ```{r}
 head(data)
 ```
@@ -123,17 +108,13 @@ mydata <- readRDS(data_location)
 
 ## A look into the cleaned dataset
 
-_This is the present state of the dataset_
+This is the present state of the dataset
 
 ```{r}
 head(mydata)
 ```
 
-
-
-
 {{< pagebreak >}}
-
 
 # Results
 
@@ -141,10 +122,9 @@ In exploratory data analysis, we will just look at data from Australia as a refe
 
 ## Exploratory/Descriptive analysis
 
-_Here, we will now use a combination of tables and figues to have a look into the data._
+*Here, we will now use a combination of tables and figues to have a look into the data.*
 
 As this is a time series data, it is quite difficult to visualize all the variables across the years for all the countries. So, we will try to keep it simple and see simple relations between variables within a year or trend of a particular variable for some countries across the years.
-
 
 @tbl-summary shows the values under interesting variables for all OECD countries for the year 2010.
 
@@ -154,11 +134,9 @@ As this is a time series data, it is quite difficult to visualize all the variab
 #| echo: FALSE
 table_html <- readRDS(here::here("results", "tables", "health_exp_2010.rds"))
 table_html
-
 ```
 
-
-### Looking into the trend for our possible dependent variable 
+### Looking into the trend for our possible dependent variable
 
 @fig-health-expenditure-plot shows how "Health Expenditure as a Percentage of GDP Over Time (2010–2020)" is distributed over the years for top 5 OECD countries.
 
@@ -169,77 +147,144 @@ table_html
 knitr::include_graphics(here("results","figures","health_expenditure_plot.png"))
 ```
 
+But, before moving on to be fixed at a single variable as our dependent variable, we will also look if there are any alternative dependent varibles that could prove to be more useful.
 
-@fig-health-exp-aus shows the distribution of "Health Expenditure as a Percentage of GDP changes over time for Australia. 
+@fig-health-exp-aus shows the distribution of "Health Expenditure as a Percentage of GDP changes over time for Australia. Here we can see that there is not much variation in the data. Therefore we will also look at other similar variables.
 
 ```{r}
 #| label: fig-health-exp-aus
 #| fig-cap: "Health Expenditure (% of GDP), Country: Australia"
-#| echo: FALSE
+#| echo: FALSE 
+#| out.width: "60%"
 knitr::include_graphics(here("results", "figures", "health_exp_aus.png"))
 ```
 
-
-@fig-pop-growth-aus shows the distribution  of Health Expenditure as a Percentage of GDP over the Years Comparing with shows any reation with annual population growth for Australia.This figure shows that it has very less in common with @fig-health-exp-aus as long as distribution and correlation is concerned.
-
-```{r}
-#| label: fig-pop-growth-aus
-#| fig-cap: "Health Expenditure (% of GDP), Country: Australia"
-#| echo: FALSE
-knitr::include_graphics(here("results","figures","pop_growth_aus.png"))
-```
-
-
-@fig-he_per_capita shows the distribution of Health Expenditure Per Capita (USD) over the Years. It shows that it is some what related to @fig-pop-growth-aus in it's distribution. So we can say that there is indeed a presence of some pattern in the variables of interest.
+@fig-he_per_capita shows the distribution of Health Expenditure Per Capita (USD) over the Years. It can be observed that this variable indeed has variation and could be useful as our dependent variable.
 
 ```{r}
 #| label: fig-he_per_capita
 #| fig-cap: "Health Expenditure Per Capita (USD, Country: Australia"
 #| echo: FALSE
+#| out.width: "60%"
 knitr::include_graphics(here("results","figures","health_exp_per_capita_aus.png"))
 ```
- I think it will be better for us to use the variable "Health Expenditure Per Capita $USD" as a dependent variable in our analysis as it show more variation and connections with other variables.
- 
-## Basic statistical analysis
 
-_To be added_
+@fig-pop-growth-aus shows the distribution of population growth of australia.This figure shows that it has very less in common with @fig-health-exp-aus and more in common with @fig-he_per_capita
 
+```{r}
+#| label: fig-pop-growth-aus
+#| fig-cap: "Population Growth, Country: Australia"
+#| echo: FALSE
+#| out.width: "60%"
+knitr::include_graphics(here("results","figures","pop_growth_aus.png"))
+```
 
+I think it will be better for us to use the variable "Health Expenditure Per Capita \$USD" as a dependent variable in our analysis as it show more variation and connections with other variables.
 
+# Basic statistical analysis
+
+## Preparing a model
+
+To help finalize our model, we will first try to look at the relation between our dependent variable "Health Expenditure Per Capita \$USD" with other variables from a specific category. Specifically, we will pick the most useful variables from the large pool of 1400+ variables in our dataset, and we will then categorize these variables based on the aspects they cover. For example, if there is avariable named "Annual GDP growth", we will categorize it as an "Economic" variable. Similarly, if there is a variable named "Unemployment rate" or "Total population", we will categorize them as "Social" variable
+
+We will then run our initial regression with "Health Expenditure Per Capita \$USD" as dependent variable, and variables from each of the category as independent variables in separate regressions
+
+@fig-regression-results shows the different regresion results based on different categories. The categories are: Economic, Health, Social, Government, Trade. We will pick the most useful variables among the variables that came up significant and create our preliminary model for our research. However, this would not be the end of our variable selection process.
+
+```{r}
+#| label: fig-regression-results
+#| fig-cap: "Regression Results by Category"
+#| echo: FALSE
+htmltools::tags$iframe(
+  src = here("results", "tables", "regression_results.html"),
+  width = "100%",
+  height = "600px"
+)
+```
+
+## Observing the relationship with dependent variable
+
+@fig-correlation-p1 show the correlation of different variables that had a statistical significant effect in @fig-regression-results (and other variables of interest). We are just trying to see the pattern present in the dataset for the year 2010, with all the countries treated as cross-sectional units.
+
+```{r}
+#| label: fig-correlation-p1
+#| fig-cap: "Correlation based on 2010 data"
+#| echo: FALSE
+#| out.width: "100%"
+knitr::include_graphics(here("results","figures","correlation_plot1.png"))
+```
+
+We do the same with few other variables.
+
+```{r}
+#| label: fig-correlation-p2
+#| fig-cap: "Correlation based on 2010 data"
+#| echo: FALSE
+#| out.width: "100%"
+knitr::include_graphics(here("results","figures","correlation_plot2.png"))
+```
+
+It can be seen that most of the variables seem to have a high correlation with our variable of interest. Although some variables lack observations, we must recall that this is just for the year 2010, and the whole dataset might have a different distribution pattern.
+
+## Proposed Model for the research
+
+Based on the informations obtained in @fig-regression-results, we have selected variable that would best explain our dependent variable. The model is as follow:
+
+Current Health Expenditure Per Capita (\$USD) = $b_0$ + $b_1$ Annual GDP growth + $b_2$ Income share held by lowest 20% + $b_3$ Control of corruption + $b_4$ Life expectancy at birth + $b_5$ Unemployed youth population as a percentage of total labor force + $b_6$ Adult literacy rate + $b_7$ Trade as a percentage of GDP + $b_8$ FDI net inflow + $b_9$ Access to electricity (rural) + $b_{10}$ Age dependency ratio
+
+```{r}
+#| label: fig-preliminary-regression-results
+#| fig-cap: "Preliminary Regression Results"
+#| echo: FALSE
+#| out.width: "70%"
+knitr::include_graphics(here("results", "tables", "preliminary_regression_results.png"))
+
+```
+
+But, it turns out that the model shows significant amount of autocorrelation
+
+```{r}
+#| label: fig-DW-test-results
+#| fig-cap: "Durbin Watson Test Results"
+#| echo: FALSE
+#| out.width: "25%"
+knitr::include_graphics(here("results", "figures", "durbin_watson_test_results.png"))
+
+```
+
+**Therefore, we will use a regression model with country fixed effect which is given below:**
+
+Current Health Expenditure Per Capita (\$USD) = $b_0$ + $b_1$ Annual GDP growth + $b_2$ Income share held by lowest 20% + $b_3$ Control of corruption + $b_4$ Life expectancy at birth + $b_5$ Unemployed youth population as a percentage of total labor force + $b_6$ Adult literacy rate + $b_7$ Trade as a percentage of GDP + $b_8$ FDI net inflow + $b_9$ Access to electricity (rural) + $b_{10}$ Age dependency ratio + country fixed effect.
+
+```{r}
+#| label: fig-DW-test-results-fe
+#| fig-cap: "Durbin Watson Test Results FE-Model"
+#| echo: FALSE
+#| out.width: "30%"
+knitr::include_graphics(here("results", "figures", "durbin_watson_test_results_fe.png"))
+
+```
 
 ## Full analysis
 
-_To be added._
-
-
-
+*To be added.*
 
 {{< pagebreak >}}
-
 
 # Discussion
 
 ## Summary and Interpretation
-_To be added._
+
+*To be added.*
 
 ## Strengths and Limitations
-_To be added._
+
+*To be added.*
 
 ## Conclusions
-_To be added._
 
-_Include citations in your Rmd file using bibtex, the list of references will automatically be placed at the end_
-
-This paper [@leek2015] discusses types of analyses. 
-
-These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template. 
-
-Note that this cited reference will show up at the end of the document, the reference formatting is determined by the CSL file specified in the YAML header. Many more style files for almost any journal [are available](https://www.zotero.org/styles). You also specify the location of your bibtex reference file in the YAML. You can call your reference file anything you like.
-
+*To be added.*
 
 {{< pagebreak >}}
 
 # References
-
-
-
