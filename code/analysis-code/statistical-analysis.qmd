@@ -16,6 +16,9 @@ library(here)
 library(modelsummary)
 library(plm)
 library(lmtest)
+library(gt)
+library(webshot2)
+
 ```
 
 At first we will import the dataset
@@ -238,18 +241,17 @@ Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate +
   , 
             data = mydata)
 
-# Save the regression results to an HTML file
 modelsummary(
   model,
-  output = here("results", "tables", "preliminary_regression_results.html"),
-  title = "First Attempt at Regression Model",
+  output = here("results", "tables", "preliminary_regression_results.png"),
+  title = "This table represents the preliminary regresssion model",
   stars = c('*' = 0.1, '**' = 0.05, '***' = 0.01),
   notes = list(
     "Standard errors are shown in parentheses.",
     "Significance levels: * p < 0.1, ** p < 0.05, *** p < 0.01."
-  ),
-  encoding = "UTF-8"  # Ensure UTF-8 encoding
+  )
 )
+
 ```
 
 The variables have a significant impact on the dependent variable as expected. But, as this is a time series dataset, we must also test for autocorrelation. There are many other tests as well which can be performed on time-series models such ADF test for unit root, and complex models such as ARCH and GARCH can also be used. However, we will only perform simple procedures and try to build a simple model.
@@ -259,9 +261,36 @@ The variables have a significant impact on the dependent variable as expected. B
 Below, we will perform the autocorrelation test.
 
 ```{r}
-# Perform Durbin-Watson test
+
+# Perform the Durbin-Watson test
 dw_test <- dwtest(model)
-print(dw_test)
+
+# Extract the test statistic and p-value
+dw_statistic <- dw_test$statistic
+dw_p_value <- dw_test$p.value
+
+# Create a data frame with the results
+dw_results <- data.frame(
+  Statistic = dw_statistic,
+  P_Value = dw_p_value
+)
+
+# Generate a table using gt
+dw_table <- gt(dw_results) %>%
+  tab_header(
+    title = "Durbin-Watson Test Results"
+  ) %>%
+  fmt_number(
+    columns = vars(Statistic, P_Value),
+    decimals = 4
+  )
+
+# Define the file path for the PNG
+png_file <- here::here("results", "figures", "durbin_watson_test_results.png")
+
+# Save the table as a PNG file
+gtsave(dw_table, png_file)
+
 ```
 
 Unfortunately, the Durbin-Watson test is significant, and our model shows presence of autocorrelation.
@@ -318,8 +347,38 @@ fixed_model_lm <- lm(Current_health_expenditure_per_capita_current_US ~
 
 #autocorrelation test
 
-dw_test_lagged <- dwtest(fixed_model_lm)
-print(dw_test_lagged)
+dw_test_fe <- dwtest(fixed_model_lm)
+print(dw_test_fe)
+
+
+
+
+# Extract the test statistic and p-value
+dw_lstatistic <- dw_test_fe$statistic
+dw_lp_value <- dw_test_fe$p.value
+
+# Create a data frame with the results
+dw_lresults <- data.frame(
+  Statistic = dw_lstatistic,
+  P_Value = dw_lp_value
+)
+
+# Generate a table using gt
+dw_table <- gt(dw_lresults) %>%
+  tab_header(
+    title = "Durbin-Watson Test Results for FE "
+  ) %>%
+  fmt_number(
+    columns = vars(Statistic, P_Value),
+    decimals = 4
+  )
+
+# Define the file path for the PNG
+png_file <- here::here("results", "figures", "durbin_watson_test_results_fe.png")
+
+# Save the table as a PNG file
+gtsave(dw_table, png_file)
+
 ```
 
 Thankfully, our country fixed effect model no longer shows autocorrelation. We will now be able to build upon this model for our further analysis.

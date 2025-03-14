@@ -53,7 +53,7 @@ The data is based on World Development Indicator from World Bank Group. This is 
 
 We will try to analyze the most influential factors affecting the expenditure in health sector by different countries. The predictor variables will include factors ranging from education, mortality, population distribution among rural and urban spaces, and so on. We would use multiple regression analysis with health sector expenditure as dependent variable and the variable of interests as predictors for this panel data.
 
-We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have also focused on the relation between life expectancy and health expenditure. However, these research were based on fixed effect and random effect models. In our analysis we will try to follow OLS multiple regression model.
+We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have such as Nkemgha in 2020 [@Nkemgha2020] studied the link among public health expenditure, private health expenditure and life expectancy in Cameroon. Christopoulos and Eleftheriou [@CHRISTOPOULOS2020195] using panel data analyzed the fiscal effects of health expenditures on health outcomes and found a significant impact of healthcare expenditures on increasing revenue. In our analysis we will try to follow OLS multiple regression model. 
 
 ## Description of data and data source
 

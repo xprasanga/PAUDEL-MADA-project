@@ -21,6 +21,7 @@ library(kableExtra)
 library(htmltools)
 library(magrittr)
 library(webshot2)
+library(patchwork)
 ```
 
 
@@ -427,6 +428,49 @@ plot_pop_growth + plot_health_expenditure
 ```
 The results for Australia can also confirmed for France, we may be able to use Health Expenditure Per Capita (USD) as a dependent variabe in our future analysis.
 
+
+# EDA (part2)
+
+This is the EDA analysis performed for part 3 of the project.
+
+
+```{r}
+# Define dataset
+df <- data_2010
+
+# Function to create a scatter plot with correlation
+create_corr_plot <- function(x_var, df, point_color) {
+  cor_value <- round(cor(df[[x_var]], df$Current_health_expenditure_per_capita_current_US, use = "complete.obs"), 2)
+  
+  ggplot(df, aes_string(x = x_var, y = "Current_health_expenditure_per_capita_current_US")) +
+    geom_point(color = point_color, alpha = 0.6) +  # Set color based on input
+    geom_smooth(method = "lm", color = "red", se = FALSE) +
+    labs(title = paste("Correlation:", cor_value), x = x_var, y = "Health Expenditure per Capita") +
+    theme_minimal()
+}
+
+# Generate individual plots with different colors
+plot1 <- create_corr_plot("GDP_growth_annual_", df, "blue")
+plot2 <- create_corr_plot("Income_share_held_by_lowest_20", df, "blue")
+plot3 <- create_corr_plot("Control_of_Corruption_Estimate", df, "blue")
+plot4 <- create_corr_plot("Life_expectancy_at_birth_total_years", df, "blue")
+
+# Arrange plots in a 2x2 grid
+final_plot1 <- (plot1 + plot2) / (plot3 + plot4)
+png_file1 <- here("results", "figures", "correlation_plot1.png")
+ggsave(filename = png_file1, plot = final_plot1, width = 10, height = 8, dpi = 300)
+
+# Generate individual plots with different colors
+plot5 <- create_corr_plot("Literacy_rate_adult_total__of_people_ages_15_and_above", df, "green")
+plot6 <- create_corr_plot("Trade__of_GDP", df, "green")
+plot7 <- create_corr_plot("Foreign_direct_investment_net_inflows_BoP_current_US", df, "green")
+plot8 <- create_corr_plot("Age_dependency_ratio__of_workingage_population", df, "green")
+
+# Arrange plots in a 2x2 grid
+final_plot2 <- (plot5 + plot6) / (plot7 + plot8)
+png_file2 <- here("results", "figures", "correlation_plot2.png")
+ggsave(filename = png_file2, plot = final_plot2, width = 10, height = 8, dpi = 300)
+```
 
 
 
