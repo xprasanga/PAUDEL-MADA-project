@@ -345,6 +345,8 @@ fixed_model_lm <- lm(Current_health_expenditure_per_capita_current_US ~
                        factor(CountryName),  # Include dummy variables for each entity
                      data = mydata)
 
+
+summary(fixed_model_lm)
 #autocorrelation test
 
 dw_test_fe <- dwtest(fixed_model_lm)
