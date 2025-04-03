@@ -2,6 +2,8 @@
 This is _PRASANGA PAUDEL's_ MADA project repository.
 
 
+Read the descriptions below to have a brief knowledge about how the folders are structured.
+
 
 # Folder structure and content
 

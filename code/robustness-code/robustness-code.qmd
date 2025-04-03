@@ -1,0 +1,283 @@
+---
+title: "robustness-check"
+format: html
+editor: visual
+---
+
+```{r}
+# Load required packages
+library(purrr)    # For map_df()
+library(dplyr)    # For data manipulation
+library(timetk)   # For time_series_cv()
+library(rsample)  # For analysis() and assessment()
+library(here)
+library(modelsummary)
+library(tidyr)
+library(ranger) 
+
+```
+
+Importing train/test dataset.
+
+```{r}
+train <- readRDS(here("data", "processed-data", "train-data.rds"))
+test <- readRDS(here("data", "processed-data", "test-data.rds"))
+```
+
+testing the results
+
+```{r}
+# preliminary regression model
+
+model <- lm(Current_health_expenditure_per_capita_current_US ~ 
+              GDP_growth_annual_ + 
+              Income_share_held_by_lowest_20 + 
+              Control_of_Corruption_Estimate + 
+              Life_expectancy_at_birth_total_years + 
+Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate + 
+              Trade__of_GDP+ Foreign_direct_investment_net_inflows_BoP_current_US+ 
+  Access_to_electricity_rural__of_rural_population +
+  Age_dependency_ratio__of_workingage_population
+  , 
+            data = test)
+
+modelsummary(
+  model,
+  output = here("results", "tables", "testresult.png"),
+  title = "This table represents regresssion results from the test data",
+  stars = c('*' = 0.1, '**' = 0.05, '***' = 0.01),
+  notes = list(
+    "Standard errors are shown in parentheses.",
+    "Significance levels: * p < 0.1, ** p < 0.05, *** p < 0.01."
+  )
+)
+
+```
+
+# cross validation
+
+```{r}
+
+
+# 1. Define your model formula (as you originally specified)
+model_formula <- Current_health_expenditure_per_capita_current_US ~ 
+  GDP_growth_annual_ + 
+  Income_share_held_by_lowest_20 + 
+  Control_of_Corruption_Estimate + 
+  Life_expectancy_at_birth_total_years + 
+  Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate + 
+  Trade__of_GDP + 
+  Foreign_direct_investment_net_inflows_BoP_current_US + 
+  Access_to_electricity_rural__of_rural_population +
+  Age_dependency_ratio__of_workingage_population
+
+# 2. Create time-series CV splits
+cv_splits <- time_series_cv(
+  data = train,
+  date_var = Year,
+  initial = 5,  # 5-year initial window
+  assess = 1,   # 1-year test window
+  skip = 1,     # Move forward 1 year each split
+  slice_limit = 3
+)
+```
+
+```{r}
+
+set.seed(123)
+
+
+cv <- function(splits, model_formula) {
+  map_df(splits, function(split) {
+    train_cv <- analysis(split)
+    test_cv <- assessment(split)
+    
+    # Train model
+    model <- lm(model_formula, data = train_cv)
+    
+    # Get predictions and actuals
+    preds <- predict(model, newdata = test_cv)
+    actuals <- test_cv$Current_health_expenditure_per_capita_current_US
+    
+    # Convert to numeric safely
+    preds_num <- suppressWarnings(as.numeric(preds))
+    actuals_num <- suppressWarnings(as.numeric(actuals))
+    
+    # Calculate RMSE with error handling
+    if(length(preds_num) == 0 || length(actuals_num) == 0) {
+      rmse_val <- NA_real_
+      status <- "Empty predictions/actuals"
+    } else if(any(is.na(actuals_num))) {
+      valid <- !is.na(actuals_num)
+      rmse_val <- sqrt(mean((preds_num[valid] - actuals_num[valid])^2, na.rm = TRUE))
+      status <- "NA in actuals"
+    } else {
+      rmse_val <- sqrt(mean((preds_num - actuals_num)^2, na.rm = TRUE))
+      status <- "Success"
+    }
+    
+    data.frame(
+      Train_Years = paste(min(train_cv$Year), max(train_cv$Year), sep = "-"),
+      Test_Year = max(test_cv$Year),
+      RMSE = rmse_val,
+      stringsAsFactors = FALSE
+    )
+  })
+}
+
+# Run the analysis
+results <- cv(cv_splits$splits, model_formula)
+print(results)
+```
+
+```{r}
+# View summary of CV results
+cv_summary <- results %>%
+  summarise(
+    Mean_RMSE = mean(RMSE, na.rm = TRUE),
+    SD_RMSE = sd(RMSE, na.rm = TRUE),
+  )
+
+print(cv_summary)
+```
+
+# Random Forest
+
+```{r}
+rf_cv <- function(splits, model_formula) {
+  map_df(splits, function(split) {
+    train_cv <- analysis(split)
+    test_cv <- assessment(split)
+    
+    # 1. Get target variable from formula
+    target_var <- all.vars(model_formula)[1]
+    
+    # 2. Check if Year column exists (case-insensitive)
+    year_col <- grep("^year$", names(train_cv), ignore.case = TRUE, value = TRUE)
+    
+    # 3. Select required variables (including Year if it exists)
+    required_vars <- unique(c(all.vars(model_formula), year_col))
+    train_cv <- train_cv %>% 
+      select(any_of(required_vars)) %>% 
+      drop_na(all_of(target_var))
+    
+    test_cv <- test_cv %>% 
+      select(any_of(required_vars)) %>% 
+      drop_na(all_of(target_var))
+    
+    # 4. Get year information
+    get_years <- function(df) {
+      if (length(year_col) > 0) {
+        list(
+          min_year = min(df[[year_col]], na.rm = TRUE),
+          max_year = max(df[[year_col]], na.rm = TRUE)
+        )
+      } else {
+        list(min_year = NA_real_, max_year = NA_real_)
+      }
+    }
+    
+    train_years <- get_years(train_cv)
+    test_year <- get_years(test_cv)$max_year
+    
+    # 5. Calculate mtry
+    n_predictors <- length(setdiff(required_vars, c(target_var, year_col)))
+    mtry_value <- max(1, min(floor(n_predictors / 3), n_predictors))
+    
+    # 6. Train model
+    set.seed(123)
+    rf_model <- ranger(
+      formula = model_formula,
+      data = train_cv,
+      num.trees = 500,
+      mtry = mtry_value,
+      importance = 'permutation',
+      seed = 123
+    )
+    
+    # 7. Calculate RMSE
+    preds <- predict(rf_model, data = test_cv)$predictions
+    actuals <- pull(test_cv, target_var)
+    rmse_val <- sqrt(mean((preds - actuals)^2, na.rm = TRUE))
+    
+    # 8. Return results
+    tibble(
+      Train_Years = if (!is.na(train_years$min_year)) {
+        paste(train_years$min_year, train_years$max_year, sep = "-")
+      } else {NA_character_},
+      Test_Year = test_year,
+      RMSE = rmse_val,
+      Model = "Random Forest",
+      Predictors_Used = n_predictors,
+      mtry_Used = mtry_value,
+      Year_Column_Found = ifelse(length(year_col) > 0, year_col, "Not found")
+    )
+  })
+}
+```
+
+```{r}
+rf_results <- rf_cv(cv_splits$splits, model_formula)
+print(rf_results)
+```
+
+# Random Forest on test dataset
+
+```{r}
+library(tidyverse)
+library(ranger)
+
+# Prepare training data (remove NA in target variable)
+target_var <- all.vars(model_formula)[1]
+train_processed <- train %>%
+  drop_na(all_of(target_var))
+
+# Calculate appropriate mtry
+n_predictors <- length(all.vars(model_formula)) - 1
+mtry_value <- max(1, min(floor(n_predictors / 3), n_predictors))
+
+# Train Random Forest model
+set.seed(123)
+rf_model <- ranger(
+  formula = model_formula,
+  data = train_processed,
+  num.trees = 500,
+  mtry = mtry_value,
+  importance = 'permutation',
+  seed = 123
+)
+```
+
+```{r}
+# Ensure test data has same structure as training data
+test_processed <- test %>%
+  select(any_of(names(train_processed))) %>%  # Keep only columns present in training
+  drop_na(all_of(target_var))  # Remove rows with NA in target
+```
+
+```{r}
+# Generate predictions
+test_predictions <- predict(rf_model, data = test_processed)$predictions
+
+# Create results dataframe
+test_results <- test_processed %>%
+  mutate(Predicted = test_predictions,
+         Residual = .data[[target_var]] - Predicted)
+```
+
+```{r}
+# Calculate metrics
+performance_metrics <- test_results %>%
+  summarise(
+    RMSE = sqrt(mean(Residual^2, na.rm = TRUE)),
+    MAE = mean(abs(Residual), na.rm = TRUE),
+    R2 = 1 - (sum(Residual^2) / sum((.data[[target_var]] - mean(.data[[target_var]]))^2))
+  )
+
+# Print metrics
+cat("\nTest Set Performance:\n")
+print(performance_metrics)
+
+# View predictions vs actual
+head(test_results %>% select(all_of(target_var), Predicted, Residual))
+```

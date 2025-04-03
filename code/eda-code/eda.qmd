@@ -37,6 +37,16 @@ mydata <- readRDS(data_location)
 ```
 
 
+```{r}
+# sorting the dataset by time
+mydata <- mydata %>% arrange(Year)  # sorting by year
+
+#splitting at 80% of the observations
+split_index <- floor(0.8 * nrow(mydata))
+train <- mydata[1:split_index, ]
+test <- mydata[(split_index + 1):nrow(mydata), ]
+```
+
 # Data exploration through tables
 
 Here we will present the summary stat for some of the interesting varible based on year 2010 for the OECD countries.
@@ -44,7 +54,7 @@ Here we will present the summary stat for some of the interesting varible based 
 ```{r}
 
 # Filtering data for the year 2010
-data_2010 <- mydata %>%
+data_2010 <- train %>%
   filter(Year == 2010)
 
 # Create a summary table, excluding specific rows
@@ -79,8 +89,6 @@ table_html <- country_summary_table %>%
 rds_file <- here::here("results", "tables", "health_exp_2010.rds")
 saveRDS(table_html, file = rds_file)
 
-
-
 ```
 
 # Data exploration through figures
@@ -91,18 +99,18 @@ First, we will see how "Health Expenditure as a Percentage of GDP Over Time (201
 
 ```{r}
 # Converting column to numeric before plotting
-mydata <- mydata %>%
+train <- train %>%
   mutate(Current_health_expenditure__of_GDP = as.numeric(Current_health_expenditure__of_GDP))
 
 # Filtering top 5 countries based on 2010 health expenditure
-top_5_countries <- mydata %>%
+top_5_countries <- train %>%
   filter(Year == 2010) %>%
   arrange(desc(Current_health_expenditure__of_GDP)) %>%
   slice_head(n = 5) %>%
   pull(CountryName)  # Extracting country names
 
 # Filtering data for only 5 countries over time
-data_filtered <- mydata %>%
+data_filtered <- train %>%
   filter(CountryName %in% top_5_countries)
 
 y_breaks <- seq(min(data_filtered$Current_health_expenditure__of_GDP, na.rm = TRUE), 
@@ -140,14 +148,14 @@ Now, we will try to see if there is any relation between GDP per capita (current
 ```{r}
 
 # Converting columns to numeric 
-mydata <- mydata %>%
+train <- train %>%
   mutate(
     Current_health_expenditure__of_GDP = as.numeric(Current_health_expenditure__of_GDP),
     GDP_per_capita_current_US = as.numeric(GDP_per_capita_current_US)
   )
 
 # Filtering data for the year 2010
-data_2010 <- mydata %>%
+data_2010 <- train %>%
   filter(Year == 2010)
 
 # Creating scatter plot
@@ -191,14 +199,14 @@ Now, we will try to see if there is any relation between hospital beds per 1000 
 ```{r}
 
 # Converting columns to numeric
-mydata <- mydata %>%
+train <- train %>%
   mutate(
     Current_health_expenditure__of_GDP = as.numeric(Current_health_expenditure__of_GDP),
     Hospital_beds_per_1000_people = as.numeric(Hospital_beds_per_1000_people)
   )
 
 # Filtering data for the year 2010
-data_2010 <- mydata %>%
+data_2010 <- train %>%
   filter(Year == 2010)
 
 # Creating scatter plot
@@ -241,7 +249,7 @@ Let's check if annual population growth shows any relation with current Health E
 ```{r}
 
 # Filtering data for Australia
-australia_data <- mydata %>%
+australia_data <- train %>%
   filter(CountryName == "Australia")
 
 # Histogram for Population Growth
@@ -296,7 +304,7 @@ We can not see a visible relation between these two factors.  Let's try it for F
 
 
 # Filter data for France
-france_data <- mydata %>%
+france_data <- train %>%
   filter(CountryName == "France")
 
 # Histogram for Population Growth
@@ -429,6 +437,53 @@ plot_pop_growth + plot_health_expenditure
 The results for Australia can also confirmed for France, we may be able to use Health Expenditure Per Capita (USD) as a dependent variabe in our future analysis.
 
 
+
+```{r}
+# Converting column to numeric before plotting
+train <- train %>%
+  mutate(Current_health_expenditure_per_capita_current_US = as.numeric(Current_health_expenditure_per_capita_current_US))
+
+# Filtering top 5 countries based on 2010 per capita health expenditure
+top_5_countries <- train %>%
+  filter(Year == 2010) %>%
+  arrange(desc(Current_health_expenditure_per_capita_current_US)) %>%
+  slice_head(n = 5) %>%
+  pull(CountryName)  # Extracting country names
+
+# Filtering data for only 5 countries over time
+data_filtered <- train %>%
+  filter(CountryName %in% top_5_countries)
+
+y_breaks <- seq(min(data_filtered$Current_health_expenditure_per_capita_current_US, na.rm = TRUE), 
+                max(data_filtered$Current_health_expenditure_per_capita_current_US, na.rm = TRUE), 
+                length.out = 4)  
+
+# Creating the line plot
+ggplot(data_filtered, aes(x = Year, y = Current_health_expenditure_per_capita_current_US, color = CountryName, group = CountryName)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +  
+  labs(
+    title = "Current Per Capita Health Expenditure (2010–2020): Top 5 nations",
+    x = "Year",
+    y = "Health Expenditure (% of GDP)",
+    color = "Country"
+  ) +
+  scale_y_continuous(breaks = y_breaks) +  
+  theme_minimal()  
+
+ggsave(
+  filename = here("results","figures", "per_capita_health_expenditure_plot.png"),  
+  plot = last_plot(),  # Saves the last plotted figure
+  width = 8, 
+  height = 6, 
+  dpi = 300
+)
+
+```
+
+
+
+
 # EDA (part2)
 
 This is the EDA analysis performed for part 3 of the project.
@@ -485,8 +540,6 @@ ggsave(filename = png_file2, plot = final_plot2, width = 10, height = 8, dpi = 3
 
 
 
-# Notes
 
-For your own explorations, tables and figures can be "quick and dirty". As long as you can see what's going on, there is no need to polish them. That's in contrast to figures you'll produce for your final products (paper, report, presentation, website, etc.). Those should look as nice, polished and easy to understand as possible.
 
 

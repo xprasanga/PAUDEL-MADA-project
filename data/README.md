@@ -7,5 +7,5 @@ This data is being loaded/manipulated/changed/saved with code from the `code` fo
 
 The `raw-data` folder contains the dataset originally downloaded from the World-bank website.
 
-The `processed-data` folder contains the dataset that is generated after cleaning the dataset, making it ready for eda and analysis process.
+The `processed-data` folder contains the dataset that is generated after cleaning the dataset, making it ready for eda and analysis process. It also contains the train and test dataset created by the `analysis-code.qmd` file.
 

@@ -165,7 +165,7 @@ Saving an excel file as well.
 
 ```{r}
 xl_path <- here("data", "processed-data", "processeddata.xlsx")
-writexl::write_xlsx(processeddata, xl_path)
+writexl::write_xlsx(data_collapsed, xl_path)
 ```
 
 
