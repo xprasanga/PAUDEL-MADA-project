@@ -298,6 +298,8 @@ ggsave(
 plot_pop_growth + plot_health_expenditure
 
 ```
+
+
 We can not see a visible relation between these two factors.  Let's try it for France now
 
 ```{r}
@@ -353,6 +355,8 @@ ggsave(
 # Combining both plots side by side
 plot_pop_growth + plot_health_expenditure
 ```
+
+
 We can not observe a distinct relation between the two variable, we can observe that the Health Expenditure (% of GDP) variable also show less fluctuation across the years for multiple countries. Lets see if Health Expenditure Per Capita (USD) over the Years shows any reation with annual population growth.
 
 ```{r}
@@ -396,6 +400,7 @@ ggsave(
 plot_pop_growth + plot_health_expenditure
 
 ```
+
 The Health Expenditure Per Capita (USD) varriable in fact shows more variation and also show some connections with annual population growth.
 ```{r}
 

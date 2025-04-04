@@ -192,15 +192,15 @@ Current Health Expenditure Per Capita (\$USD) = $b_0$ + $b_1$ Annual GDP growth 
 
 ## Full analysis
 
-We ran the regression based on our primary model described in the [proposed model for the research](#model) section of this article. The results obtained from the regression analysis are presented by @tbl-preliminary-regression-results.
+We ran the regression based on our primary model described in the [proposed model for the research](#model) section of this article. The results obtained from the regression analysis are presented by @tbl-primary-regression-results.
 
 
 ```{r}
-#| label: tbl-preliminary-regression-results
-#| tbl-cap: "Preliminary Regression Results"
+#| label: tbl-primary-regression-results
+#| tbl-cap: "Primary Regression Results"
 #| echo: FALSE
 #| out.width: "70%"
-knitr::include_graphics(here("results", "tables", "preliminary_regression_results.png"))
+knitr::include_graphics(here("results", "tables", "primary_regression_results.png"))
 ```
 
 The result shows that annual GDP growth of a country has statistically significant negative impact on the per capita health expenditure of the country at 1% level of significance. Specifically, one percentage oint growth in annual GDP decreases the per capita health expenditure by 117.468 US dollars. Similarly, the estimate for the control of corruption in a country has a statistically significant negative effect at 1% level of significance. Specifically, one unit increase in control increases the per capita health expenditure by 1822 US dollars. The level of unemployment among youth population out of the total labor force population had a statistically significant negative effect at 1% level of significance. To be precise, one percent increase in unemployment rate among youth decreases the per capita health expenditure by 25 US dollars. Similarly, foreign direct investment (FDI) had a positive but very low magnitude effect on the health expenditure at 1% level of significance. Life expectancy at birth had a statistically significant positive effect on the health expenditure at 1% significance level, with increase in health expectancy by one year resulting in an increase in per capita health expenditure by 208 US dollars. Factors such as income share held by the lowest 20-percent population, trade as a percentage of GDP, access to electricity among rural popuation, and age dependency ration had no statistical significant impact on the health expenditure.

@@ -23,6 +23,8 @@ library(webshot2)
 library(fixest)
 library(lubridate)
 library(Metrics)
+library(kableExtra)
+library(here)
 
 ```
 
@@ -256,13 +258,46 @@ Now that we have tested some variables in our model across different categories,
 ```{r}
 # preliminary regression model
 
+model1 <- lm(Current_health_expenditure_per_capita_current_US ~ 
+              GDP_growth_annual_ + 
+              Income_share_held_by_lowest_20 + 
+              Control_of_Corruption_Estimate + 
+              Life_expectancy_at_birth_total_years + 
+Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate + 
+              Trade__of_GDP+ Foreign_direct_investment_net_inflows_BoP_current_US+
+  Access_to_electricity_rural__of_rural_population +
+  Age_dependency_ratio__of_workingage_population +
+  Military_expenditure__of_GDP +
+  Literacy_rate_adult_total__of_people_ages_15_and_above
+  
+  , 
+            data = train)
+
+modelsummary(
+  model1,
+  output = here("results", "tables", "preliminary_regression_results.png"),
+  title = "This table represents the preliminary regresssion model",
+  stars = c('*' = 0.1, '**' = 0.05, '***' = 0.01),
+  notes = list(
+    "Standard errors are shown in parentheses.",
+    "Significance levels: * p < 0.1, ** p < 0.05, *** p < 0.01."
+  )
+)
+
+```
+
+However, due to the missing values in the independent variables the total number of observation used in the regression is too low. So, we will use such variables which are available as much as possible for all countries.
+
+```{r}
+# primary regression model
+
 model <- lm(Current_health_expenditure_per_capita_current_US ~ 
               GDP_growth_annual_ + 
               Income_share_held_by_lowest_20 + 
               Control_of_Corruption_Estimate + 
               Life_expectancy_at_birth_total_years + 
 Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate + 
-              Trade__of_GDP+ Foreign_direct_investment_net_inflows_BoP_current_US+ 
+              Trade__of_GDP+ Foreign_direct_investment_net_inflows_BoP_current_US+
   Access_to_electricity_rural__of_rural_population +
   Age_dependency_ratio__of_workingage_population
   , 
@@ -270,8 +305,8 @@ Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate +
 
 modelsummary(
   model,
-  output = here("results", "tables", "preliminary_regression_results.png"),
-  title = "This table represents the preliminary regresssion model",
+  output = here("results", "tables", "primary_regression_results.png"),
+  title = "This table represents the primary regresssion model",
   stars = c('*' = 0.1, '**' = 0.05, '***' = 0.01),
   notes = list(
     "Standard errors are shown in parentheses.",
@@ -342,20 +377,19 @@ summary(null_model)
 cat("\nNull Model RMSE:", null_rmse, "\n")
 ```
 
+ADF test (combined)
 
-
- ADF test (combined)
 ```{r}
 library(plm)
 
-# 1. Prepare panel data (handle NAs first)
+#handling NAs first
 train_clean <- na.omit(train[, c("CountryName", "Year", "Current_health_expenditure_per_capita_current_US")])
 
-# 2. Check time dimensions
+# time dimensions
 time_counts <- table(train_clean$country)
 print(time_counts)
 
-# 3. Run Fisher-type test with reduced lags
+# Fisher-type test with reduced lags
 pdata <- pdata.frame(train_clean, index = c("CountryName", "Year"))
 fisher_test <- purtest(pdata$Current_health_expenditure_per_capita_current_US,
                       test = "madwu",
@@ -363,13 +397,12 @@ fisher_test <- purtest(pdata$Current_health_expenditure_per_capita_current_US,
                       lags = 1) # Force shorter lags
 
 ```
-
+ADF test (combined) continued....
 
 ```{r}
-library(kableExtra)
-library(here)
 
-# 1. Create properly formatted results table
+
+# 1. Creating properly formatted results table
 unit_root_table <- data.frame(
   Test = "Fisher-Type Panel Unit Root Test (ADF)",
   Statistic = fisher_test$statistic$statistic,
@@ -378,29 +411,22 @@ unit_root_table <- data.frame(
   check.names = FALSE
 )
 
-# 2. Create and save HTML table
+# creating and save HTML table
 unit_root_table %>%
   kbl(format = "html", digits = 4, align = "c",
-      caption = "Panel Unit Root Test Results") %>%
+      caption = "Primary model Unit Root Test Results") %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   add_footnote("Null hypothesis: All series contain unit roots", 
               notation = "none") %>%
   save_kable(here("results", "tables", "unit_root_results.html"))
 ```
 
-
 ADF test (Individual countries)
 
 ```{r}
 library(tseries)
 
-# Option 1: Simple version with try()
-adf_results <- by(train, train$CountryName, function(x) {
-  try(adf.test(na.omit(x$Current_health_expenditure_per_capita_current_US)),
-  silent = TRUE)
-})
-
-# Option 2: More robust version with error handling
+# adf result
 adf_results <- lapply(split(train, train$CountryName), function(df) {
   if (sum(!is.na(df$Current_health_expenditure_per_capita_current_US)) >= 3) {
     tryCatch({
@@ -429,3 +455,35 @@ results_table <- do.call(rbind, lapply(names(adf_results), function(CountryName)
 print(results_table)
 ```
 
+
+
+We will also test another version of our primary model excluding life expectancy to test if the results differ.
+
+```{r}
+# primary regression model
+
+model2 <- lm(Current_health_expenditure_per_capita_current_US ~ 
+              GDP_growth_annual_ + 
+              Income_share_held_by_lowest_20 + 
+              Control_of_Corruption_Estimate + 
+Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate + 
+              Trade__of_GDP+ Foreign_direct_investment_net_inflows_BoP_current_US+
+  Access_to_electricity_rural__of_rural_population +
+  Age_dependency_ratio__of_workingage_population
+  , 
+            data = train)
+
+modelsummary(
+  model2,
+  output = here("results", "tables", "primary_regression_excl_LE.png"),
+  title = "This table represents the primary regresssion model without life expectancy",
+  stars = c('*' = 0.1, '**' = 0.05, '***' = 0.01),
+  notes = list(
+    "Standard errors are shown in parentheses.",
+    "Significance levels: * p < 0.1, ** p < 0.05, *** p < 0.01."
+  )
+)
+
+```
+
+We can observe that the estimates and standard error don't change much even after the exclusion of life expectancy at birth, so our suspicion of endogeniety might not be that serious.
