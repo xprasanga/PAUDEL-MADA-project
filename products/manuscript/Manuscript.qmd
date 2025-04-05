@@ -35,7 +35,7 @@ library(kableExtra)
 
 $*$ These authors contributed equally to this work.
 
-$\land$ Corresponding author: some\@email.com
+$\land$ Corresponding author: prasanga.paudel@email.com
 
 $\dagger$ Disclaimer: The opinions expressed in this article are the author's own and don't reflect their employer.
 
@@ -43,7 +43,7 @@ $\dagger$ Disclaimer: The opinions expressed in this article are the author's ow
 
 # Abstract
 
-The data is based on World Development Indicator from World Bank Group. This is a comprehensive database that includes information including employment, public and private expenditure in health sector, fertility, immunization, literacy, mortality, and many more.The dataset has a total of 1496 variables and across 11 years from 2010 to 2020. The actual source of data has information from 1960 to 2023 but to deal with the problem of missing values in recent years and overcomplication in analysis due to too many year data , we will focus on 10 recent years between 2010 and 2020.
+_We used Ordinary Least Squares method to analyze the factors affecting per capita health expenditure of a country among the OECD nations during 2010 to 2020. We found that corruption GDP growth, control of corruption, and  unemployment rate have a significant and an important role in determining the amount of money spent on health sector by the country. Foreign Direct Investment had a significant but low magnitude impact. Factors such as income share held by the lowest 20-percent population, trade as a percentage of GDP, access to electricity among rural popuation, and age dependency ration had no statistical significant impact on the health expenditure._
 
 {{< pagebreak >}}
 
@@ -61,7 +61,7 @@ This is a time series data based on 38 member countries from the Organisation fo
 
 ## Objective of the research
 
-The expenditure in health sector is one of the important factor that helps in determining the efficiency of health sector. We can relate the expenditure with different national development indicators and hope to find important connections between them. This will help government to make specific interventions through their policy to enhance their health sector. We can also find out how countries are currently operating and which factor has helped or negatively affected their health sector.
+The expenditure in health sector is one of the important factor that helps in determining the efficiency of health sector. We can relate the expenditure with different national development indicators and hope to find important connections between them. This will help government and international institutions to make specific interventions through their policy to enhance their health sector. We can also find out how countries are currently operating and which factor has helped or negatively affected their health sector.
 
 *The main objective of this research is to:*
 
@@ -82,7 +82,7 @@ where $e_{it}$ is the error term. $X_{itk}$ is the $k^{th}$ independent variable
 
 # Dataset
 
-The original data in it's raw form was obtained from World Bank. However, the dataset needed processing, and some modification. The final dataset that is eligible for our use contains 462 observations and 1496 variables for the OECD countries. However, we will be using 80% of the dataset for our whole analysis and we will test the robustness of the results on the un-used 20% at the end of the analysis.
+The original data (2010-2020) in it's raw form was obtained from World Bank. However, the dataset needed processing, and some modification. The final dataset that is eligible for our use contains 462 observations and 1496 variables for the OECD countries. However, we will be using 80% of the dataset for our whole analysis and we will test the robustness of the results on the un-used 20% at the end of the analysis.
 
 ## A look into the train dataset
 
