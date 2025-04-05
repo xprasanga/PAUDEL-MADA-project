@@ -47,6 +47,28 @@ train <- mydata[1:split_index, ]
 test <- mydata[(split_index + 1):nrow(mydata), ]
 ```
 
+
+But first, let's save the dataset
+
+```{r}
+# converting all columns to numeric except CountryName, CountryCode, and SeriesCode
+train <- train %>%
+  mutate(across(-c(CountryName, CountryCode, SeriesCode), as.numeric))
+
+#saving the train dataset as we will be using it in future as well
+
+saveRDS(train, file = here("data", "processed-data", "train-data.rds"))
+
+# converting all columns to numeric except CountryName, CountryCode, and SeriesCode
+test <- test %>%
+  mutate(across(-c(CountryName, CountryCode, SeriesCode), as.numeric))
+
+#saving the train dataset as we will be using it in future as well
+
+saveRDS(test, file = here("data", "processed-data", "test-data.rds"))
+```
+
+
 # Data exploration through tables
 
 Here we will present the summary stat for some of the interesting varible based on year 2010 for the OECD countries.

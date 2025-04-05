@@ -46,6 +46,8 @@ train <- readRDS(here("data", "processed-data", "train-data.rds"))
 test <- readRDS(here("data", "processed-data", "test-data.rds"))
 ```
 
+Grouping the variables.
+
 ```{r}
 
 #defining the dependent variable
@@ -132,25 +134,6 @@ print(variable_categories)
 ```
 
 Now that we have selected our variables, we will try to look at the relation between our dependent variable "Health Expenditure Per Capita \$USD" with other variables from a specific category.
-
-```{r}
-
-# converting all columns to numeric except CountryName, CountryCode, and SeriesCode
-train <- train %>%
-  mutate(across(-c(CountryName, CountryCode, SeriesCode), as.numeric))
-
-#saving the train dataset as we will be using it in future as well
-
-saveRDS(train, file = here("data", "processed-data", "train-data.rds"))
-
-# converting all columns to numeric except CountryName, CountryCode, and SeriesCode
-test <- test %>%
-  mutate(across(-c(CountryName, CountryCode, SeriesCode), as.numeric))
-
-#saving the train dataset as we will be using it in future as well
-
-saveRDS(test, file = here("data", "processed-data", "test-data.rds"))
-```
 
 ```{r}
 
@@ -397,6 +380,7 @@ fisher_test <- purtest(pdata$Current_health_expenditure_per_capita_current_US,
                       lags = 1) # Force shorter lags
 
 ```
+
 ADF test (combined) continued....
 
 ```{r}
@@ -455,12 +439,10 @@ results_table <- do.call(rbind, lapply(names(adf_results), function(CountryName)
 print(results_table)
 ```
 
-
-
 We will also test another version of our primary model excluding life expectancy to test if the results differ.
 
 ```{r}
-# primary regression model
+# primary regression model without LE
 
 model2 <- lm(Current_health_expenditure_per_capita_current_US ~ 
               GDP_growth_annual_ + 

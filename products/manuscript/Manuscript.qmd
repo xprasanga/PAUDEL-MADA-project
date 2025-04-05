@@ -244,7 +244,7 @@ We also performed the analysis on test dataset. The regression result obtained f
 knitr::include_graphics(here("results", "tables", "testresult.png"))
 ```
 
-We can observe that the variables in general show some common pattern between the two datasets. The difference is acceptable as they are based on entirely different time frames. If we observe the model performance, it is evident that the model performance is weaker than obtined in the train dataset. The RMSE has increased by 383 from 1213 to 1596, however this is still 768 lower than the NULL model. The adjusted R-squared in our test dataset has also dropped by 12.3% to 62%
+We can observe that the variables in general show some common pattern between the two datasets. The difference is acceptable as they are based on entirely different time frames. If we observe the model performance, it is evident that the model performance is weaker than obtined in the train dataset. The RMSE has increased by 383 from 1213 to 1596, however this is still 768 lower than the NULL model. The adjusted R-squared in our test dataset has also dropped by 12.3% to 62%. We also tested Random Forest model as an alternative of the OLS model, and althouth Random Forest showed promising results in our train dataset, the results were worse than OLS model for the test dataset.
 
 {{< pagebreak >}}
 

@@ -5,7 +5,7 @@ editor: visual
 ---
 
 ```{r}
-# Load required packages
+# Loading required packages
 library(purrr)    # For map_df()
 library(dplyr)    # For data manipulation
 library(timetk)   # For time_series_cv()
@@ -24,10 +24,10 @@ train <- readRDS(here("data", "processed-data", "train-data.rds"))
 test <- readRDS(here("data", "processed-data", "test-data.rds"))
 ```
 
-testing the results
+Here, we will be testing the regression model on out test data
 
 ```{r}
-# preliminary regression model
+# primary regression model on test data
 
 model <- lm(Current_health_expenditure_per_capita_current_US ~ 
               GDP_growth_annual_ + 
@@ -54,12 +54,16 @@ modelsummary(
 
 ```
 
+The results from our test dataset is show moderate performance of our model. Check the manuscript for more details on the comparision between train and test results.
+
 # cross validation
+
+Here, we will use cross validation to test the robustness of our model. We will have 5 year initial window and 1 year test window.
 
 ```{r}
 
 
-# 1. Define your model formula (as you originally specified)
+# defining the model  
 model_formula <- Current_health_expenditure_per_capita_current_US ~ 
   GDP_growth_annual_ + 
   Income_share_held_by_lowest_20 + 
@@ -71,7 +75,7 @@ model_formula <- Current_health_expenditure_per_capita_current_US ~
   Access_to_electricity_rural__of_rural_population +
   Age_dependency_ratio__of_workingage_population
 
-# 2. Create time-series CV splits
+#creating time-series CV splits
 cv_splits <- time_series_cv(
   data = train,
   date_var = Year,
@@ -86,24 +90,23 @@ cv_splits <- time_series_cv(
 
 set.seed(123)
 
-
 cv <- function(splits, model_formula) {
   map_df(splits, function(split) {
     train_cv <- analysis(split)
     test_cv <- assessment(split)
     
-    # Train model
+    #training model
     model <- lm(model_formula, data = train_cv)
     
-    # Get predictions and actuals
+    # Getting predictions and actuals
     preds <- predict(model, newdata = test_cv)
     actuals <- test_cv$Current_health_expenditure_per_capita_current_US
     
-    # Convert to numeric safely
+    #converting to numeric 
     preds_num <- suppressWarnings(as.numeric(preds))
     actuals_num <- suppressWarnings(as.numeric(actuals))
     
-    # Calculate RMSE with error handling
+    #calculating RMSE
     if(length(preds_num) == 0 || length(actuals_num) == 0) {
       rmse_val <- NA_real_
       status <- "Empty predictions/actuals"
@@ -125,13 +128,13 @@ cv <- function(splits, model_formula) {
   })
 }
 
-# Run the analysis
+#saving the results
 results <- cv(cv_splits$splits, model_formula)
 print(results)
 ```
 
 ```{r}
-# View summary of CV results
+#view summary of CV results
 cv_summary <- results %>%
   summarise(
     Mean_RMSE = mean(RMSE, na.rm = TRUE),
@@ -141,6 +144,10 @@ cv_summary <- results %>%
 print(cv_summary)
 ```
 
+The mean RMSE is 1151 which is simillar to the RMSE found in the original result (RMSE=1213). Therefore CV estimates show that our result is quite robust with very low Standard Deviation of 74.8
+
+We will also test if there is any other model that performs better than OLS regression. We will use Random Forest model.
+
 # Random Forest
 
 ```{r}
@@ -149,13 +156,13 @@ rf_cv <- function(splits, model_formula) {
     train_cv <- analysis(split)
     test_cv <- assessment(split)
     
-    # 1. Get target variable from formula
+    # setting the target variables
     target_var <- all.vars(model_formula)[1]
     
-    # 2. Check if Year column exists (case-insensitive)
+    # checking if Year column exists
     year_col <- grep("^year$", names(train_cv), ignore.case = TRUE, value = TRUE)
     
-    # 3. Select required variables (including Year if it exists)
+    #selecting required variables
     required_vars <- unique(c(all.vars(model_formula), year_col))
     train_cv <- train_cv %>% 
       select(any_of(required_vars)) %>% 
@@ -165,7 +172,7 @@ rf_cv <- function(splits, model_formula) {
       select(any_of(required_vars)) %>% 
       drop_na(all_of(target_var))
     
-    # 4. Get year information
+    # getting years
     get_years <- function(df) {
       if (length(year_col) > 0) {
         list(
@@ -180,11 +187,11 @@ rf_cv <- function(splits, model_formula) {
     train_years <- get_years(train_cv)
     test_year <- get_years(test_cv)$max_year
     
-    # 5. Calculate mtry
+    #calculate mtry
     n_predictors <- length(setdiff(required_vars, c(target_var, year_col)))
     mtry_value <- max(1, min(floor(n_predictors / 3), n_predictors))
     
-    # 6. Train model
+    #train model
     set.seed(123)
     rf_model <- ranger(
       formula = model_formula,
@@ -195,12 +202,12 @@ rf_cv <- function(splits, model_formula) {
       seed = 123
     )
     
-    # 7. Calculate RMSE
+    #calculate RMSE
     preds <- predict(rf_model, data = test_cv)$predictions
     actuals <- pull(test_cv, target_var)
     rmse_val <- sqrt(mean((preds - actuals)^2, na.rm = TRUE))
     
-    # 8. Return results
+    #return results
     tibble(
       Train_Years = if (!is.na(train_years$min_year)) {
         paste(train_years$min_year, train_years$max_year, sep = "-")
@@ -221,22 +228,24 @@ rf_results <- rf_cv(cv_splits$splits, model_formula)
 print(rf_results)
 ```
 
+The results of Random Forest are also quite good. They show very low RMSE compared to the OLS Moldel.
+
 # Random Forest on test dataset
 
 ```{r}
 library(tidyverse)
 library(ranger)
 
-# Prepare training data (remove NA in target variable)
+#preparing training data
 target_var <- all.vars(model_formula)[1]
 train_processed <- train %>%
   drop_na(all_of(target_var))
 
-# Calculate appropriate mtry
+#calculate appropriate mtry
 n_predictors <- length(all.vars(model_formula)) - 1
 mtry_value <- max(1, min(floor(n_predictors / 3), n_predictors))
 
-# Train Random Forest model
+#training Random Forest model
 set.seed(123)
 rf_model <- ranger(
   formula = model_formula,
@@ -249,24 +258,24 @@ rf_model <- ranger(
 ```
 
 ```{r}
-# Ensure test data has same structure as training data
+#processing test data
 test_processed <- test %>%
-  select(any_of(names(train_processed))) %>%  # Keep only columns present in training
-  drop_na(all_of(target_var))  # Remove rows with NA in target
+  select(any_of(names(train_processed))) %>%  # keeping only columns present in training
+  drop_na(all_of(target_var))  # Removing rows with NA in target
 ```
 
 ```{r}
-# Generate predictions
+# Generating predictions
 test_predictions <- predict(rf_model, data = test_processed)$predictions
 
-# Create results dataframe
+#creating results dataframe
 test_results <- test_processed %>%
   mutate(Predicted = test_predictions,
          Residual = .data[[target_var]] - Predicted)
 ```
 
 ```{r}
-# Calculate metrics
+#calculating metrics
 performance_metrics <- test_results %>%
   summarise(
     RMSE = sqrt(mean(Residual^2, na.rm = TRUE)),
@@ -274,10 +283,15 @@ performance_metrics <- test_results %>%
     R2 = 1 - (sum(Residual^2) / sum((.data[[target_var]] - mean(.data[[target_var]]))^2))
   )
 
-# Print metrics
+# printing metrics
 cat("\nTest Set Performance:\n")
 print(performance_metrics)
 
-# View predictions vs actual
+```
+
+However, the results from test dataset are not promising for our Random Forest model. So, we will stick with our OLS model.
+
+```{r}
+#viewing the predictions vs actuals
 head(test_results %>% select(all_of(target_var), Predicted, Residual))
 ```
