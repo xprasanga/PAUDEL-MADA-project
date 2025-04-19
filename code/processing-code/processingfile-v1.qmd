@@ -5,6 +5,8 @@ date: "2024-02-17"
 output: html_document
 ---
 
+Please see the readme file before running the codes.
+
 
 ```{r}
 #loading the necessary packages
@@ -93,6 +95,10 @@ data_long <- data_long %>%
 ```
 
 Here, we will transform the variables as column names with appropriates values assigned to them correctly.
+
+CAUTION: This chunck might take a long time to process. Please wait pariently for few minutes (2-5 minutes if your PC has 16gb RAM) until the code processes itself.
+
+
 ```{r}
 # Spread the SeriesName into separate columns
 data_final <- data_long %>%
@@ -119,6 +125,7 @@ print(original_value)
 ```
 This provides the value for Primary education, teachers for Hungary based on original dataset.
 
+CAUTION: This chunck might also consume a good amoung of your PC's memory, expect upto 1-2 minutes for the code to process.
 
 ```{r}
 # Convert Year to numeric
@@ -140,6 +147,9 @@ Since they are equal, we have verified that our transformation was accurate.
 ## Creating a more compact dataset 
 
 As the dataset has 10 years information for each country and currently this structure has resulted in creation of 641,817 observations, we will try to make it more compact and less complex.
+
+
+CAUTION: This chunk could also take upto 1-2 minutes to process.
 
 ```{r}
 data_collapsed <- data_final %>%

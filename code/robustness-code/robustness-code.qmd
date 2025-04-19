@@ -4,6 +4,8 @@ format: html
 editor: visual
 ---
 
+NOTE: Not all codes may produce an output, you can find those outputs saved in the respective folder location.
+
 ```{r}
 # Loading required packages
 library(purrr)    # For map_df()
@@ -14,8 +16,11 @@ library(here)
 library(modelsummary)
 library(tidyr)
 library(ranger) 
+library(knitr)
+library(kableExtra)
 
 ```
+# Importing dataset
 
 Importing train/test dataset.
 
@@ -23,6 +28,9 @@ Importing train/test dataset.
 train <- readRDS(here("data", "processed-data", "train-data.rds"))
 test <- readRDS(here("data", "processed-data", "test-data.rds"))
 ```
+
+
+# OLS regression on dataset
 
 Here, we will be testing the regression model on out test data
 
@@ -56,7 +64,7 @@ modelsummary(
 
 The results from our test dataset is show moderate performance of our model. Check the manuscript for more details on the comparision between train and test results.
 
-# cross validation
+# cross validation of OLS model
 
 Here, we will use cross validation to test the robustness of our model. We will have 5 year initial window and 1 year test window.
 
@@ -131,7 +139,16 @@ cv <- function(splits, model_formula) {
 #saving the results
 results <- cv(cv_splits$splits, model_formula)
 print(results)
+
+#saving the results
+#saving the table
+cv_results <- kable(results, format = "html", digits = 3) %>%
+kable_styling()
+save_kable(cv_results, file = here("results", "tables","OLS-CV-results-full.html"))
 ```
+
+
+Now we will see the summary of the CV results
 
 ```{r}
 #view summary of CV results
@@ -142,6 +159,11 @@ cv_summary <- results %>%
   )
 
 print(cv_summary)
+
+#saving the table
+cv_summary_kable <- kable(cv_summary, format = "html", digits = 3) %>%
+kable_styling()
+save_kable(cv_summary_kable, file = here("results", "tables","OLS-CV-results.html"))
 ```
 
 The mean RMSE is 1151 which is simillar to the RMSE found in the original result (RMSE=1213). Therefore CV estimates show that our result is quite robust with very low Standard Deviation of 74.8
@@ -150,8 +172,97 @@ We will also test if there is any other model that performs better than OLS regr
 
 # Random Forest
 
+## Random Forest using train dataset
+
 ```{r}
-rf_cv <- function(splits, model_formula) {
+
+target_var <- all.vars(model_formula)[1]
+train_processed <- train %>%
+  drop_na(all_of(target_var))
+
+#calculate appropriate mtry
+n_predictors <- length(all.vars(model_formula)) - 1
+mtry_value <- max(1, min(floor(n_predictors / 3), n_predictors))
+
+
+# Train Random Forest on full training dataset
+set.seed(123)
+rf_full_model <- ranger(
+  formula = model_formula,
+  data = train_processed,
+  num.trees = 500,
+  mtry = mtry_value,
+  importance = 'permutation',
+  seed = 123
+)
+
+# Extract variable importance
+importance_df <- data.frame(
+  Variable = names(rf_full_model$variable.importance),
+  Importance = rf_full_model$variable.importance
+) %>% 
+  arrange(desc(Importance))
+
+# Create importance plot
+library(ggplot2)
+importance_plot <- ggplot(importance_df, aes(x = reorder(Variable, Importance), 
+                         y = Importance)) +  # Fixed this line - removed extra parenthesis
+  geom_col(fill = "steelblue") +  # Simplified this line
+  coord_flip() +
+  labs(title = "Random Forest Variable Importance",
+       x = "Predictor Variables",
+       y = "Importance (Permutation)") +
+  theme_minimal()
+
+# Save the plot
+ggsave(here("results", "figures", "rf_importance_plot.png"), 
+       plot = importance_plot,
+       width = 8, height = 6, dpi = 300)
+```
+
+Here we will calcualte the performance metrics of our RF model.
+
+```{r}
+train_predictions <- predict(rf_full_model, data = train_processed)$predictions
+
+# Calculate performance metrics
+train_performance <- train_processed %>%
+  mutate(Predicted = train_predictions) %>%
+  summarise(
+    RMSE = sqrt(mean((.data[[target_var]] - Predicted)^2)),
+    MAE = mean(abs(.data[[target_var]] - Predicted)),
+    R2 = cor(.data[[target_var]], Predicted)^2
+  ) %>%
+  mutate(across(everything(), ~round(., 3)))  # Round all metrics to 3 decimal places
+
+# Display the performance metrics
+print(train_performance)
+
+```
+
+Saving the table
+
+```{r}
+library(kableExtra)
+ train_table <- train_performance %>%
+  pivot_longer(everything(), names_to = "Metric", values_to = "Value") %>%
+  mutate(Metric = case_when(
+    Metric == "RMSE" ~ "Root Mean Squared Error",
+    Metric == "MAE" ~ "Mean Absolute Error",
+    Metric == "R2" ~ "R-squared",
+    TRUE ~ Metric
+  )) %>%
+  kable(format = "html", align = c("l", "r")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+kableExtra::save_kable(train_table, 
+                       file = here("results", "tables", "rf_train_performance.html"))
+```
+
+## Random Forest with CV on train dataset
+
+```{r}
+rf_cv <- function(splits, model_formula, include_importance = TRUE) {
   map_df(splits, function(split) {
     train_cv <- analysis(split)
     test_cv <- assessment(split)
@@ -230,6 +341,57 @@ print(rf_results)
 
 The results of Random Forest are also quite good. They show very low RMSE compared to the OLS Moldel.
 
+Saving the RF results
+
+```{r}
+# Select only the desired columns
+rf_results_table <- rf_results %>%
+  select(Train_Years, Test_Year, RMSE, Predictors_Used, mtry_Used)
+
+# Create and save the HTML table
+rf_results_html <- kable(rf_results_table, 
+                         format = "html",
+                         digits = 2,
+                         caption = "") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE,
+                position = "left") %>%
+  add_header_above(c("Training Period" = 1, "Test Year" = 1, 
+                     "Performance" = 1, "Model Parameters" = 2))
+
+# Save the table
+save_kable(rf_results_html, 
+           file = here("results", "tables", "rf_cv_results.html"))
+```
+
+Now we will calculate the summary of the above results.
+
+
+
+```{r}
+
+# Create summary table first
+rf_summary_table <- rf_results %>%
+  summarise(
+    `Mean RMSE` = mean(RMSE, na.rm = TRUE),
+    `SD RMSE` = sd(RMSE, na.rm = TRUE),
+    `Min RMSE` = min(RMSE, na.rm = TRUE),
+    `Max RMSE` = max(RMSE, na.rm = TRUE)
+  ) %>%
+  mutate(across(everything(), ~round(., 3)))  # Round all values
+
+# Then create and save HTML table
+rf_summary_html <- kable(rf_summary_table, 
+                         format = "html",
+                         caption = "") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE,
+                position = "center") %>%
+  row_spec(0, bold = TRUE)
+
+save_kable(rf_summary_html, file = here("results", "tables", "rf_cv_summary.html"))
+```
+
 # Random Forest on test dataset
 
 ```{r}
@@ -275,23 +437,153 @@ test_results <- test_processed %>%
 ```
 
 ```{r}
-#calculating metrics
-performance_metrics <- test_results %>%
-  summarise(
-    RMSE = sqrt(mean(Residual^2, na.rm = TRUE)),
-    MAE = mean(abs(Residual), na.rm = TRUE),
-    R2 = 1 - (sum(Residual^2) / sum((.data[[target_var]] - mean(.data[[target_var]]))^2))
-  )
+# Calculate metrics manually
+performance_metrics <- data.frame(
+  RMSE = sqrt(mean(test_results$Residual^2)),
+  MAE = mean(abs(test_results$Residual)),
+  R2 = cor(test_results[[target_var]], test_results$Predicted)^2
+)
 
-# printing metrics
-cat("\nTest Set Performance:\n")
 print(performance_metrics)
+```
+
+```{r}
+
+# Format the performance metrics into a clean table
+performance_table <- performance_metrics %>%
+  pivot_longer(cols = everything(), 
+               names_to = "Metric", 
+               values_to = "Value") %>%
+  mutate(Metric = case_when(
+    Metric == "RMSE" ~ "Root Mean Squared Error",
+    Metric == "MAE" ~ "Mean Absolute Error",
+    Metric == "R2" ~ "R-squared",
+    TRUE ~ Metric
+  ),
+  Value = round(Value, 3))  # Round to 3 decimal places
+
+# Create and save the HTML table
+performance_html <- kable(performance_table, 
+                         format = "html",
+                         col.names = c("Performance Metric", "Value"),
+                         align = c("l", "r"),
+                         caption = "") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE,
+                position = "center") %>%
+  row_spec(0, bold = TRUE, background = "#f8f9fa") %>%
+  column_spec(2, width = "5cm")
+
+# Save the table
+save_kable(performance_html, 
+           file = here("results", "tables", "rf_test_performance.html"))
 
 ```
 
 However, the results from test dataset are not promising for our Random Forest model. So, we will stick with our OLS model.
 
+# Visualizing the models train dataset
+
 ```{r}
-#viewing the predictions vs actuals
-head(test_results %>% select(all_of(target_var), Predicted, Residual))
+# For Random Forest model 
+rf_train_predictions <- predict(rf_full_model, data = train_processed)$predictions
+
+# For OLS model 
+ols_model <- lm(model_formula, data = train_processed)
+ols_train_predictions <- predict(ols_model, newdata = train_processed)
+
+#creating combined data frame for plotting
+plot_data <- train_processed %>%
+  mutate(
+    RF_Predicted = rf_train_predictions,
+    OLS_Predicted = ols_train_predictions,
+    Observed = .data[[target_var]]
+  )
+
+#creating the comparison plot
+library(ggplot2)
+pred_vs_obs_plot <- ggplot(plot_data, aes(x = Observed)) +
+  geom_point(aes(y = RF_Predicted, color = "Random Forest"), alpha = 0.6) +
+  geom_point(aes(y = OLS_Predicted, color = "OLS Regression"), alpha = 0.6) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black") +
+  labs(
+    title = "Predicted vs Observed Values (Training Data)",
+    x = "Observed Health Expenditure per Capita (US$)",
+    y = "Predicted Health Expenditure per Capita (US$)",
+    color = "Model Type"
+  ) +
+  scale_color_manual(values = c("Random Forest" = "#1f77b4", 
+                               "OLS Regression" = "#ff7f0e")) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+#saing the plot
+ggsave(here("results", "figures", "pred_vs_obs_train.png"),
+       plot = pred_vs_obs_plot,
+       width = 8, height = 6, dpi = 300)
+
+# Display  plot
+print(pred_vs_obs_plot)
+```
+
+
+# Visualizing the models test dataset
+
+```{r}
+#generating predictions for test data as we did for train data
+
+# Random Forest predictions 
+rf_test_predictions <- predict(rf_model, data = test_processed)$predictions
+
+# OLS predictions on test data
+ols_test_predictions <- predict(model, newdata = test_processed)  #
+
+# combined data frame for plotting
+test_plot_data <- test_processed %>%
+  mutate(
+    RF_Predicted = rf_test_predictions,
+    OLS_Predicted = ols_test_predictions,
+    Observed = .data[[target_var]]
+  )
+
+# comparison plot
+test_pred_vs_obs_plot <- ggplot(test_plot_data, aes(x = Observed)) +
+  geom_point(aes(y = RF_Predicted, color = "Random Forest"), alpha = 0.6, size = 2) +
+  geom_point(aes(y = OLS_Predicted, color = "OLS Regression"), alpha = 0.6, size = 2) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black") +
+  labs(
+    title = "Predicted vs Observed Values (Test Data)",
+    x = "Observed Health Expenditure per Capita (US$)",
+    y = "Predicted Health Expenditure per Capita (US$)",
+    color = "Model Type"
+  ) +
+  scale_color_manual(values = c("Random Forest" = "#E69F00",  
+                               "OLS Regression" = "#56B4E9")) +  
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5)) +  # Center title
+  coord_equal()  # Equal axis scaling for proper 45° line
+
+#adding performance metrics to plot
+test_performance <- test_plot_data %>%
+  summarise(
+    RF_RMSE = sqrt(mean((Observed - RF_Predicted)^2)),
+    OLS_RMSE = sqrt(mean((Observed - OLS_Predicted)^2))
+  )
+
+test_pred_vs_obs_plot <- test_pred_vs_obs_plot +
+  annotate("text", x = min(test_plot_data$Observed), 
+           y = max(c(test_plot_data$RF_Predicted, test_plot_data$OLS_Predicted)),
+           hjust = 0, vjust = 1,
+           label = sprintf("RMSE:\nRandom Forest: %.1f\nOLS: %.1f",
+                          test_performance$RF_RMSE, 
+                          test_performance$OLS_RMSE))
+
+#saving the plot
+ggsave(here("results", "figures", "pred_vs_obs_test.png"),
+       plot = test_pred_vs_obs_plot,
+       width = 8, height = 6, dpi = 300)
+
+#show the plot
+print(test_pred_vs_obs_plot)
 ```

@@ -11,7 +11,6 @@ We will load the necessary libraries.
 library(dplyr)
 library(tidyr)
 library(broom)      
-library(kableExtra) 
 library(webshot)
 library(magick)
 library(here)
@@ -27,6 +26,9 @@ library(kableExtra)
 library(here)
 
 ```
+
+
+# Importing datasets
 
 Then we will import the dataset
 
@@ -46,7 +48,8 @@ train <- readRDS(here("data", "processed-data", "train-data.rds"))
 test <- readRDS(here("data", "processed-data", "test-data.rds"))
 ```
 
-Grouping the variables.
+
+# Grouping the variables.
 
 ```{r}
 
@@ -134,6 +137,10 @@ print(variable_categories)
 ```
 
 Now that we have selected our variables, we will try to look at the relation between our dependent variable "Health Expenditure Per Capita \$USD" with other variables from a specific category.
+
+
+# Preliminary Regression
+
 
 ```{r}
 
@@ -231,12 +238,15 @@ Now, we will save our regression result is a HTML table so that we can use to pr
 
 ```{r}
 # Save the table as a HTML file
-html_file <- here("results", "tables", "regression_results.html")
+html_file <- here("products", "supplementary-files", "regression_results.html")
 save_kable(table_html, file = html_file)
 
 ```
 
 Now that we have tested some variables in our model across different categories, we will pick the most useful variable and add them into our preliminary model. We will also add other variable that were not present in the above table. Variable selection is a continuous process and the variables selected in the preliminary model may also be dropped later to make space for new variables that may appear as important.
+
+
+# Suggested Model
 
 ```{r}
 # preliminary regression model
@@ -270,6 +280,10 @@ modelsummary(
 ```
 
 However, due to the missing values in the independent variables the total number of observation used in the regression is too low. So, we will use such variables which are available as much as possible for all countries.
+
+
+# Primary regression model 
+
 
 ```{r}
 # primary regression model
@@ -342,6 +356,8 @@ Fortunately, the Durbin-Watson test is insignificant, and our model does not sho
 
 We can therefore move forward with this model.
 
+# Null Model
+
 Calculating the RMSE of a NULL Model.
 
 ```{r}
@@ -359,6 +375,8 @@ null_rmse <- sqrt(mean(residuals^2))
 summary(null_model)
 cat("\nNull Model RMSE:", null_rmse, "\n")
 ```
+
+# ADF test
 
 ADF test (combined)
 
@@ -398,9 +416,9 @@ unit_root_table <- data.frame(
 # creating and save HTML table
 unit_root_table %>%
   kbl(format = "html", digits = 4, align = "c",
-      caption = "Primary model Unit Root Test Results") %>%
+      caption = "") %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  add_footnote("Null hypothesis: All series contain unit roots", 
+  add_footnote("", 
               notation = "none") %>%
   save_kable(here("results", "tables", "unit_root_results.html"))
 ```
@@ -440,6 +458,9 @@ print(results_table)
 ```
 
 We will also test another version of our primary model excluding life expectancy to test if the results differ.
+
+
+# Regression model without Life Expectancy
 
 ```{r}
 # primary regression model without LE

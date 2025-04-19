@@ -7,3 +7,6 @@ The analysis code from this folder depends on the processed data generated from 
 The `eda.html` file contains the output generated from the `eda.qmq` code in a html format.
 
 The`eda_files` folder contains supplementary files that are auto-genarated, just ignore  it.
+
+
+The `eda.qmd` also creates two datasets `train-data` and `test-data` that will be used in `statistical-analysis.qmd` 

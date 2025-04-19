@@ -22,6 +22,10 @@ library(htmltools)
 library(magrittr)
 library(webshot2)
 library(patchwork)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(patchwork)
 ```
 
 
@@ -79,7 +83,7 @@ Here we will present the summary stat for some of the interesting varible based 
 data_2010 <- train %>%
   filter(Year == 2010)
 
-# Create a summary table, excluding specific rows
+# creating a summary table, excluding specific rows
 country_summary_table <- data_2010 %>%
   filter(!CountryName %in% c("Data from database: World Development Indicators", "OECD members",        "Last Updated: 01/28/2025")) %>%
   select(
@@ -99,7 +103,7 @@ country_summary_table <- data_2010 %>%
 
 
 
-# Generate the HTML table
+# generate the HTML table
 table_html <- country_summary_table %>%
   kable("html", escape = FALSE, digits = 2) %>%
   kable_styling(full_width = FALSE, position = "left") %>%
@@ -107,7 +111,7 @@ table_html <- country_summary_table %>%
   add_header_above(c(" " = 1, "National Development Indicators" = 11)) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
-# Save the table object as an RDS file
+# saving the table object as an RDS file
 rds_file <- here::here("results", "tables", "health_exp_2010.rds")
 saveRDS(table_html, file = rds_file)
 
@@ -140,7 +144,7 @@ y_breaks <- seq(min(data_filtered$Current_health_expenditure__of_GDP, na.rm = TR
                 length.out = 4)  
 
 # Creating the line plot
-ggplot(data_filtered, aes(x = Year, y = Current_health_expenditure__of_GDP, color = CountryName, group = CountryName)) +
+p1<- ggplot(data_filtered, aes(x = Year, y = Current_health_expenditure__of_GDP, color = CountryName, group = CountryName)) +
   geom_line(size = 1) +
   geom_point(size = 2) +  
   labs(
@@ -424,6 +428,7 @@ plot_pop_growth + plot_health_expenditure
 ```
 
 The Health Expenditure Per Capita (USD) varriable in fact shows more variation and also show some connections with annual population growth.
+
 ```{r}
 
 # Histogram for Population Growth
@@ -486,13 +491,13 @@ y_breaks <- seq(min(data_filtered$Current_health_expenditure_per_capita_current_
                 length.out = 4)  
 
 # Creating the line plot
-ggplot(data_filtered, aes(x = Year, y = Current_health_expenditure_per_capita_current_US, color = CountryName, group = CountryName)) +
+p2<- ggplot(data_filtered, aes(x = Year, y = Current_health_expenditure_per_capita_current_US, color = CountryName, group = CountryName)) +
   geom_line(size = 1) +
   geom_point(size = 2) +  
   labs(
     title = "Current Per Capita Health Expenditure (2010–2020): Top 5 nations",
     x = "Year",
-    y = "Health Expenditure (% of GDP)",
+    y = "Per capita Health Expenditure (USD)",
     color = "Country"
   ) +
   scale_y_continuous(breaks = y_breaks) +  
@@ -509,6 +514,23 @@ ggsave(
 ```
 
 
+saving the health expenditure plot
+
+```{r}
+combined_plot <- p1 / p2 + 
+plot_layout(widths = c(1, 1)) +  # Equal width for both plots
+plot_annotation(tag_levels = 'A')
+
+ggsave(
+  filename = here("results", "figures", "combined_health_expenditure_plots.png"),
+  plot = combined_plot,
+  width = 10,  #  width as needed
+  height = 8,  #  height as needed
+  dpi = 300
+)
+```
+
+
 
 
 # EDA (part2)
@@ -517,7 +539,7 @@ This is the EDA analysis performed for part 3 of the project.
 
 
 ```{r}
-# Define dataset
+# defining dataset
 
 df <- data_2010
 
@@ -548,22 +570,129 @@ plot2 <- create_corr_plot("Income_share_held_by_lowest_20", df, "blue")
 plot3 <- create_corr_plot("Control_of_Corruption_Estimate", df, "blue")
 plot4 <- create_corr_plot("Life_expectancy_at_birth_total_years", df, "blue")
 
-# Arrange plots in a 2x2 grid
+# arranging plots in a 2x2 grid
 final_plot1 <- (plot1 + plot2) / (plot3 + plot4)
 png_file1 <- here("results", "figures", "correlation_plot1.png")
 ggsave(filename = png_file1, plot = final_plot1, width = 10, height = 8, dpi = 300)
 
-# Generate individual plots with different colors
+# generating individual plots with different colors
 plot5 <- create_corr_plot("Literacy_rate_adult_total__of_people_ages_15_and_above", df, "green")
 plot6 <- create_corr_plot("Trade__of_GDP", df, "green")
 plot7 <- create_corr_plot("Foreign_direct_investment_net_inflows_BoP_current_US", df, "green")
 plot8 <- create_corr_plot("Age_dependency_ratio__of_workingage_population", df, "green")
 
-# Arrange plots in a 2x2 grid
+# arranging plots in a 2x2 grid
 final_plot2 <- (plot5 + plot6) / (plot7 + plot8)
 png_file2 <- here("results", "figures", "correlation_plot2.png")
 ggsave(filename = png_file2, plot = final_plot2, width = 10, height = 8, dpi = 300)
 ```
+
+
+# EDA (part 3)
+
+## Figures for manuscript
+
+```{r}
+
+
+#cleaning and preparing the data
+trend_data <- train %>%
+  # Remove non-country rows
+  filter(!CountryName %in% c(
+    "Data from database: World Development Indicators",
+    "OECD members",
+    "Last Updated: 01/28/2025")) %>%
+  
+  # renaming columns
+  select(
+    year = Year,
+    country = CountryName,
+    gdp = GDP_current_US,
+    population = Population_total,
+    life_exp = Life_expectancy_at_birth_total_years,
+    physicians = Physicians_per_1000_people,
+    hospital_beds = Hospital_beds_per_1000_people,
+    gov_effectiveness = Government_Effectiveness_Estimate,
+    corruption = Control_of_Corruption_Estimate,
+    rule_of_law = Rule_of_Law_Estimate,
+    electricity = Access_to_electricity__of_population,
+    unemployment = Unemployment_total__of_total_labor_force_modeled_ILO_estimate,
+    poverty = Poverty_headcount_ratio_at_national_poverty_lines__of_population
+  ) %>%
+  
+  #converting to long format
+  pivot_longer(
+    cols = -c(year, country),
+    names_to = "indicator",
+    values_to = "value"
+  ) %>%
+  
+  #calculating yearly averages
+  group_by(year, indicator) %>%
+  summarise(avg_value = mean(value, na.rm = TRUE)) %>%
+  ungroup()
+
+#making a reusable plotting function
+create_trend_plot <- function(data, indicator_name, plot_title, y_label, color) {
+  data %>%
+    filter(indicator == indicator_name) %>%
+    ggplot(aes(x = year, y = avg_value)) +
+    geom_line(color = color, linewidth = 1) +
+    geom_point(color = color, size = 2) +
+    labs(title = plot_title, y = y_label, x = NULL) +
+    theme_minimal(base_size = 12) +
+    theme(plot.title = element_text(size = 11))
+}
+
+
+#now defining colors for consistency
+plot_colors <- c(
+  "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728",
+  "#9467bd", "#8c564b", "#e377c2", "#7f7f7f",
+  "#bcbd22", "#17becf", "#393b79"
+)
+
+#generating the plots
+plots <- list(
+  gdp = create_trend_plot(trend_data, "gdp", "GDP (current US$)", "USD", plot_colors[1]),
+  population = create_trend_plot(trend_data, "population", "Total Population", "Count", plot_colors[2]),
+  life_exp = create_trend_plot(trend_data, "life_exp", "Life Expectancy", "Years", plot_colors[3]),
+  physicians = create_trend_plot(trend_data, "physicians", "Physicians per 1000", "Count", plot_colors[4]),
+  hospital_beds = create_trend_plot(trend_data, "hospital_beds", "Hospital Beds per 1000", "Count", plot_colors[5]),
+  gov_effectiveness = create_trend_plot(trend_data, "gov_effectiveness", "Government Effectiveness", "Score", plot_colors[6]),
+  corruption = create_trend_plot(trend_data, "corruption", "Control of Corruption", "Score", plot_colors[7]),
+  rule_of_law = create_trend_plot(trend_data, "rule_of_law", "Rule of Law", "Score", plot_colors[8]),
+  electricity = create_trend_plot(trend_data, "electricity", "Rural Electricity Access", " Percentage", plot_colors[9]),
+  unemployment = create_trend_plot(trend_data, "unemployment", "Unemployment Rate", "% Labor Force", plot_colors[10]),
+  poverty = create_trend_plot(trend_data, "poverty", "Poverty Headcount", "% of Population", plot_colors[11])
+)
+
+#combining plots ----
+#create a 3-column layout 
+combined_plot <- wrap_plots(plots, ncol = 3) +
+  plot_annotation(
+    title = "Trends in Key Development Indicators",
+    subtitle = "Country averages across time",
+    caption = "Source: World Development Indicators",
+    theme = theme(
+      plot.title = element_text(size = 16, face = "bold"),
+      plot.subtitle = element_text(size = 12)
+    )
+  )
+
+
+#saving the plot
+ggsave(
+  filename = here::here("results", "figures", "development_indicators_trends.png"),
+  plot = combined_plot,
+  width = 16,
+  height = 14,
+  dpi = 300
+)
+
+```
+
+
 
 
 
