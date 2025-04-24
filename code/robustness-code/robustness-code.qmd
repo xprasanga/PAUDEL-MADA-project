@@ -20,6 +20,7 @@ library(knitr)
 library(kableExtra)
 
 ```
+
 # Importing dataset
 
 Importing train/test dataset.
@@ -28,7 +29,6 @@ Importing train/test dataset.
 train <- readRDS(here("data", "processed-data", "train-data.rds"))
 test <- readRDS(here("data", "processed-data", "test-data.rds"))
 ```
-
 
 # OLS regression on dataset
 
@@ -146,7 +146,6 @@ cv_results <- kable(results, format = "html", digits = 3) %>%
 kable_styling()
 save_kable(cv_results, file = here("results", "tables","OLS-CV-results-full.html"))
 ```
-
 
 Now we will see the summary of the CV results
 
@@ -366,8 +365,6 @@ save_kable(rf_results_html,
 
 Now we will calculate the summary of the above results.
 
-
-
 ```{r}
 
 # Create summary table first
@@ -525,7 +522,6 @@ ggsave(here("results", "figures", "pred_vs_obs_train.png"),
 # Display  plot
 print(pred_vs_obs_plot)
 ```
-
 
 # Visualizing the models test dataset
 
