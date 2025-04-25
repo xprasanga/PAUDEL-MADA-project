@@ -1,0 +1,182 @@
+---
+title: Project Review
+author: Annalise Cramer
+date: 4/25/25
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+# Overview
+
+Title of project: Factors affecting health sector expenditure in OECD countries
+
+Name of project author(s): Prasanga Paudel
+
+Name of project reviewer: Annalise Cramer
+
+
+## Background, Context and Motivation
+How well is the context of the project described? Is a comprehensive background, including summary of previous/related work given? Is the project well placed into the context of existing work (including proper referencing of existing work). Is it clear why the project was undertaken and what new information it hopes to provide?
+
+### Feedback and Comments
+
+I think defined OECD starting in the abstract would be helpful. More background information on the problem would be helpful-- why do we care about health expenditure? Why look at different countries? As someone who doesn't know much about this field, I would guess this has something to do with different healthcare systems in various countires and is this some sort of measure of efficency of the different systems? Idk, but add some more to fill it out.
+
+### Summary assessment (PICK ONE, DELETE THE OTHERS)
+
+Some contextualization and motivation
+
+
+
+## Question description
+How well and clear are the question(s)/hypotheses the project aims to address described? Is it clear how the questions relate to the data?
+
+
+### Feedback and Comments
+
+I liked the part about how this research could inform policy.
+
+### Summary assessment
+
+Question/hypotheses fully clear
+
+
+## Data description
+How well is the data overall described? Is the source provided? Is a codebook or other meta-information available that makes it clear what the data is? 
+
+### Feedback and Comments
+
+Data source is well explained and 38 countries is described. What years does this data cover, and what types of variables are in this dataset?
+
+Edit: I see there's more information on the data that answers some of my questions. I think combining this information into one place would be helpful.
+
+### Summary assessment
+
+Source and overall structure of data somewhat explained
+
+
+
+## Data wrangling and exploratory analysis
+How well is the data cleaned/processed and explored? Are all steps reasonable and well explained? Are alternatives discussed and considered? Are meaningful exploratory results shown (e.g. in the supplementary materials)?
+
+### Feedback and Comments
+
+This is some of the best documented code I've seen all semester. I was easily able to follow along with data manipulation and what the figures were for, and the figures looked excellent. I got an error at line 435 for france_data, maybe you had a line in there ealier that got removed? As I continue, correlation plots look great. You provided plenty of description in your manuscript for EDA.
+
+### Summary assessment
+
+Essentially no weaknesses in wrangling and exploratory component
+
+
+
+## Appropriateness of Analysis
+Were the analysis methods appropriate for the data? Was the analysis done properly? Were different components of the analysis (e.g. performance measure, variable selection, data pre-processing, model evaluation) done in the best way possible and explained well?
+
+### Feedback and Comments
+
+I'm able to follow the analysis successfully. First, you group the variables into theme categories. I'm used to seeing forwards or backawards selection for model building, so I'm a lttle unfamiliar with this method-- could you explain more? The regression ran smoothly. 
+
+For 5.2.3 in your manuscript where you type the regression equation, at line 163 in your manuscript, the equation needs some reformatting. Maybe make the vairable names abgreviated subscripts? 
+
+Adding in a little bit more motivation for exploring the random forest model would help
+
+You can save yourself some time but just loading library(tidyverse), which includes: ggplot2, dplyr, tidyr, readr, purrr, tibble, stringr, and forcats, and some others too. It's a little easier than typing a bunch of those out :)
+
+
+### Summary assessment
+
+Strong and reasonable analysis
+
+## Presentation
+How well are results presented? Are tables and figures easy to read and understand? Are the main figures/tables publication level quality? 
+
+### Feedback and Comments
+
+10/10 figures and tables
+
+### Summary assessment
+
+Results are very well presented
+
+
+## Discussion/Conclusions
+Are the study findings properly discussed? Are strengths and limitations acknowledged? Are findings interpreted properly?
+
+### Feedback and Comments
+
+Good explanation and interpretation of results and their implications. Could use discussion of limitations.
+
+### Summary assessment
+
+Minor parts wrong, missing or unclear
+
+
+
+## Further comments
+
+
+# Overall project content evaluation
+Evaluate overall features of the project  by filling in the sections below.
+
+
+## Structure
+Is the project well structured? Are files in well labeled folders? Do files have reasonable names? Are all "junk" files not needed for analysis/reproduction removed? By just looking at files and folders, can you get an idea of how things fit together?
+
+### Feedback and Comments
+
+I was able to find everything with no issues. Copy/pasting the codebook into some of the EDA code could be helpful.
+
+### Summary assessment
+
+Well structured
+
+
+## Documentation 
+How well is the project documented? Are you able to understand each step of the whole analysis, each decision that was made, and each line of code? Is enough information provided as comments in code or as part of Rmd files? 
+
+### Feedback and Comments
+
+Excellent no notes
+
+### Summary assessment
+
+Fully and well documented
+
+
+
+## Reproducibility
+Are all results fully reproducible? Is documentation provided which clearly explains how to reproduce things, and does it work without the need for any manual intervention? Are you able to re-run the whole analysis without having to do manual interventions/edits?
+
+### Feedback and Comments
+
+I was able to run everything with no issues
+
+
+### Summary assessment
+ 
+Fully reproducible without issues
+
+
+## Thoroughness
+How thorough was the overall study? Were alternatives (e.g. different ways of processing the data or different models) considered? Were alternatives discussed? Were the questions/hypotheses fully and thoroughly addressed?
+
+### Feedback and Comments
+
+There was lots of exploration on which vairables to include in the model, and ML altetnatives were epxlored. 
+
+### Summary assessment
+
+Strong level of thorougness
+
+
+## Further comments
+
+Overall you're in really good shape. Filling it out a little more in some parts will make it even better.
+
+
+
+
+
