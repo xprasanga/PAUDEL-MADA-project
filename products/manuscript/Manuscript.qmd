@@ -48,13 +48,11 @@ _We used Ordinary Least Squares method to analyze the factors affecting per capi
 ## General Background Information
 
 Health expenditure is an important indicator of a country's committment to citizen's well-being and efficiency of it's healthcare systems. Among the OECD countries, the per capita health expenditure vary significantly ranging from 1,000 USD to over 10,000 [@2021].
-Understanding the factors that drive these differences is important for policymakers to optimize healthcare delivery and improving healhcare access. While GDP had been one of the primary determinant of health expending [@Newhouse1977], recent studies suggest that institutional, demographic, and socio-economic factors may also play a crucial role in determination of health expenditure among different countries [@Ziegler2017].
-
-The relationship between health expenditure and their determinants because particularly relevant in the context of recent global challenges. The recent COVID-19 pandemic also exposed the vulnerabilities in global healthcare systems with countries showing high pre-pandemic health expenditure generally demonstrating greater resilience [@WHO2022]
+Understanding the factors that drive these differences is important for policymakers to optimize healthcare delivery and improving healhcare access. While GDP had been one of the primary determinant of health expending [@Newhouse1977], recent studies suggest that institutional, demographic, and socio-economic factors may also play a crucial role in determination of health expenditure among different countries [@Ziegler2017]. The relationship between health expenditure and their determinants because particularly relevant in the context of recent global challenges. The recent COVID-19 pandemic also exposed the vulnerabilities in global healthcare systems with countries showing high pre-pandemic health expenditure generally demonstrating greater resilience [@WHO2022]
 
 We will try to analyze the most influential factors affecting the expenditure in health sector by different countries. The predictor variables will include factors ranging from education, mortality, population distribution among rural and urban spaces, and so on. We would use multiple regression analysis with health sector expenditure as dependent variable and the variable of interests as predictors for this panel data.
 
-We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have such as [@Nkemgha2020] studied the link among public health expenditure, private health expenditure and life expectancy in Cameroon. [@CHRISTOPOULOS2020195] using panel data analyzed the fiscal effects of health expenditures on health outcomes and found a significant impact of healthcare expenditures on increasing revenue. In our analysis we will try to follow OLS multiple regression model.
+We are using data from OECD members for analysis, and there have already been some research which have focused on GDP as predictor for health sector expenditure. Some research have such as [@Nkemgha2020] studied the link among public health expenditure, private health expenditure and life expectancy in Cameroon. [@CHRISTOPOULOS2020195] using panel data analyzed the fiscal effects of health expenditures on health outcomes and found a significant impact of healthcare expenditures on increasing revenue. In our analysis we will try to follow OLS multiple regression model. We will also use methodological inventions in comparing different models primarily OLS regression and Random Forest to address the recent suggestions in analytical apporaches in health economics [@ParkerLue2020] 
 
 ## Data source
 
@@ -198,7 +196,7 @@ We performed the Durbin Watson autocorrelation test for our model. The results f
 #| label: tbl-DW-test-results
 #| tbl-cap: "Durbin Watson Test Results"
 #| echo: FALSE
-#| out.width: "40%"
+#| out.width: "30%"
 knitr::include_graphics(here("results", "figures", "durbin_watson_test_results.png"))
 ```
 
@@ -439,6 +437,9 @@ The results from our study concludes that corruption GDP growth, control of corr
 
 A special concideration should be given to nations that have an increasing GDP, high corruption, and high unemployment rate, as these nations have lower investments in health sectors. These type of countries should therefore be priotized by world bank, World Health Organization, and other institutions where allocating their resources to help countries.
 
+# Limitations
+
+Our analysis covers 2010-2020, excluding the full impact of the COVID-19 pandemic, which dramatically altered health expenditure patterns worldwide. Our OLS approach assumes linear relationships that may not capture complex interactions present in health systems, and although we employ Random Forest to address this, the "black box" nature of machine learning models limits policy interpretability.
 
 # Data aquisition
 
@@ -446,6 +447,4 @@ The data for this research is available at the official World Bank- Data Bank we
 
 The dataset can be assessed through this [link.](https://databank.worldbank.org/source/world-development-indicators/Type/TABLE/preview/on#)
 
-{{< pagebreak >}}
-
-# References
+# Reference

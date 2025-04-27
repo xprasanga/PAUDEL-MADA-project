@@ -354,7 +354,7 @@ rf_results_html <- kable(rf_results_table,
                          caption = "") %>%
   kable_styling(bootstrap_options = c("striped", "hover"),
                 full_width = FALSE,
-                position = "left") %>%
+                position = "center") %>%
   add_header_above(c("Training Period" = 1, "Test Year" = 1, 
                      "Performance" = 1, "Model Parameters" = 2))
 
