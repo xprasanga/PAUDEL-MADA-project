@@ -27,10 +27,9 @@ library(here)
 
 ```
 
-
 # Importing datasets
 
-Then we will import the dataset
+Then we will import the dataset.
 
 ```{r}
 #Path to data. 
@@ -47,7 +46,6 @@ But, before that we will import the training data which was obtained after split
 train <- readRDS(here("data", "processed-data", "train-data.rds"))
 test <- readRDS(here("data", "processed-data", "test-data.rds"))
 ```
-
 
 # Grouping the variables.
 
@@ -138,9 +136,7 @@ print(variable_categories)
 
 Now that we have selected our variables, we will try to look at the relation between our dependent variable "Health Expenditure Per Capita \$USD" with other variables from a specific category.
 
-
 # Preliminary Regression
-
 
 ```{r}
 
@@ -245,7 +241,6 @@ save_kable(table_html, file = html_file)
 
 Now that we have tested some variables in our model across different categories, we will pick the most useful variable and add them into our preliminary model. We will also add other variable that were not present in the above table. Variable selection is a continuous process and the variables selected in the preliminary model may also be dropped later to make space for new variables that may appear as important.
 
-
 # Suggested Model
 
 ```{r}
@@ -281,9 +276,7 @@ modelsummary(
 
 However, due to the missing values in the independent variables the total number of observation used in the regression is too low. So, we will use such variables which are available as much as possible for all countries.
 
-
-# Primary regression model 
-
+# Primary regression model
 
 ```{r}
 # primary regression model
@@ -458,7 +451,6 @@ print(results_table)
 ```
 
 We will also test another version of our primary model excluding life expectancy to test if the results differ.
-
 
 # Regression model without Life Expectancy
 
