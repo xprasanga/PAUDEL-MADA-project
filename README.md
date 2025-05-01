@@ -25,17 +25,72 @@ Read the descriptions below to have a brief knowledge about how the folders are 
   * `data-analysis-template.Rproj` is a file that tells RStudio that this is the main folder for a project. Rename if you want.
   * a few "hidden" files and folders (they start with a `.` and depending on how your OS is configured, you might not see them). Those are for R/RStudio and Git/GitHub and you can ignore them.
 
-CODEBOOK:
+# CODEBOOK
 
-The dataset contains a lot of variables (1400+), most of the variables are quite straight forward and self explanatory.
+The dataset contains a lot of variables (1400+), most of the variables are quite straight forward and self explanatory.Although the full expanation of all 1400+ variables is somewhat unncecessary, we have included some basica description of out most used variables.
 
-Current_health_expenditure_per_capita_current_US: Current health expenditure (per capita) in current US dollars
-GDP_growth_annual_ : Annual GDP growth
-Income_share_held_by_lowest_20: Income share held by lowest 20% of the population
-Control_of_Corruption_Estimate: Estimate of corruption in the country. The score for the Control of Corruption Estimate ranges from approximately -2.5 to 2.5.
-Life_expectancy_at_birth_total_years: life expectancy at birth is the average lifespan a newborn can be expected to live, assuming that age-specific mortality levels remain constant.
-Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate: This indicator represents the share of the labor force ages 15-24 without work but available for and seeking employment.
-Trade__of_GDP: This ratio is calculated by dividing the total value of a country's imports and exports by its gross domestic product (GDP) for the same period, usually expressed as a percentage.
-Foreign_direct_investment_net_inflows_BoP_current_US: an indicator provided by the World Bank that measures the value of foreign direct investment received by a country in current US dollars
-Access_to_electricity_rural__of_rural_population: This indicator measures the percentage of rural population with access to electricity.
-Age_dependency_ratio__of_workingage_population:  the ratio of dependents (people younger than 15 or older than 64) to the working-age population (those ages 15-64)
+## Variable Descriptions
+
+### Economic Indicators
+- **GDP_per_capita_current_US**: Gross Domestic Product per capita in current US dollars
+- **GNI_per_capita_Atlas_method_current_US**: Gross National Income per capita calculated using the Atlas method (current US dollars)
+- **GDP_growth_annual_**: Annual percentage growth rate of Gross Domestic Product
+- **Inflation_GDP_deflator_annual_**: Annual inflation rate based on GDP deflator
+- **Domestic_credit_provided_by_financial_sector__of_GDP**: Domestic credit provided by the financial sector as percentage of GDP
+- **Gross_capital_formation__of_GDP**: Gross capital formation (investments) as percentage of GDP
+- **Exports_of_goods_and_services__of_GDP**: Exports of goods and services as percentage of GDP
+- **Imports_of_goods_and_services__of_GDP**: Imports of goods and services as percentage of GDP
+- **Foreign_direct_investment_net_inflows_BoP_current_US**: Net inflows of foreign direct investment in current US dollars (Balance of Payments)
+- **Industry_including_construction_value_added__of_GDP**: Value added by industry (including construction) as percentage of GDP
+- **Agriculture_forestry_and_fishing_value_added__of_GDP**: Value added by agriculture, forestry and fishing as percentage of GDP
+- **Services_value_added__of_GDP**: Value added by services sector as percentage of GDP
+- **Unemployment_total__of_total_labor_force_modeled_ILO_estimate**: Total unemployment as percentage of total labor force (ILO estimate)
+- **Income_share_held_by_lowest_20**: Percentage share of income or consumption held by lowest 20% of population
+- **Income_share_held_by_highest_20**: Percentage share of income or consumption held by highest 20% of population
+- **Poverty_headcount_ratio_at_215_a_day_2017_PPP__of_population**: Percentage of population living below $2.15 a day at 2017 purchasing power parity
+
+### Health Indicators
+- **Life_expectancy_at_birth_total_years**: Average number of years a newborn would live if mortality patterns remain constant
+- **Mortality_rate_under5_per_1000_live_births**: Probability per 1,000 that a newborn will die before age 5
+- **Prevalence_of_HIV_total__of_population_ages_1549**: Percentage of population ages 15-49 infected with HIV
+- **Immunization_measles__of_children_ages_1223_months**: Percentage of children ages 12-23 months receiving measles vaccination
+- **Births_attended_by_skilled_health_staff__of_total**: Percentage of births attended by skilled health personnel
+- **Contraceptive_prevalence_any_method__of_married_women_ages_1549**: Percentage of married women ages 15-49 using any contraceptive method
+- **Hospital_beds_per_1000_people**: Number of hospital beds available per 1,000 people
+- **Physicians_per_1000_people**: Number of medical doctors per 1,000 people
+- **Prevalence_of_underweight_weight_for_age__of_children_under_5**: Percentage of children under 5 considered underweight for their age
+- **Adolescent_fertility_rate_births_per_1000_women_ages_1519**: Number of births per 1,000 women ages 15-19
+- **Current_health_expenditure__of_GDP**: Total health expenditure as percentage of GDP
+- **Domestic_general_government_health_expenditure__of_GDP**: Government health expenditure as percentage of GDP
+
+### Social Indicators
+- **Population_total**: Total population count
+- **Population_growth_annual_**: Annual population growth rate (percentage)
+- **Population_density_people_per_sq_km_of_land_area**: Number of people per square kilometer of land area
+- **Urban_population__of_total_population**: Percentage of total population living in urban areas
+- **Rural_population__of_total_population**: Percentage of total population living in rural areas
+- **Literacy_rate_adult_total__of_people_ages_15_and_above**: Percentage of population ages 15 and above who can read and write
+- **School_enrollment_primary__gross**: Gross enrollment ratio for primary education
+- **School_enrollment_secondary__gross**: Gross enrollment ratio for secondary education
+- **School_enrollment_tertiary__gross**: Gross enrollment ratio for tertiary education
+- **Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate**: Youth unemployment (ages 15-24) as percentage of labor force in that age group (ILO estimate)
+- **Net_migration**: Net number of migrants (immigrants minus emigrants)
+- **Refugee_population_by_country_or_territory_of_asylum**: Number of refugees residing in the country
+
+### Government Indicators
+- **Military_expenditure__of_GDP**: Military spending as percentage of GDP
+- **Tax_revenue__of_GDP**: Tax revenue collected as percentage of GDP
+- **Government_expenditure_on_education_total__of_GDP**: Government spending on education as percentage of GDP
+- **Government_Effectiveness_Estimate**: Worldwide Governance Indicator measuring quality of public services (-2.5 to 2.5 scale)
+- **Rule_of_Law_Estimate**: Worldwide Governance Indicator measuring confidence in legal system (-2.5 to 2.5 scale)
+- **Control_of_Corruption_Estimate**: Worldwide Governance Indicator measuring perceived corruption (-2.5 to 2.5 scale)
+- **Political_Stability_and_Absence_of_ViolenceTerrorism_Estimate**: Worldwide Governance Indicator measuring political stability (-2.5 to 2.5 scale)
+- **Regulatory_Quality_Estimate**: Worldwide Governance Indicator measuring ability to formulate sound policies (-2.5 to 2.5 scale)
+
+### Trade Indicators
+- **Trade__of_GDP**: Sum of exports and imports of goods and services as percentage of GDP
+- **Merchandise_trade__of_GDP**: Sum of merchandise exports and imports as percentage of GDP
+- **Exports_of_goods_and_services_current_US**: Exports of goods and services in current US dollars
+- **Imports_of_goods_and_services_current_US**: Imports of goods and services in current US dollars
+- **External_debt_stocks_total_DOD_current_US**: Total external debt stocks in current US dollars (DOD = Debt Outstanding and Disbursed)
+- **Net_barter_terms_of_trade_index_2015__100**: Ratio of export to import unit value indexes (2015 = 100)
