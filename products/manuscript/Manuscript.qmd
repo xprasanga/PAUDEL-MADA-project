@@ -87,13 +87,13 @@ where $e_{it}$ is the error term. $X_{itk}$ is the $k^{th}$ independent variable
 
 # Results
 
-In this section, we will we will explore the data based.
+In this section, we will we will explore the data and perform analysis based on ordinary least squares and random forest model.
 
 ## Descriptive analysis
 
 Here, we will now use a combination of tables and figues to have a look into the data.
 
-As this is a time series data, it is quite difficult to visualize all the variables across the years for all the countries. So, we will try to keep it simple and see simple relations between variables within a year or trend of a particular variable for some countries across the years.
+As this is a time series data, it is quite difficult to visualize all the variables across the years for all the countries. So, we will try to keep it simple and see simple relations between variables within a year or trend of a particular variable for some countries across the years or the average trend.
 
 ### Trends of Development Indicators
 
@@ -101,7 +101,7 @@ In @fig-development-indicators-trends, we will explore differenct variables of i
 
 ```{r}
 #| label: fig-development-indicators-trends
-#| fig-cap: "Trends of Development Indicators (Average across countries)"
+#| fig-cap: "Trends of Development Indicators (average across countries)"
 #| echo: FALSE
 knitr::include_graphics(here("results","figures","development_indicators_trends.png"))
 ```
@@ -262,7 +262,7 @@ If we observe the mean RMSE across the three cross-validation subsets, the mean 
 
 ### Random Forest model as an Alternative
 
-Next, we will perform our analyses with a different technique other than ordinary least squares method. We will use a Random Forest (RF) model to explain per capita health expenditure of a country. we will use a tree size of 300, and mtry value equal to 3.
+Next, we will perform our analyses with a different technique other than ordinary least squares method. We will use a Random Forest (RF) model to explain per capita health expenditure of a country. we will use a tree size of 300, and mtry value equal to 3. The motivation behind using a random forest model is to check if we are being able to capture the relation between per capita health expenditure and our predictors variable well enough using the OLS model. The non-linear effects, if present, would be captured better by the RF model.
 
 #### Random Forest Results
 
@@ -318,7 +318,7 @@ htmltools::tags$iframe(
 
 
 
-The results obtained from the cross-validation as observed in @tbl-rf-cv-results show that the RMSE values have more than doubled in the cross-validation sets.Infact, the highest RMSE value observed in cv is as high as 2.6 times more than the RMSE obtained in the primary train dataset.
+The results obtained from the cross-validation as observed in @tbl-rf-cv-results show that the RMSE values have more than doubled in the cross-validation sets. Infact, the highest RMSE value observed in cv is as high as 2.6 times more than the RMSE obtained in the primary train dataset.
 
 
 ```{r}
@@ -423,24 +423,24 @@ One thing that should be noted is that the RF model should be optimized and form
 
 # Discussion
 
-Our results shows that annual GDP growth, control of corruption, life expectancy at birth, unemployment rate, and FDI all have a statistically significant effect on the per capita health expenditure of a country. [@Nghiem2017] also found evidence that annual GDP and unemployment rate have a significant effect on the health expenditures, however the variables used in the studies are different. [@Factor2015] has found that country with high level of corruption have a lower spending on health care as a percentage of GDP. [@Giammanco2019] have found that FDI is positively related to factors related to public health. [@Wang2015] argues that the impact of health expenditures on economic growth is somewhat ambiguous.
+Our results show that annual GDP growth, control of corruption, life expectancy at birth, unemployment rate, and FDI all have a statistically significant effect on the per capita health expenditure of a country. [@Nghiem2017] also found evidence that annual GDP and unemployment rate have a significant effect on the health expenditures, however the variables used in the studies are different. Similarly, [@Factor2015] has found that country with high level of corruption have a lower spending on health care as a percentage of GDP. In a similar study, [@Giammanco2019] have found that FDI is positively related to factors related to public health. Therefore, our result somewhat follow the general trend of findings in the field of health economics. In another study, [@Wang2015] argues that the impact of health expenditures on economic growth is somewhat ambiguous.
 
-Factors such as income share held by the lowest 20-percent population, trade as a percentage of GDP, access to electricity among rural popuation, and age dependency ration had no statistical significant impact on the health expenditure. Among these variables, age dependency ratio was expected to have a significant impact as higher pressure on the working population to support the non-active population reduces the chances of surplus revenues to invest in different sectors of the economy. 
+Our study showed that factors such as income share held by the lowest 20-percent population, trade as a percentage of GDP, access to electricity among rural popuation, and age dependency ration had no statistical significant impact on the health expenditure. Among these variables, age dependency ratio was expected to have a significant impact as higher pressure on the working population to support the non-active population reduces the chances of surplus revenues to invest in different sectors of the economy. 
 
 
 # Conclusions and Policy implications
 
 The results from our study concludes that corruption GDP growth, control of corruption, and  unemployment rate have a significant and an important role in determining the amount of money spent on health sector by the country. Therefore, if we are to improve the investment on health sectors and therefore improve the citizen's access to the heath services we also need to consider the unemployment rate, corruption and the GDP growth as well. This information could be handy for donor agencies and INGO's who work to improve access of health cervice in different nations. 
 
-A special concideration should be given to nations that have an increasing GDP, high corruption, and high unemployment rate, as these nations have lower investments in health sectors. These type of countries should therefore be priotized by world bank, World Health Organization, and other institutions where allocating their resources to help countries.
+A special concideration should be given to nations that have an increasing GDP, high corruption, and high unemployment rate, as these nations have lower investments in health sectors. These type of countries should therefore be priotized by world bank, World Health Organization, and other institutions who allocate their resources to help countries while also considering the fact that corruption and high unemployment should also be addressed as they show causal effect.
 
 # Limitations
 
-Our analysis covers 2010-2020, excluding the full impact of the COVID-19 pandemic, which dramatically altered health expenditure patterns worldwide. Our OLS approach assumes linear relationships that may not capture complex interactions present in health systems, and although we employ Random Forest to address this, the "black box" nature of machine learning models limits policy interpretability.
+Our analysis covers 2010-2020, excluding the full impact of the COVID-19 pandemic, which dramatically altered health expenditure patterns worldwide. Our OLS approach assumes linear relationships that may not capture complex interactions present in health systems, and although we employ Random Forest to address this, the "black box" nature of machine learning models limits policy interpretability. As with time-series datasets for countries, our datasets had a lot of missing values for a lot of variables across different countries. This is quite common as countries differ in their time and duration of census and surveys and not all countries folllow the sam procedure to collect informations. Also, not all countries would collect the same set of information. We had to drop the missing values due to which we lost a lot of information which coould have been a valuable source of information.
 
 # Data aquisition
 
-The data for this research is available at the official World Bank- Data Bank website.It is a free database managed by world bank group and can be accessed anytime. We can apply various filters as per our need and export the data as a .CSV or an .xlsx file.
+The data for this research is available at the official World Bank- Data Bank website. It is a free database managed by world bank group and can be accessed anytime. We can apply various filters as per our need and export the data as a .CSV or an .xlsx file.
 
 The dataset can be assessed through this [link.](https://databank.worldbank.org/source/world-development-indicators/Type/TABLE/preview/on#)
 

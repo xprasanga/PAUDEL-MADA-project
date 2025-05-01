@@ -665,16 +665,15 @@ plots <- list(
   poverty = create_trend_plot(trend_data, "poverty", "Poverty Headcount", "% of Population", plot_colors[11])
 )
 
-#combining plots ----
-#create a 3-column layout 
 combined_plot <- wrap_plots(plots, ncol = 3) +
   plot_annotation(
     title = "Trends in Key Development Indicators",
     subtitle = "Country averages across time",
     caption = "Source: World Development Indicators",
     theme = theme(
-      plot.title = element_text(size = 16, face = "bold"),
-      plot.subtitle = element_text(size = 12)
+      plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Center title
+      plot.subtitle = element_text(size = 12, hjust = 0.5),              # Center subtitle
+      plot.caption = element_text(hjust = 0.5)                           # Center caption
     )
   )
 
