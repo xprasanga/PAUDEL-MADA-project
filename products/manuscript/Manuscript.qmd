@@ -47,7 +47,7 @@ _We used Ordinary Least Squares method to analyze the factors affecting per capi
 
 ## General Background Information
 
-Health expenditure is an important indicator of a country's committment to citizen's well-being and efficiency of it's healthcare systems. Among the OECD countries, the per capita health expenditure vary significantly ranging from 1,000 USD to over 10,000 [@2021].
+Health expenditure is an important indicator of a country's committment to citizen's well-being and efficiency of it's healthcare systems. Among the OECD (Organisation for Economic Co-operation and Development) countries, the per capita health expenditure vary significantly ranging from 1,000 USD to over 10,000 [@2021].
 Understanding the factors that drive these differences is important for policymakers to optimize healthcare delivery and improving healhcare access. While GDP had been one of the primary determinant of health expending [@Newhouse1977], recent studies suggest that institutional, demographic, and socio-economic factors may also play a crucial role in determination of health expenditure among different countries [@Ziegler2017]. The relationship between health expenditure and their determinants because particularly relevant in the context of recent global challenges. The recent COVID-19 pandemic also exposed the vulnerabilities in global healthcare systems with countries showing high pre-pandemic health expenditure generally demonstrating greater resilience [@WHO2022]
 
 We will try to analyze the most influential factors affecting the expenditure in health sector by different countries. The predictor variables will include factors ranging from education, mortality, population distribution among rural and urban spaces, and so on. We would use multiple regression analysis with health sector expenditure as dependent variable and the variable of interests as predictors for this panel data.
@@ -56,7 +56,10 @@ We are using data from OECD members for analysis, and there have already been so
 
 ## Data source
 
-This is a time series data based on 38 member countries from the Organisation for Economic Co-operation and Development (OECD). This organization is a unique forum with governments from 37 democracies collaborate to develop policy standards to promote sustainable economic growth. However, the data obtained from this dataset is crude and needed to be treated before attempting analysis based on it. The details about the data cleaning process can be assessed from this [ GitHub](https://github.com/xprasanga/PAUDEL-MADA-project) repository.
+This is a time series data based on 38 member countries from the Organisation for Economic Co-operation and Development (OECD). This organization is a unique forum with governments from 37 democracies collaborate to develop policy standards to promote sustainable economic growth. However, the data obtained from this dataset is crude and needed to be treated before attempting analysis based on it. The details about the data cleaning process is available at [ GitHub](https://github.com/xprasanga/PAUDEL-MADA-project).
+
+The original data (2010-2020) in it's raw form was obtained from World Bank. However, the dataset needed processing, and some modification. The final dataset that is eligible for our use contains 462 observations and 1496 variables for the OECD countries. The variables include information on various aspect of a country's development indicators, such as information on education, health, population distribution, trade, energy access, GDP, infrastructure, market, corruption, investments, and so on. However, we will be using 80% of the dataset for our whole analysis and we will test the robustness of the results on the un-used 20% at the end of the analysis.
+
 
 ## Objective of the research
 
@@ -77,12 +80,6 @@ We will be following a panel data time series regression model. A general form o
 $y_{it}$ = $b_0$ + $b_1$$X_{it1}$ + $b_2$$X_{it2}$ + $b_3$$X_{it3}$ + $b_4$$X_{it4}$ + $b_5$$X_{it5}$ + $e_{it}$
 
 where $e_{it}$ is the error term. $X_{itk}$ is the $k^{th}$ independent variable ( k= 1 to 5, in the above equation but our research will likely have k>5) $y_{it}$ is the dependent variable, $b_0$ is the intercept, and $b_k$ is the estimated parameter for the $k^{th}$ independent variable.
-
-
-# Dataset
-
-The original data (2010-2020) in it's raw form was obtained from World Bank. However, the dataset needed processing, and some modification. The final dataset that is eligible for our use contains 462 observations and 1496 variables for the OECD countries. However, we will be using 80% of the dataset for our whole analysis and we will test the robustness of the results on the un-used 20% at the end of the analysis.
-
 
 
 
