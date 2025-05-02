@@ -77,9 +77,9 @@ The main objective of this research is to:
 
 We will be following a panel data time series regression model. A general form of the OLS model for time series can be represented as:
 
-$y_{it}$ = $b_0$ + $b_1$$X_{it1}$ + $b_2$$X_{it2}$ + $b_3$$X_{it3}$ + $b_4$$X_{it4}$ + $b_5$$X_{it5}$ + $e_{it}$
+   $y_{it}$ = $b_0$ + $b_1$$X_{it1}$ + $b_2$$X_{it2}$ + $b_3$$X_{it3}$ + $b_4$$X_{it4}$ + $b_5$$X_{it5}$ + $e_{it}$
 
-where $e_{it}$ is the error term. $X_{itk}$ is the $k^{th}$ independent variable ( k= 1 to 5, in the above equation but our research will likely have k>5) $y_{it}$ is the dependent variable, $b_0$ is the intercept, and $b_k$ is the estimated parameter for the $k^{th}$ independent variable.
+where $e_{it}$ is the error term. $X_{itk}$ is the $k^{th}$ independent variable ( k= 1 to 5 in the above equation but our research will likely have k>5), $y_{it}$ is the dependent variable, $b_0$ is the intercept, and $b_k$ is the estimated parameter for the $k^{th}$ independent variable.
 
 
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -63,10 +63,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="statistical-analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="statistical-analysis_files/libs/quarto-html/anchor.min.js"></script>
 <link href="statistical-analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="statistical-analysis_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="statistical-analysis_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="statistical-analysis_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="statistical-analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="statistical-analysis_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="statistical-analysis_files/libs/bootstrap/bootstrap-8a79a254b8e706d3c925cde0a310d4f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="statistical-analysis_files/libs/kePrint-0.0.1/kePrint.js"></script>
 
 <link href="statistical-analysis_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
@@ -129,7 +129,7 @@ Disabled features: fontconfig, x11</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>here() starts at C:/Users/mz13171/Downloads/MADA-course/PAUDEL-MADA-project</code></pre>
+<pre><code>here() starts at C:/Users/LibraryUser/Documents/GitHub/PAUDEL-MADA-project</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -204,14 +204,14 @@ Attaching package: 'kableExtra'</code></pre>
 </div>
 <section id="importing-datasets" class="level1">
 <h1>Importing datasets</h1>
-<p>Then we will import the dataset</p>
+<p>Then we will import the dataset.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Path to data. </span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"processed-data"</span>,<span class="st">"processeddata.rds"</span>)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(data_location)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will now pick the most useful variables from the large pool of 1400+ variables in our dataset, and we will then categorize these variables based on the aspects they cover. For example, if there is avariable named “Annual GDP growth”, we will categorize it as an “Economic” variable. Similarly, if there is a variable named “Unemployment rate” or “Total population”, we will categorize them as “Social” variable.</p>
+<p>We will now pick the most useful variables from the large pool of 1400+ variables in our dataset, and we will then categorize these variables based on the aspects they cover. For example, if there is avariable named “Annual GDP growth”, we will categorize it as an “Economic” variable. Similarly, if there is a variable named “Unemployment rate” or “Total population”, we will categorize them as “Social” variable. This will help us look into the data more easily</p>
 <p>But, before that we will import the training data which was obtained after splitting the dataset into 80% train data and 20% test data. We will be performing all our analysis on train data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed-data"</span>, <span class="st">"train-data.rds"</span>))</span>
@@ -1070,7 +1070,7 @@ $Trade
 </div>
 </div>
 <p>In the above table, we can observe that a lot of factors affect the dependent variable and a lot of them don’t. We can also observe that a lot of our variables have missing values making it unavailable for the regression estimation.</p>
-<p>Now, we will save our regression result is a HTML table so that we can use to present it in our manuscript.</p>
+<p>Now, we will save our regression result is a HTML table so that we can use to present it in our manuscript or our supplementary material.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the table as a HTML file</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>html_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"products"</span>, <span class="st">"supplementary-files"</span>, <span class="st">"regression_results.html"</span>)</span>
@@ -1177,7 +1177,7 @@ $Trade
 <span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the table as a PNG file</span></span>
 <span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gtsave</span>(dw_table, png_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>file:///C:/Users/mz13171/AppData/Local/Temp/RtmpaQyICc/fileb37c4441384.html screenshot completed</code></pre>
+<pre><code>file:///C:/Users/LIBRAR~1/AppData/Local/Temp/RtmpQ33M61/file29e85c75336.html screenshot completed</code></pre>
 </div>
 </div>
 <p>Fortunately, the Durbin-Watson test is insignificant, and our model does not show presence of autocorrelation.</p>
@@ -1528,8 +1528,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1640,7 +1638,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

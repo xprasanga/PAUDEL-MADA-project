@@ -5,9 +5,6 @@ author: "Prasanga Paudel"
 output: html_document
 ---
 
-  
-
-
 ```{r}
 #load needed packages. make sure they are installed.
 library(here) #for data loading/saving
@@ -27,9 +24,13 @@ library(patchwork)
 ```
 
 
+
+
 # Loading the data.
 
 We will import the processed data from the processed-data folder which we is the cleaned and transformed dataset.
+
+
 
 ```{r}
 #Path to data. 
@@ -37,7 +38,6 @@ data_location <- here::here("data","processed-data","processeddata.rds")
 #load data
 mydata <- readRDS(data_location)
 ```
-
 
 ```{r}
 # sorting the dataset by time
@@ -50,7 +50,11 @@ test <- mydata[(split_index + 1):nrow(mydata), ]
 ```
 
 
+
+
 But first, let's save the dataset
+
+
 
 ```{r}
 # converting all columns to numeric except CountryName, CountryCode, and SeriesCode
@@ -71,9 +75,13 @@ saveRDS(test, file = here("data", "processed-data", "test-data.rds"))
 ```
 
 
+
+
 # Data exploration through tables
 
 Here we will present the summary stat for some of the interesting varible based on year 2010 for the OECD countries.
+
+
 
 ```{r}
 
@@ -115,11 +123,15 @@ saveRDS(table_html, file = rds_file)
 
 ```
 
+
+
 # Data exploration through figures
 
 In this section, we will explore some of the variables and try to look at some of the similarity among the varibles.
 
 First, we will see how "Health Expenditure as a Percentage of GDP Over Time (2010–2020)" is distributed over the years for top 5 OECD countries.The top 5 countries are calculated based on 2010 data.  _Note: The aggregate values visible as "OECD members" will not be used for analysis purpose. It is just for demonstration._
+
+
 
 ```{r}
 # Converting column to numeric before plotting
@@ -167,7 +179,11 @@ ggsave(
 
 
 
+
+
 Now, we will try to see if there is any relation between GDP per capita (current US) and current Health Expenditure as a % of GDP.
+
+
 
 ```{r}
 
@@ -218,7 +234,11 @@ ggsave(
 )
 ```
 
+
+
 Now, we will try to see if there is any relation between hospital beds per 1000 people and current Health Expenditure as a percentage of GDP.
+
+
 
 ```{r}
 
@@ -268,7 +288,11 @@ ggsave(
 )
 ```
 
+
+
 Let's check if annual population growth shows any relation with current Health Expenditure as a percentage of GDP for Australia
+
+
 
 ```{r}
 
@@ -324,7 +348,11 @@ plot_pop_growth + plot_health_expenditure
 ```
 
 
+
+
 We can not see a visible relation between these two factors.  Let's try it for France now
+
+
 
 ```{r}
 
@@ -381,7 +409,11 @@ plot_pop_growth + plot_health_expenditure
 ```
 
 
+
+
 We can not observe a distinct relation between the two variable, we can observe that the Health Expenditure (% of GDP) variable also show less fluctuation across the years for multiple countries. Lets see if Health Expenditure Per Capita (USD) over the Years shows any reation with annual population growth.
+
+
 
 ```{r}
 
@@ -425,7 +457,11 @@ plot_pop_growth + plot_health_expenditure
 
 ```
 
+
+
 The Health Expenditure Per Capita (USD) varriable in fact shows more variation and also show some connections with annual population growth.
+
+
 
 ```{r}
 
@@ -464,7 +500,11 @@ ggsave(
 # Combine both plots side by side
 plot_pop_growth + plot_health_expenditure
 ```
+
+
 The results for Australia can also confirmed for France, we may be able to use Health Expenditure Per Capita (USD) as a dependent variabe in our future analysis.
+
+
 
 
 
@@ -512,7 +552,11 @@ ggsave(
 ```
 
 
+
+
 saving the health expenditure plot
+
+
 
 ```{r}
 combined_plot <- p1 / p2 + 
@@ -531,9 +575,13 @@ ggsave(
 
 
 
+
+
 # EDA (part2)
 
 This is the EDA analysis performed for part 3 of the project.
+
+
 
 
 ```{r}
@@ -586,9 +634,13 @@ ggsave(filename = png_file2, plot = final_plot2, width = 10, height = 8, dpi = 3
 ```
 
 
+
+
 # EDA (part 3)
 
 ## Figures for manuscript
+
+
 
 ```{r}
 
@@ -688,11 +740,4 @@ ggsave(
 )
 
 ```
-
-
-
-
-
-
-
 
