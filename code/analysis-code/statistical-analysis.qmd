@@ -294,8 +294,8 @@ Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate +
   , 
             data = train)
 
-# Define a named vector for pretty variable names
-pretty_names <- c(
+# Define a named vector for clean variable names
+clean_names <- c(
   "(Intercept)" = "Intercept",
   "GDP_growth_annual_" = "GDP Growth (annual %)",
   "Income_share_held_by_lowest_20" = "Income Share (Lowest 20%)",
@@ -314,7 +314,7 @@ modelsummary(
   output = here("results", "tables", "primary_regression_results.png"),
   title = "",
   stars = c('*' = 0.1, '**' = 0.05, '***' = 0.01),
-  coef_rename = pretty_names,
+  coef_rename = clean_names,
   notes = list(
     "Standard errors are shown in parentheses.",
     "Significance levels: * p < 0.1, ** p < 0.05, *** p < 0.01."
@@ -341,7 +341,8 @@ dw_p_value <- dw_test$p.value
 # Create a data frame with the results
 dw_results <- data.frame(
   Statistic = dw_statistic,
-  P_Value = dw_p_value
+  `p-value` = dw_p_value,  
+  check.names = FALSE      # Preserve the column name formatting
 )
 
 # Generate a table using gt
@@ -350,7 +351,7 @@ dw_table <- gt(dw_results) %>%
     title = "Durbin-Watson Test Results"
   ) %>%
   fmt_number(
-    columns = vars(Statistic, P_Value),
+    columns = everything(),  # Applies to all columns
     decimals = 4
   )
 

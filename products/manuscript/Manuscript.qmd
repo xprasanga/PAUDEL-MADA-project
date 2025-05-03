@@ -268,7 +268,7 @@ Next, we will perform our analyses with a different technique other than ordinar
 
 ```{r}
 #| label: tbl-rf-importance-results
-#| tbl-cap: "RF importance plot"
+#| tbl-cap: "Random Forest importance plot"
 #| echo: FALSE
 #| out.width: "100%"
 knitr::include_graphics(here("results", "figures", "rf_importance_plot.png"))
@@ -367,7 +367,7 @@ We also performed the analysis on test dataset. The regression result obtained f
 #| label: tbl-test-regression-results
 #| tbl-cap: "Regression Results for the test dataset"
 #| echo: FALSE
-#| out.width: "70%"
+#| out.width: "55%"
 knitr::include_graphics(here("results", "tables", "testresult.png"))
 ```
 

@@ -11,8 +11,9 @@ NOTE: Not all codes may produce an output, you can find those outputs saved in t
 library(purrr)    # For map_df()
 library(dplyr)    # For data manipulation
 library(timetk)   # For time_series_cv()
-library(rsample)  # For analysis() and assessment()
+library(rsample)  # For analysis() and assessmen()
 library(here)
+library(ggplot2)
 library(modelsummary)
 library(tidyr)
 library(ranger) 
@@ -49,16 +50,33 @@ Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate +
   , 
             data = test)
 
+# Define a named vector for clean variable names
+clean_names <- c(
+  "(Intercept)" = "Intercept",
+  "GDP_growth_annual_" = "GDP Growth (annual %)",
+  "Income_share_held_by_lowest_20" = "Income Share (Lowest 20%)",
+  "Control_of_Corruption_Estimate" = "Control of Corruption",
+  "Life_expectancy_at_birth_total_years" = "Life Expectancy (years)",
+  "Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate" = "Youth Unemployment (% of labor force, ages 15-24)",
+  "Trade__of_GDP" = "Trade (% of GDP)",
+  "Foreign_direct_investment_net_inflows_BoP_current_US" = "FDI Net Inflows (current US$)",
+  "Access_to_electricity_rural__of_rural_population" = "Rural Electricity Access (% of rural population)",
+  "Age_dependency_ratio__of_workingage_population" = "Age Dependency Ratio"
+)
+
+# Generate the table with formatted names
 modelsummary(
   model,
   output = here("results", "tables", "testresult.png"),
-  title = "This table represents regresssion results from the test data",
+  title = "",
   stars = c('*' = 0.1, '**' = 0.05, '***' = 0.01),
+  coef_rename = clean_names,
   notes = list(
     "Standard errors are shown in parentheses.",
     "Significance levels: * p < 0.1, ** p < 0.05, *** p < 0.01."
   )
 )
+
 
 ```
 
@@ -127,12 +145,13 @@ cv <- function(splits, model_formula) {
       status <- "Success"
     }
     
-    data.frame(
-      Train_Years = paste(min(train_cv$Year), max(train_cv$Year), sep = "-"),
-      Test_Year = max(test_cv$Year),
-      RMSE = rmse_val,
-      stringsAsFactors = FALSE
-    )
+results <- data.frame(
+  `Train Years` = paste(min(train_cv$Year), max(train_cv$Year), sep = "-"),
+  `Test Year` = max(test_cv$Year),
+  RMSE = rmse_val,
+  stringsAsFactors = FALSE,
+  check.names = FALSE  # Preserves the spaces in column names
+)
   })
 }
 
@@ -153,8 +172,8 @@ Now we will see the summary of the CV results
 #view summary of CV results
 cv_summary <- results %>%
   summarise(
-    Mean_RMSE = mean(RMSE, na.rm = TRUE),
-    SD_RMSE = sd(RMSE, na.rm = TRUE),
+    `Mean RMSE` = mean(RMSE, na.rm = TRUE),
+    `Std.D (RMSE)` = sd(RMSE, na.rm = TRUE)
   )
 
 print(cv_summary)
@@ -195,28 +214,49 @@ rf_full_model <- ranger(
   seed = 123
 )
 
-# Extract variable importance
+# First create a named vector for pretty variable names
+neat_names <- c(
+  "GDP_growth_annual_" = "GDP Growth",
+  "Income_share_held_by_lowest_20" = "Income Share (Lowest 20%)",
+  "Control_of_Corruption_Estimate" = "Control of Corruption",
+  "Life_expectancy_at_birth_total_years" = "Life Expectancy",
+  "Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate" = "Youth Unemployment",
+  "Trade__of_GDP" = "Trade (% of GDP)",
+  "Foreign_direct_investment_net_inflows_BoP_current_US" = "FDI Net Inflows",
+  "Access_to_electricity_rural__of_rural_population" = "Rural Electricity Access",
+  "Age_dependency_ratio__of_workingage_population" = "Age Dependency Ratio"
+)
+
+# Extract and prepare importance data with neat names
 importance_df <- data.frame(
   Variable = names(rf_full_model$variable.importance),
-  Importance = rf_full_model$variable.importance
+  Importance = rf_full_model$variable.importance,
+  stringsAsFactors = FALSE
 ) %>% 
+  mutate(Variable = neat_names[Variable]) %>%  # Replace with neat names
   arrange(desc(Importance))
 
-# Create importance plot
-library(ggplot2)
+# Create importance plot with better formatting
 importance_plot <- ggplot(importance_df, aes(x = reorder(Variable, Importance), 
-                         y = Importance)) +  # Fixed this line - removed extra parenthesis
-  geom_col(fill = "steelblue") +  # Simplified this line
+                                           y = Importance)) +
+  geom_col(fill = "steelblue", width = 0.7) +
   coord_flip() +
   labs(title = "Random Forest Variable Importance",
-       x = "Predictor Variables",
+       x = NULL,  #  redundant axis title
        y = "Importance (Permutation)") +
-  theme_minimal()
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )
 
-# Save the plot
+# Saving the plot
 ggsave(here("results", "figures", "rf_importance_plot.png"), 
        plot = importance_plot,
-       width = 8, height = 6, dpi = 300)
+       width = 10,  #  wider for better text fit
+       height = 6, 
+       dpi = 300)
 ```
 
 Here we will calcualte the performance metrics of our RF model.
@@ -343,24 +383,34 @@ The results of Random Forest are also quite good. They show very low RMSE compar
 Saving the RF results
 
 ```{r}
-# Select only the desired columns
+# Select and rename columns with clean names
 rf_results_table <- rf_results %>%
-  select(Train_Years, Test_Year, RMSE, Predictors_Used, mtry_Used)
+  select(
+    `Train Years` = Train_Years,
+    `Test Year` = Test_Year,
+    RMSE,
+    `Predictors Used` = Predictors_Used,
+    `mtry Used` = mtry_Used
+  )
 
-# Create and save the HTML table
+# Create and save the HTML table with formatted headers
 rf_results_html <- kable(rf_results_table, 
-                         format = "html",
-                         digits = 2,
-                         caption = "") %>%
+                        format = "html",
+                        digits = 2,
+                        col.names = c("Train Years", "Test Year", "RMSE", 
+                                     "No. of predictors", "mtry"),
+                        caption = "") %>%
   kable_styling(bootstrap_options = c("striped", "hover"),
                 full_width = FALSE,
                 position = "center") %>%
-  add_header_above(c("Training Period" = 1, "Test Year" = 1, 
-                     "Performance" = 1, "Model Parameters" = 2))
+  add_header_above(c(" " = 1, " " = 1,  # Empty spaces for first two columns
+                    "Performance" = 1, 
+                    "Model Parameters" = 2)) %>%
+  row_spec(0, bold = TRUE)  # Make header row bold
 
 # Save the table
 save_kable(rf_results_html, 
-           file = here("results", "tables", "rf_cv_results.html"))
+          file = here("results", "tables", "rf_cv_results.html"))
 ```
 
 Now we will calculate the summary of the above results.

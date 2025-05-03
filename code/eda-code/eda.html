@@ -736,19 +736,35 @@ Removed 3 rows containing missing values or values outside the scale range
 <span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Foreign_direct_investment_net_inflows_BoP_current_US <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(df<span class="sc">$</span>Foreign_direct_investment_net_inflows_BoP_current_US)</span>
 <span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Age_dependency_ratio__of_workingage_population <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(df<span class="sc">$</span>Age_dependency_ratio__of_workingage_population)</span>
 <span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to create a scatter plot with correlation</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to create a scatter plot with correlation and formatted x-axis labels</span></span>
 <span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>create_corr_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(x_var, df, point_color) {</span>
-<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>  cor_value <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">cor</span>(df[[x_var]], df<span class="sc">$</span>Current_health_expenditure_per_capita_current_US, <span class="at">use =</span> <span class="st">"complete.obs"</span>), <span class="dv">2</span>)</span>
-<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(df, <span class="fu">aes_string</span>(<span class="at">x =</span> x_var, <span class="at">y =</span> <span class="st">"Current_health_expenditure_per_capita_current_US"</span>)) <span class="sc">+</span></span>
-<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">color =</span> point_color, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span>  <span class="co"># Set color based on input</span></span>
-<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Correlation:"</span>, cor_value), <span class="at">x =</span> x_var, <span class="at">y =</span> <span class="st">"Health Expenditure per Capita"</span>) <span class="sc">+</span></span>
-<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
-<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate individual plots with different colors</span></span>
-<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">create_corr_plot</span>(<span class="st">"GDP_growth_annual_"</span>, df, <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a named vector for neat variable names</span></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>  pretty_names <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GDP_growth_annual_"</span> <span class="ot">=</span> <span class="st">"GDP Growth (annual %)"</span>,</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Income_share_held_by_lowest_20"</span> <span class="ot">=</span> <span class="st">"Income Share held by lowest 20%"</span>,</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Control_of_Corruption_Estimate"</span> <span class="ot">=</span> <span class="st">"Control of Corruption Estimate"</span>,</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Life_expectancy_at_birth_total_years"</span> <span class="ot">=</span> <span class="st">"Life expectancy at birth (years)"</span>,</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Literacy_rate_adult_total__of_people_ages_15_and_above"</span> <span class="ot">=</span> <span class="st">"Adult literacy rate (% ages 15+)"</span>,</span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Trade__of_GDP"</span> <span class="ot">=</span> <span class="st">"Trade (% of GDP)"</span>,</span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span> <span class="ot">=</span> <span class="st">"FDI Net inflows (current US$)"</span>,</span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Age_dependency_ratio__of_workingage_population"</span> <span class="ot">=</span> <span class="st">"Age Dependency Ratio (% of working-age population)"</span></span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>  cor_value <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">cor</span>(df[[x_var]], df<span class="sc">$</span>Current_health_expenditure_per_capita_current_US, <span class="at">use =</span> <span class="st">"complete.obs"</span>), <span class="dv">2</span>)</span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(df, <span class="fu">aes_string</span>(<span class="at">x =</span> x_var, <span class="at">y =</span> <span class="st">"Current_health_expenditure_per_capita_current_US"</span>)) <span class="sc">+</span></span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">color =</span> point_color, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Correlation:"</span>, cor_value), </span>
+<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> pretty_names[x_var], </span>
+<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Health Expenditure per Capita (current US$)"</span></span>
+<span id="cb45-38"><a href="#cb45-38" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb45-39"><a href="#cb45-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
+<span id="cb45-40"><a href="#cb45-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb45-41"><a href="#cb45-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-42"><a href="#cb45-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate individual plots with different colors</span></span>
+<span id="cb45-43"><a href="#cb45-43" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">create_corr_plot</span>(<span class="st">"GDP_growth_annual_"</span>, df, <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
 ℹ Please use tidy evaluation idioms with `aes()`.
@@ -909,8 +925,8 @@ Removed 3 rows containing missing values or values outside the scale range
 <span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">color =</span> color, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">color =</span> color, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> plot_title, <span class="at">y =</span> y_label, <span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>))</span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">18</span>) <span class="sc">+</span></span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span>
 <span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a></span>
@@ -939,12 +955,12 @@ Removed 3 rows containing missing values or values outside the scale range
 <span id="cb73-36"><a href="#cb73-36" aria-hidden="true" tabindex="-1"></a>combined_plot <span class="ot">&lt;-</span> <span class="fu">wrap_plots</span>(plots, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb73-37"><a href="#cb73-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
 <span id="cb73-38"><a href="#cb73-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Trends in Key Development Indicators"</span>,</span>
-<span id="cb73-39"><a href="#cb73-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Country averages across time"</span>,</span>
+<span id="cb73-39"><a href="#cb73-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"(The x-axis is labeled at the top of each plot, y-axis is labeled at the left side )"</span>,</span>
 <span id="cb73-40"><a href="#cb73-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: World Development Indicators"</span>,</span>
 <span id="cb73-41"><a href="#cb73-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">theme =</span> <span class="fu">theme</span>(</span>
-<span id="cb73-42"><a href="#cb73-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),  <span class="co"># Center title</span></span>
-<span id="cb73-43"><a href="#cb73-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),              <span class="co"># Center subtitle</span></span>
-<span id="cb73-44"><a href="#cb73-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.caption =</span> <span class="fu">element_text</span>()                         </span>
+<span id="cb73-42"><a href="#cb73-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">19</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),  <span class="co"># Center title</span></span>
+<span id="cb73-43"><a href="#cb73-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">17</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),              <span class="co"># Center subtitle</span></span>
+<span id="cb73-44"><a href="#cb73-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>)                         </span>
 <span id="cb73-45"><a href="#cb73-45" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb73-46"><a href="#cb73-46" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb73-47"><a href="#cb73-47" aria-hidden="true" tabindex="-1"></a></span>
@@ -954,7 +970,7 @@ Removed 3 rows containing missing values or values outside the scale range
 <span id="cb73-51"><a href="#cb73-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"figures"</span>, <span class="st">"development_indicators_trends.png"</span>),</span>
 <span id="cb73-52"><a href="#cb73-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> combined_plot,</span>
 <span id="cb73-53"><a href="#cb73-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">16</span>,</span>
-<span id="cb73-54"><a href="#cb73-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">14</span>,</span>
+<span id="cb73-54"><a href="#cb73-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">18</span>,</span>
 <span id="cb73-55"><a href="#cb73-55" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span></span>
 <span id="cb73-56"><a href="#cb73-56" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
