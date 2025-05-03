@@ -551,14 +551,30 @@ df$Trade__of_GDP <- as.numeric(df$Trade__of_GDP)
 df$Foreign_direct_investment_net_inflows_BoP_current_US <- as.numeric(df$Foreign_direct_investment_net_inflows_BoP_current_US)
 df$Age_dependency_ratio__of_workingage_population <- as.numeric(df$Age_dependency_ratio__of_workingage_population)
 
-# Function to create a scatter plot with correlation
+# Function to create a scatter plot with correlation and formatted x-axis labels
 create_corr_plot <- function(x_var, df, point_color) {
+  # Create a named vector for neat variable names
+  pretty_names <- c(
+    "GDP_growth_annual_" = "GDP Growth (annual %)",
+    "Income_share_held_by_lowest_20" = "Income Share held by lowest 20%",
+    "Control_of_Corruption_Estimate" = "Control of Corruption Estimate",
+    "Life_expectancy_at_birth_total_years" = "Life expectancy at birth (years)",
+    "Literacy_rate_adult_total__of_people_ages_15_and_above" = "Adult literacy rate (% ages 15+)",
+    "Trade__of_GDP" = "Trade (% of GDP)",
+    "Foreign_direct_investment_net_inflows_BoP_current_US" = "FDI Net inflows (current US$)",
+    "Age_dependency_ratio__of_workingage_population" = "Age Dependency Ratio (% of working-age population)"
+  )
+  
   cor_value <- round(cor(df[[x_var]], df$Current_health_expenditure_per_capita_current_US, use = "complete.obs"), 2)
   
   ggplot(df, aes_string(x = x_var, y = "Current_health_expenditure_per_capita_current_US")) +
-    geom_point(color = point_color, alpha = 0.6) +  # Set color based on input
+    geom_point(color = point_color, alpha = 0.6) +
     geom_smooth(method = "lm", color = "red", se = FALSE) +
-    labs(title = paste("Correlation:", cor_value), x = x_var, y = "Health Expenditure per Capita") +
+    labs(
+      title = paste("Correlation:", cor_value), 
+      x = pretty_names[x_var], 
+      y = "Health Expenditure per Capita (current US$)"
+    ) +
     theme_minimal()
 }
 

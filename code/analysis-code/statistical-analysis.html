@@ -1073,7 +1073,7 @@ $Trade
 <p>Now, we will save our regression result is a HTML table so that we can use to present it in our manuscript or our supplementary material.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the table as a HTML file</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>html_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"products"</span>, <span class="st">"supplementary-files"</span>, <span class="st">"regression_results.html"</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>html_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"supplementary-tables"</span>, <span class="st">"regression_results.html"</span>)</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">save_kable</span>(table_html, <span class="at">file =</span> html_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that we have tested some variables in our model across different categories, we will pick the most useful variable and add them into our preliminary model. We will also add other variable that were not present in the above table. Variable selection is a continuous process and the variables selected in the preliminary model may also be dropped later to make space for new variables that may appear as important.</p>
@@ -1128,16 +1128,32 @@ $Trade
 <span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  , </span>
 <span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> train)</span>
 <span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(</span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  model,</span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">output =</span> <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>, <span class="st">"primary_regression_results.png"</span>),</span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"This table represents the primary regresssion model"</span>,</span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">'*'</span> <span class="ot">=</span> <span class="fl">0.1</span>, <span class="st">'**'</span> <span class="ot">=</span> <span class="fl">0.05</span>, <span class="st">'***'</span> <span class="ot">=</span> <span class="fl">0.01</span>),</span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">notes =</span> <span class="fu">list</span>(</span>
-<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Standard errors are shown in parentheses."</span>,</span>
-<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Significance levels: * p &lt; 0.1, ** p &lt; 0.05, *** p &lt; 0.01."</span></span>
-<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a named vector for pretty variable names</span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>pretty_names <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"(Intercept)"</span> <span class="ot">=</span> <span class="st">"Intercept"</span>,</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GDP_growth_annual_"</span> <span class="ot">=</span> <span class="st">"GDP Growth (annual %)"</span>,</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Income_share_held_by_lowest_20"</span> <span class="ot">=</span> <span class="st">"Income Share (Lowest 20%)"</span>,</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Control_of_Corruption_Estimate"</span> <span class="ot">=</span> <span class="st">"Control of Corruption"</span>,</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Life_expectancy_at_birth_total_years"</span> <span class="ot">=</span> <span class="st">"Life Expectancy (years)"</span>,</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate"</span> <span class="ot">=</span> <span class="st">"Youth Unemployment (% of labor force, ages 15-24)"</span>,</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Trade__of_GDP"</span> <span class="ot">=</span> <span class="st">"Trade (% of GDP)"</span>,</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Foreign_direct_investment_net_inflows_BoP_current_US"</span> <span class="ot">=</span> <span class="st">"FDI Net Inflows (current US$)"</span>,</span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Access_to_electricity_rural__of_rural_population"</span> <span class="ot">=</span> <span class="st">"Rural Electricity Access (% of rural population)"</span>,</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Age_dependency_ratio__of_workingage_population"</span> <span class="ot">=</span> <span class="st">"Age Dependency Ratio"</span></span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the table with formatted names</span></span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(</span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>  model,</span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">output =</span> <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>, <span class="st">"primary_regression_results.png"</span>),</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">""</span>,</span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">'*'</span> <span class="ot">=</span> <span class="fl">0.1</span>, <span class="st">'**'</span> <span class="ot">=</span> <span class="fl">0.05</span>, <span class="st">'***'</span> <span class="ot">=</span> <span class="fl">0.01</span>),</span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">coef_rename =</span> pretty_names,</span>
+<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">notes =</span> <span class="fu">list</span>(</span>
+<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Standard errors are shown in parentheses."</span>,</span>
+<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Significance levels: * p &lt; 0.1, ** p &lt; 0.05, *** p &lt; 0.01."</span></span>
+<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-40"><a href="#cb36-40" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The variables have a significant impact on the dependent variable as expected. But, as this is a time series dataset, we must also test for autocorrelation. There are many other tests as well which can be performed on time-series models such ADF test for unit root, and complex models for variance modelling such as ARCH and GARCH can also be used. However, we will only perform simple procedures and try to build a simple model.</p>
 </section>
@@ -1177,7 +1193,7 @@ $Trade
 <span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the table as a PNG file</span></span>
 <span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gtsave</span>(dw_table, png_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>file:///C:/Users/LIBRAR~1/AppData/Local/Temp/RtmpQ33M61/file29e85c75336.html screenshot completed</code></pre>
+<pre><code>file:///C:/Users/LIBRAR~1/AppData/Local/Temp/RtmpIp1jb4/file5ea05e7c7ff6.html screenshot completed</code></pre>
 </div>
 </div>
 <p>Fortunately, the Durbin-Watson test is insignificant, and our model does not show presence of autocorrelation.</p>

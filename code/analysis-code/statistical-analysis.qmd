@@ -235,7 +235,7 @@ Now, we will save our regression result is a HTML table so that we can use to pr
 
 ```{r}
 # Save the table as a HTML file
-html_file <- here("products", "supplementary-files", "regression_results.html")
+html_file <- here("results", "supplementary-tables", "regression_results.html")
 save_kable(table_html, file = html_file)
 
 ```
@@ -294,11 +294,27 @@ Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate +
   , 
             data = train)
 
+# Define a named vector for pretty variable names
+pretty_names <- c(
+  "(Intercept)" = "Intercept",
+  "GDP_growth_annual_" = "GDP Growth (annual %)",
+  "Income_share_held_by_lowest_20" = "Income Share (Lowest 20%)",
+  "Control_of_Corruption_Estimate" = "Control of Corruption",
+  "Life_expectancy_at_birth_total_years" = "Life Expectancy (years)",
+  "Unemployment_youth_total__of_total_labor_force_ages_1524_modeled_ILO_estimate" = "Youth Unemployment (% of labor force, ages 15-24)",
+  "Trade__of_GDP" = "Trade (% of GDP)",
+  "Foreign_direct_investment_net_inflows_BoP_current_US" = "FDI Net Inflows (current US$)",
+  "Access_to_electricity_rural__of_rural_population" = "Rural Electricity Access (% of rural population)",
+  "Age_dependency_ratio__of_workingage_population" = "Age Dependency Ratio"
+)
+
+# Generate the table with formatted names
 modelsummary(
   model,
   output = here("results", "tables", "primary_regression_results.png"),
-  title = "This table represents the primary regresssion model",
+  title = "",
   stars = c('*' = 0.1, '**' = 0.05, '***' = 0.01),
+  coef_rename = pretty_names,
   notes = list(
     "Standard errors are shown in parentheses.",
     "Significance levels: * p < 0.1, ** p < 0.05, *** p < 0.01."

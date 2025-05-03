@@ -173,7 +173,7 @@ We ran the regression based on our primary model described in the section [ 5.2.
 #| label: tbl-primary-regression-results
 #| tbl-cap: "Primary Regression Results"
 #| echo: FALSE
-#| out.width: "70%"
+#| out.width: "55%"
 knitr::include_graphics(here("results", "tables", "primary_regression_results.png"))
 ```
 
@@ -191,7 +191,7 @@ We performed the Durbin Watson autocorrelation test for our model. The results f
 #| label: tbl-DW-test-results
 #| tbl-cap: "Durbin Watson Test Results"
 #| echo: FALSE
-#| out.width: "30%"
+#| out.width: "27%"
 knitr::include_graphics(here("results", "figures", "durbin_watson_test_results.png"))
 ```
 
