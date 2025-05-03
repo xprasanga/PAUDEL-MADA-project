@@ -668,11 +668,11 @@ plots <- list(
 combined_plot <- wrap_plots(plots, ncol = 3) +
   plot_annotation(
     title = "Trends in Key Development Indicators",
-    subtitle = "(Country averages across time)",
+    subtitle = "(The x-axis is labeled at the top of each plot, y-axis is labeled at the left side )",
     caption = "Source: World Development Indicators",
     theme = theme(
-      plot.title = element_text(size = 18, face = "bold", hjust = 0.5),  # Center title
-      plot.subtitle = element_text(size = 14, hjust = 0.5),              # Center subtitle
+      plot.title = element_text(size = 19, face = "bold", hjust = 0.5),  # Center title
+      plot.subtitle = element_text(size = 17, hjust = 0.5),              # Center subtitle
       plot.caption = element_text(size = 14)                         
     )
   )
